@@ -195,7 +195,7 @@ const Jobs = ({ data }) => {
 
   return (
     <StyledContainer id="jobs" ref={revealContainer}>
-      <Heading>Where I&apos;ve Worked</Heading>
+      <Heading>.experiences()</Heading>
       <StyledTabs>
         <StyledTabList role="tablist" aria-label="Job tabs" onKeyDown={e => onKeyPressed(e)}>
           {data &&
@@ -223,7 +223,7 @@ const Jobs = ({ data }) => {
         {data &&
           data.map(({ node }, i) => {
             const { frontmatter, html } = node;
-            const { title, url, company, range } = frontmatter;
+            const { title, company, range } = frontmatter;
             return (
               <StyledTabContent
                 key={i}
@@ -237,9 +237,9 @@ const Jobs = ({ data }) => {
                   <span>{title}</span>
                   <StyledCompany>
                     <span>&nbsp;@&nbsp;</span>
-                    <a href={url} target="_blank" rel="nofollow noopener noreferrer">
+                    <p target="_blank" rel="nofollow noopener noreferrer">
                       {company}
-                    </a>
+                    </p>
                   </StyledCompany>
                 </StyledJobTitle>
                 <StyledJobDetails>

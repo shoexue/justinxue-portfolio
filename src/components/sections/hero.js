@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { email } from '@config';
+// import { email } from '@config';
 import styled from 'styled-components';
 import { theme, mixins, media, Section } from '@styles';
 const { colors, fontSizes, fonts, navDelay, loaderDelay } = theme;
@@ -51,10 +51,10 @@ const StyledDescription = styled.div`
     ${mixins.inlineLink};
   }
 `;
-const StyledEmailLink = styled.a`
-  ${mixins.bigButton};
-  margin-top: 50px;
-`;
+// const StyledEmailLink = styled.a`
+//   ${mixins.bigButton};
+//   margin-top: 50px;
+// `;
 
 const Hero = ({ data }) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -70,7 +70,7 @@ const Hero = ({ data }) => {
     <StyledOverline style={{ transitionDelay: '100ms' }}>{frontmatter.title}</StyledOverline>
   );
   const two = () => (
-    <StyledTitle style={{ transitionDelay: '200ms' }}>{frontmatter.name}.</StyledTitle>
+    <StyledTitle style={{ transitionDelay: '200ms' }}>{frontmatter.name}</StyledTitle>
   );
   const three = () => (
     <StyledSubtitle style={{ transitionDelay: '300ms' }}>{frontmatter.subtitle}</StyledSubtitle>
@@ -81,13 +81,13 @@ const Hero = ({ data }) => {
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
-  const five = () => (
-    <div style={{ transitionDelay: '500ms' }}>
-      <StyledEmailLink href={`mailto:${email}`}>Get In Touch</StyledEmailLink>
-    </div>
-  );
+  // const five = () => (
+  //   <div style={{ transitionDelay: '500ms' }}>
+  //     <StyledEmailLink href={`mailto:${email}`}>Get In Touch</StyledEmailLink>
+  //   </div>
+  // );
 
-  const items = [one, two, three, four, five];
+  const items = [one, two, three, four];
 
   return (
     <StyledContainer>
