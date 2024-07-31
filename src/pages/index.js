@@ -13,7 +13,7 @@ const IndexPage = ({ location, data }) => (
   <Layout location={location}>
     <StyledMainContainer className="fillHeight">
       <Hero data={data.hero.edges} />
-      <About data={data.about.edges} />
+      <About data={data.about.edges} technologiesData={data.technologies.edges} />
       <Jobs data={data.jobs.edges} />
       <Featured data={data.featured.edges} />
       <Projects data={data.projects.edges} />
@@ -126,6 +126,17 @@ export const pageQuery = graphql`
           frontmatter {
             title
             buttonText
+          }
+          html
+        }
+      }
+    }
+    technologies: allMarkdownRemark(filter: { fileAbsolutePath: { regex: "/technologies/" } }) {
+      edges {
+        node {
+          frontmatter {
+            title
+            technologies
           }
           html
         }

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Img from 'gatsby-image';
@@ -13,10 +14,13 @@ const StyledContainer = styled(Section)`
 const StyledFlexContainer = styled.div`
   ${mixins.flexBetween};
   align-items: flex-start;
+  margin-bottom: 15%;
   ${media.tablet`display: block;`};
 `;
 const StyledContent = styled.div`
   width: 60%;
+  height: 100%
+  align-items: flex
   max-width: 480px;
   ${media.tablet`width: 100%;`};
   a {
@@ -52,6 +56,7 @@ const StyledPic = styled.div`
   width: 40%;
   max-width: 300px;
   margin-left: 60px;
+  margin-bottom: 10px;
   ${media.tablet`margin: 60px auto 0;`};
   ${media.phablet`width: 70%;`};
   a {
@@ -111,23 +116,62 @@ const StyledAvatarLink = styled.a`
     z-index: -1;
   }
 `;
+const TechnologyContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+`;
 
-const About = ({ data }) => {
+const TechnologyItem = styled.div`
+  flex: 1;
+  min-width: 200px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+
+  h4 {
+    color: ${colors.green};
+  }
+
+  ul {
+    display: grid; // Using grid layout
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); // Create columns that fit content
+    gap: 5%; // Space between items
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+  }
+
+  li {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.smish};
+    color: ${colors.green};
+    &:before {
+      content: '▹';
+      color: ${colors.green};
+      margin-right: 10px;
+    }
+  }
+`;
+
+const About = ({ data, technologiesData }) => {
   const { frontmatter, html } = data[0].node;
   const { title, skills, avatar } = frontmatter;
   const revealContainer = useRef(null);
+
   useEffect(() => sr.reveal(revealContainer.current, srConfig()), []);
 
   return (
     <StyledContainer id="about" ref={revealContainer}>
-      <Dot>.</Dot>
-      <Heading>{title}</Heading>
+      <Heading>
+        <Dot>.</Dot>
+        {title}
+      </Heading>
       <StyledFlexContainer>
         <StyledContent>
           <div dangerouslySetInnerHTML={{ __html: html }} />
-          <SkillsContainer>
+          {/* <SkillsContainer>
             {skills && skills.map((skill, i) => <Skill key={i}>{skill}</Skill>)}
-          </SkillsContainer>
+          </SkillsContainer> */}
         </StyledContent>
         <StyledPic>
           <StyledAvatarLink href={github}>
@@ -135,12 +179,27 @@ const About = ({ data }) => {
           </StyledAvatarLink>
         </StyledPic>
       </StyledFlexContainer>
+      <Heading>Here's my tech stack!</Heading>
+      <TechnologyContainer>
+        {technologiesData.map(({ node }, i) => (
+          <TechnologyItem key={i}>
+            <h4>{node.frontmatter.title}</h4>
+            <div dangerouslySetInnerHTML={{ __html: node.html }} />
+            <ul>
+              {node.frontmatter.technologies.map((tech, index) => (
+                <li key={index}>{tech}</li>
+              ))}
+            </ul>
+          </TechnologyItem>
+        ))}
+      </TechnologyContainer>
     </StyledContainer>
   );
 };
 
 About.propTypes = {
   data: PropTypes.array.isRequired,
+  technologiesData: PropTypes.array.isRequired,
 };
 
 export default About;
