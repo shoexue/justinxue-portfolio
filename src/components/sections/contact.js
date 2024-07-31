@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import sr from '@utils/sr';
 import { srConfig, email } from '@config';
 import styled from 'styled-components';
-import { theme, mixins, media, Section, Heading } from '@styles';
+import { theme, mixins, media, Section, Heading, Dot } from '@styles';
 const { colors, fontSizes, fonts } = theme;
 
 const StyledContainer = styled(Section)`
@@ -51,9 +51,12 @@ const Contact = ({ data }) => {
 
   return (
     <StyledContainer id="contact" ref={revealContainer}>
-      <StyledHeading>What&apos;s Next?</StyledHeading>
+      <StyledHeading>well, what now?</StyledHeading>
 
-      <StyledTitle>{title}</StyledTitle>
+      <StyledTitle>
+        <Dot>.</Dot>
+        {title}
+      </StyledTitle>
 
       <div dangerouslySetInnerHTML={{ __html: html }} />
 

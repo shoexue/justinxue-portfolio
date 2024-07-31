@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -6,7 +6,7 @@ import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { FormattedIcon } from '@components/icons';
 import styled from 'styled-components';
-import { theme, mixins, media, Section, Button } from '@styles';
+import { theme, mixins, media, Section } from '@styles';
 const { colors, fontSizes, fonts } = theme;
 
 const StyledContainer = styled(Section)`
@@ -122,12 +122,8 @@ const StyledTechList = styled.ul`
     }
   }
 `;
-const StyledMoreButton = styled(Button)`
-  margin: 100px auto 0;
-`;
 
 const Projects = ({ data }) => {
-  const [showMore, setShowMore] = useState(false);
   const revealTitle = useRef(null);
   const revealArchiveLink = useRef(null);
   const revealProjects = useRef([]);
@@ -138,16 +134,15 @@ const Projects = ({ data }) => {
     revealProjects.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
   }, []);
 
-  const GRID_LIMIT = 9;
   const projects = data.filter(({ node }) => node);
-  const firstSix = projects.slice(0, GRID_LIMIT);
-  const projectsToShow = showMore ? projects : firstSix;
+  const projectsToShow = projects;
+  const archiveText = `// archives`;
 
   return (
     <StyledContainer>
-      <StyledTitle ref={revealTitle}>Other Noteworthy Projects</StyledTitle>
+      <StyledTitle ref={revealTitle}>{archiveText}</StyledTitle>
       <StyledArchiveLink to="/archive" ref={revealArchiveLink}>
-        View Complete List of Projects/Codes
+        see a complete list of all my projects
       </StyledArchiveLink>
 
       <StyledGrid>
@@ -157,17 +152,13 @@ const Projects = ({ data }) => {
               const { frontmatter, html } = node;
               const { github, external, title, tech } = frontmatter;
               return (
-                <CSSTransition
-                  key={i}
-                  classNames="fadeup"
-                  timeout={i >= GRID_LIMIT ? (i - GRID_LIMIT) * 300 : 300}
-                  exit={false}>
+                <CSSTransition key={i} classNames="fadeup" timeout={300} exit={false}>
                   <StyledProject
                     key={i}
                     ref={el => (revealProjects.current[i] = el)}
                     tabIndex="0"
                     style={{
-                      transitionDelay: `${i >= GRID_LIMIT ? (i - GRID_LIMIT) * 100 : 0}ms`,
+                      transitionDelay: `0ms`,
                     }}>
                     <StyledProjectInner>
                       <header>
@@ -215,10 +206,6 @@ const Projects = ({ data }) => {
             })}
         </TransitionGroup>
       </StyledGrid>
-
-      <StyledMoreButton onClick={() => setShowMore(!showMore)}>
-        Show {showMore ? 'Less' : 'More'}
-      </StyledMoreButton>
     </StyledContainer>
   );
 };

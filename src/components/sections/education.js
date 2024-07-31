@@ -200,7 +200,7 @@ const Education = ({ data }) => {
     <StyledContainer id="education" ref={revealContainer}>
       <Heading>
         <Dot>.</Dot>
-        education()
+        education ()
       </Heading>
       <StyledTabs>
         {data &&
