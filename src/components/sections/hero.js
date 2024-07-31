@@ -4,6 +4,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 // import { email } from '@config';
 import styled from 'styled-components';
 import { theme, mixins, media, Section } from '@styles';
+// import FractalTree from '@components';
 const { colors, fontSizes, fonts, navDelay, loaderDelay } = theme;
 
 const StyledContainer = styled(Section)`
@@ -85,6 +86,13 @@ const Hero = ({ data }) => {
   //   <div style={{ transitionDelay: '500ms' }}>
   //     <StyledEmailLink href={`mailto:${email}`}>Get In Touch</StyledEmailLink>
   //   </div>
+  // );
+
+  // Fractal tree that doesn't work lol
+  // const five = () => (
+  //   <FractalTreeContainer style={{ transitionDelay: '500ms' }}>
+  //     <FractalTree />
+  //   </FractalTreeContainer>
   // );
 
   const items = [one, two, three, four];

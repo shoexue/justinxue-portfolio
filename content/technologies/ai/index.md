@@ -1,8 +1,10 @@
 ---
-title: 'Title'
+title: 'Machine Learning'
 technologies:
-  - tech 1
-  - tech 2
+  - TensorFlow
+  - Pytorch
+  - OpenCV
+  - Keras
 ---
 
-words words words
+I have experience training my own ML models and working with various libraries such as...

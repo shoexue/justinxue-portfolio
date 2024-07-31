@@ -5,7 +5,7 @@ import sr from '@utils/sr';
 import { srConfig } from '@config';
 import { FormattedIcon } from '@components/icons';
 import styled from 'styled-components';
-import { theme, mixins, media, Section, Heading } from '@styles';
+import { theme, mixins, media, Section, Heading, Dot } from '@styles';
 const { colors, fontSizes, fonts } = theme;
 
 const StyledContainer = styled(Section)`
@@ -23,14 +23,6 @@ const StyledContent = styled.div`
     z-index: 5;
   `};
   ${media.phablet`padding: 30px 25px 20px;`};
-`;
-const StyledLabel = styled.h4`
-  font-size: ${fontSizes.smish};
-  font-weight: normal;
-  color: ${colors.green};
-  font-family: ${fonts.SFMono};
-  margin-top: 10px;
-  padding-top: 0;
 `;
 const StyledProjectName = styled.h5`
   font-size: 28px;
@@ -216,7 +208,10 @@ const Featured = ({ data }) => {
 
   return (
     <StyledContainer id="projects">
-      <Heading ref={revealTitle}>Some Things I&apos;ve Built</Heading>
+      <Heading ref={revealTitle}>
+        <Dot>.</Dot>
+        projects ()
+      </Heading>
 
       <div>
         {featuredProjects &&
@@ -227,7 +222,6 @@ const Featured = ({ data }) => {
             return (
               <StyledProject key={i} ref={el => (revealProjects.current[i] = el)}>
                 <StyledContent>
-                  <StyledLabel>Featured Project</StyledLabel>
                   <StyledProjectName>
                     {external ? (
                       <a

@@ -1,8 +1,15 @@
 ---
-title: 'Title'
+title: 'Languages'
 technologies:
-  - tech 1
-  - tech 2
+  - Python
+  - Java
+  - C
+  - C++
+  - Assembly
+  - JavaScript
+  - SQL
+  - HTML/CSS
+  - Bash
 ---
 
-words words words
+I am familar with these programming languages:

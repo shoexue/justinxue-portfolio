@@ -1,9 +1,10 @@
 ---
-title: 'Title'
+title: 'Frontend'
 technologies:
-  - tech 1
-  - tech 2
-  - tech 3
+  - React
+  - Flutter/Dart
+  - three.js
+  - Tailwind CSS
 ---
 
-words words words
+I enjoy making dynamic websites and applications that are also fun to look at! These are the technologies I am familiar with:
