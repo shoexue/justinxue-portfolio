@@ -157,11 +157,6 @@ const StyledListLink = styled(Link)`
   display: flex; // This ensures the dot and the name align properly
   align-items: center; // Centers the dot vertically with the text
 `;
-const StyledResumeButton = styled.a`
-  ${mixins.smallButton};
-  margin-left: 10px;
-  font-size: ${fontSizes.smish};
-`;
 
 const DELTA = 5;
 
@@ -299,14 +294,7 @@ class Nav extends Component {
             <TransitionGroup component={null}>
               {isMounted && (
                 <CSSTransition classNames={fadeDownClass} timeout={timeout}>
-                  <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms` }}>
-                    <StyledResumeButton
-                      href="/resume.pdf"
-                      target="_blank"
-                      rel="nofollow noopener noreferrer">
-                      Resume
-                    </StyledResumeButton>
-                  </div>
+                  <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms` }}></div>
                 </CSSTransition>
               )}
             </TransitionGroup>

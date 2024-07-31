@@ -42,7 +42,21 @@ const StyledEmailLink = styled.a`
   ${mixins.bigButton};
   margin-top: 50px;
 `;
+const StyledResumeLink = styled.a`
+  && {
+    margin-top: 50px;
+    color: ${colors.lightSlate};
+    font-size: ${fontSizes.lg};
+    transition: color 0.3s ease;
+    text-decoration: none;
 
+    &:hover,
+    &:focus {
+      color: ${colors.green};
+      text-decoration: none;
+    }
+  }
+`;
 const Contact = ({ data }) => {
   const { frontmatter, html } = data[0].node;
   const { title, buttonText } = frontmatter;
@@ -63,6 +77,10 @@ const Contact = ({ data }) => {
       <StyledEmailLink href={`mailto:${email}`} target="_blank" rel="nofollow noopener noreferrer">
         {buttonText}
       </StyledEmailLink>
+      <div />
+      <StyledResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
+        little souvenir? download my resume
+      </StyledResumeLink>
     </StyledContainer>
   );
 };
