@@ -4,7 +4,7 @@ import Img from 'gatsby-image';
 import sr from '@utils/sr';
 import { srConfig, github } from '@config';
 import styled from 'styled-components';
-import { theme, mixins, media, Section, Heading } from '@styles';
+import { theme, mixins, media, Section, Heading, Dot } from '@styles';
 const { colors, fontSizes, fonts } = theme;
 
 const StyledContainer = styled(Section)`
@@ -120,6 +120,7 @@ const About = ({ data }) => {
 
   return (
     <StyledContainer id="about" ref={revealContainer}>
+      <Dot>.</Dot>
       <Heading>{title}</Heading>
       <StyledFlexContainer>
         <StyledContent>

@@ -143,15 +143,19 @@ const StyledListItem = styled.li`
   position: relative;
   font-size: ${fontSizes.smish};
   counter-increment: item 1;
-  &:before {
-    content: '0' counter(item) '.';
-    text-align: right;
-    color: ${colors.green};
-    font-size: ${fontSizes.xs};
-  }
+  // Removed the :before section that added the numbers
 `;
+
+const StyledDot = styled.span`
+  color: ${colors.green}; // Ensuring the dot uses the specified green color
+  padding-right: 5px; // Adds some space between the dot and the text
+  font-family: ${fonts.SFMono}; // Maintains the same font as the list
+`;
+
 const StyledListLink = styled(Link)`
   padding: 12px 10px;
+  display: flex; // This ensures the dot and the name align properly
+  align-items: center; // Centers the dot vertically with the text
 `;
 const StyledResumeButton = styled.a`
   ${mixins.smallButton};
@@ -282,7 +286,10 @@ class Nav extends Component {
                       <StyledListItem
                         key={i}
                         style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
-                        <StyledListLink to={url}>{name}</StyledListLink>
+                        <StyledListLink to={url}>
+                          <StyledDot>.</StyledDot>
+                          {name}
+                        </StyledListLink>
                       </StyledListItem>
                     </CSSTransition>
                   ))}

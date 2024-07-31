@@ -1,8 +1,8 @@
 ---
-title: '.about()'
-avatar: 'me.jpg'
+title: 'about ()'
+avatar: 'headshot.png'
 skills:
-  - None
+  - Insert skills here
 ---
 
 What's up!
