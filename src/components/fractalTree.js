@@ -2,16 +2,16 @@ import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const Canvas = styled.canvas`
-  width: 70%;
-  height: 70%;
+  width: 50%; // Set a specific width for the canvas
+  height: 50%; // Take the full height of the container
 `;
 
 const FractalTree = () => {
   const canvasRef = useRef(null);
   const [angle, setAngle] = useState(0.45);
-  const maxAngle = 2;
-  const minAngle = 0;
-  const speed = 0.01;
+  const maxAngle = 2; // Allow wider angles
+  const minAngle = 0; // Minimum angle
+  const speed = 0.01; // Slower animation speed
   const [animating, setAnimating] = useState(false);
   let increment = speed;
 
@@ -20,8 +20,18 @@ const FractalTree = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
+    const canvasHeight = window.innerHeight; // Get viewport height for sizing
+    // const canvasWidth = canvas.width;
+
+    if (isMobile) {
+      canvas.width = window.innerWidth * 2;
+    } else {
+      canvas.width = window.innerWidth;
+    }
     canvas.height = window.innerHeight;
+    const canvasWidth = canvas.width;
+
+    const initialBranchLength = canvasHeight * 0.3; // Adjust initial branch length based on canvas height
 
     const drawLine = len => {
       ctx.beginPath();
@@ -32,7 +42,8 @@ const FractalTree = () => {
 
     const drawBranch = (len, angle, depth) => {
       drawLine(len);
-      if (len < 4) {
+      if (len < 5 || depth > 9) {
+        // Minimum length of branch and max depth
         return;
       }
 
@@ -45,15 +56,16 @@ const FractalTree = () => {
       ctx.rotate(angle);
       drawBranch(len * 0.67, angle, depth + 1);
       ctx.restore();
+      ctx.translate(0, len); // Move back to the original position
     };
 
     const drawTree = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
       ctx.save();
-      ctx.translate(canvas.width / 2, canvas.height);
+      ctx.translate(canvasWidth / 2, canvasHeight);
       ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth = 2;
-      drawBranch(120, angle, 0);
+      ctx.lineWidth = 3;
+      drawBranch(initialBranchLength, angle, 0);
       ctx.restore();
     };
 
@@ -77,13 +89,13 @@ const FractalTree = () => {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [animating, isMobile]); // Include isMobile in the dependency array
+  }, [animating, isMobile]);
 
   return (
     <Canvas
       ref={canvasRef}
-      onMouseOver={isMobile ? null : () => setAnimating(true)}
-      onMouseOut={isMobile ? null : () => setAnimating(false)}
+      onMouseOver={isMobile ? null : () => setAnimating(false)}
+      onMouseOut={isMobile ? null : () => setAnimating(true)}
       onFocus={isMobile ? null : () => setAnimating(true)}
       onBlur={isMobile ? null : () => setAnimating(false)}
       tabIndex={0}

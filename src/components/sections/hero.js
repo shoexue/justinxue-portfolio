@@ -45,7 +45,7 @@ const StyledSubtitle = styled.h3`
 `;
 const StyledDescription = styled.div`
   margin-top: 25px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   width: 50%;
   max-width: 500px;
   a {
@@ -73,10 +73,12 @@ const Hero = ({ data }) => {
     <StyledSubtitle style={{ transitionDelay: '300ms' }}>{frontmatter.subtitle}</StyledSubtitle>
   );
   const four = () => (
-    <StyledDescription
-      style={{ transitionDelay: '400ms' }}
-      dangerouslySetInnerHTML={{ __html: html }}
-    />
+    <div>
+      <StyledDescription
+        style={{ transitionDelay: '400ms' }}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+    </div>
   );
 
   const five = () => (
