@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-// import { email } from '@config';
 import styled from 'styled-components';
-import { theme, mixins, media, Section } from '@styles';
-// import FractalTree from '@components';
+import { theme, mixins, media, Section, FractalTreeContainer } from '@styles';
+import { FractalTree } from '@components';
 const { colors, fontSizes, fonts, navDelay, loaderDelay } = theme;
 
 const StyledContainer = styled(Section)`
@@ -46,16 +45,13 @@ const StyledSubtitle = styled.h3`
 `;
 const StyledDescription = styled.div`
   margin-top: 25px;
+  margin-bottom: 10px;
   width: 50%;
   max-width: 500px;
   a {
     ${mixins.inlineLink};
   }
 `;
-// const StyledEmailLink = styled.a`
-//   ${mixins.bigButton};
-//   margin-top: 50px;
-// `;
 
 const Hero = ({ data }) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -82,20 +78,14 @@ const Hero = ({ data }) => {
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
-  // const five = () => (
-  //   <div style={{ transitionDelay: '500ms' }}>
-  //     <StyledEmailLink href={`mailto:${email}`}>Get In Touch</StyledEmailLink>
-  //   </div>
-  // );
 
-  // Fractal tree that doesn't work lol
-  // const five = () => (
-  //   <FractalTreeContainer style={{ transitionDelay: '500ms' }}>
-  //     <FractalTree />
-  //   </FractalTreeContainer>
-  // );
+  const five = () => (
+    <FractalTreeContainer style={{ transitionDelay: '500ms' }}>
+      <FractalTree />
+    </FractalTreeContainer>
+  );
 
-  const items = [one, two, three, four];
+  const items = [one, two, three, four, five];
 
   return (
     <StyledContainer>

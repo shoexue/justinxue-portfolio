@@ -2,17 +2,20 @@ import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const Canvas = styled.canvas`
-  width: 100%;
-  height: 100%;
+  width: 70%;
+  height: 70%;
 `;
 
 const FractalTree = () => {
   const canvasRef = useRef(null);
   const [angle, setAngle] = useState(0.45);
-  const maxAngle = 0.8;
-  const minAngle = 0.1;
+  const maxAngle = 2;
+  const minAngle = 0;
   const speed = 0.01;
+  const [animating, setAnimating] = useState(false);
   let increment = speed;
+
+  const isMobile = window.innerWidth <= 768; // Using 768px as the breakpoint for mobile devices
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -35,12 +38,10 @@ const FractalTree = () => {
 
       ctx.translate(0, -len);
       ctx.save();
-
       ctx.rotate(-angle);
       drawBranch(len * 0.67, angle, depth + 1);
       ctx.restore();
       ctx.save();
-
       ctx.rotate(angle);
       drawBranch(len * 0.67, angle, depth + 1);
       ctx.restore();
@@ -57,33 +58,34 @@ const FractalTree = () => {
     };
 
     drawTree();
-
-    const animateAngle = () => {
-      setAngle(prevAngle => {
-        if (prevAngle >= maxAngle || prevAngle <= minAngle) {
-          increment = -increment;
-        }
-        return prevAngle + increment;
-      });
-    };
-
-    const interval = setInterval(animateAngle, 20);
-
-    return () => clearInterval(interval);
   }, [angle]);
 
-  const handleMouseOver = () => setAngle(minAngle);
-  const handleMouseOut = () => setAngle(maxAngle);
-  const handleFocus = () => setAngle(minAngle);
-  const handleBlur = () => setAngle(maxAngle);
+  useEffect(() => {
+    let interval;
+    if (animating || isMobile) {
+      // Always animate on mobile devices
+      interval = setInterval(() => {
+        setAngle(prevAngle => {
+          const newAngle = prevAngle + increment;
+          if (newAngle >= maxAngle || newAngle <= minAngle) {
+            increment = -increment;
+          }
+          return newAngle;
+        });
+      }, 20);
+    } else {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [animating, isMobile]); // Include isMobile in the dependency array
 
   return (
     <Canvas
       ref={canvasRef}
-      onMouseOver={handleMouseOver}
-      onMouseOut={handleMouseOut}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
+      onMouseOver={isMobile ? null : () => setAnimating(true)}
+      onMouseOut={isMobile ? null : () => setAnimating(false)}
+      onFocus={isMobile ? null : () => setAnimating(true)}
+      onBlur={isMobile ? null : () => setAnimating(false)}
       tabIndex={0}
     />
   );
