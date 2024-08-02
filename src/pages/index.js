@@ -39,7 +39,6 @@ export const pageQuery = graphql`
             title
             name
             subtitle
-            buttonText
           }
           html
         }
@@ -57,7 +56,6 @@ export const pageQuery = graphql`
                 }
               }
             }
-            skills
           }
           html
         }

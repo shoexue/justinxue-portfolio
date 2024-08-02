@@ -128,10 +128,13 @@ const StyledTabContent = styled.div`
 
   ul {
     ${mixins.fancyList};
+    font-size: ${fontSizes.sm};
   }
   a {
     ${mixins.inlineLink};
   }
+> div {
+    font-family: ${fonts.SFMono};
 `;
 const StyledSchoolTitle = styled.h4`
   color: ${colors.lightestSlate};
@@ -150,7 +153,7 @@ const StyledJobDetails = styled.h5`
   font-size: ${fontSizes.smish};
   font-weight: normal;
   letter-spacing: 0.05em;
-  color: ${colors.lightSlate};
+  color: ${colors.lightestSlate};
   margin-bottom: 30px;
   svg {
     width: 15px;

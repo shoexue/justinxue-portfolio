@@ -1,8 +1,5 @@
 ---
-title: 'hey! my name is...'
-name: 'Alvina Yang'
+title: "hey! i'm..."
+name: 'Alvina.'
 subtitle: 'i can occasionally code :)'
-buttonText: 'Get In Touch'
 ---
-
-welcome to my portfolio

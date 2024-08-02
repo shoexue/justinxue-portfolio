@@ -11,4 +11,4 @@ tech:
 showInProjects: true
 ---
 
-Worked in a team of 6 to create an interactive Java-based platform for visualzing neural network decision boundaries. This platform allows for users to customize datasets and adjust paramaters to demonstrate real-time effects on the decision boundary. Yes the font is comic sans :)
+An interactive Java-based platform for visualzing neural network decision boundaries which has heavily inspired by the [Tensorflow Playground](https://playground.tensorflow.org). This platform allows for users to customize datasets and adjust paramaters to demonstrate real-time effects on the decision boundary. ... And yes the font is comic sans :)

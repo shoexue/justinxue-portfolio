@@ -22,33 +22,11 @@ const StyledContent = styled.div`
   height: 100%
   align-items: flex
   max-width: 480px;
+  font-family: ${fonts.SFMono};
+  font-size: ${fontSizes.md};
   ${media.tablet`width: 100%;`};
   a {
     ${mixins.inlineLink};
-  }
-`;
-const SkillsContainer = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(2, minmax(140px, 200px));
-  overflow: hidden;
-  padding: 0;
-  margin: 20px 0 0 0;
-  list-style: none;
-`;
-const Skill = styled.li`
-  position: relative;
-  margin-bottom: 10px;
-  padding-left: 20px;
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.smish};
-  color: ${colors.green};
-  &:before {
-    content: '▹';
-    position: absolute;
-    left: 0;
-    color: ${colors.green};
-    font-size: ${fontSizes.sm};
-    line-height: 12px;
   }
 `;
 const StyledPic = styled.div`
@@ -141,6 +119,11 @@ const TechnologyItem = styled.div`
     margin-top: 10px;
   }
 
+  div {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.smish};
+  }
+
   li {
     font-family: ${fonts.SFMono};
     font-size: ${fontSizes.smish};
@@ -155,7 +138,7 @@ const TechnologyItem = styled.div`
 
 const About = ({ data, technologiesData }) => {
   const { frontmatter, html } = data[0].node;
-  const { title, skills, avatar } = frontmatter;
+  const { title, avatar } = frontmatter;
   const revealContainer = useRef(null);
 
   useEffect(() => sr.reveal(revealContainer.current, srConfig()), []);
@@ -169,9 +152,6 @@ const About = ({ data, technologiesData }) => {
       <StyledFlexContainer>
         <StyledContent>
           <div dangerouslySetInnerHTML={{ __html: html }} />
-          {/* <SkillsContainer>
-            {skills && skills.map((skill, i) => <Skill key={i}>{skill}</Skill>)}
-          </SkillsContainer> */}
         </StyledContent>
         <StyledPic>
           <StyledAvatarLink href={github}>

@@ -1,5 +1,5 @@
 ---
-date: '2024-05-01'
+date: '2024-05-02'
 title: 'Undergraduate Researcher'
 company: 'Intelligent Adaptive Interventions Lab'
 location: Toronto, ON, Canada / Remote

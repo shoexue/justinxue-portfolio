@@ -117,6 +117,7 @@ const StyledHighlight = styled.span`
     margin-left: 25px;
   `};
 `;
+
 const StyledTabContent = styled.div`
   position: relative;
   width: 100%;
@@ -128,9 +129,14 @@ const StyledTabContent = styled.div`
 
   ul {
     ${mixins.fancyList};
+    font-size: ${fontSizes.sm};
   }
   a {
     ${mixins.inlineLink};
+  }
+
+  > div {
+    font-family: ${fonts.SFMono};
   }
 `;
 const StyledJobTitle = styled.h4`
@@ -139,15 +145,18 @@ const StyledJobTitle = styled.h4`
   font-weight: 500;
   margin-bottom: 5px;
 `;
-const StyledCompany = styled.span`
+const StyledCompany = styled.h6`
   color: ${colors.green};
+  font-size: ${fontSizes.lg};
+  font-weight: 500;
+  margin-bottom: 5px;
 `;
 const StyledJobDetails = styled.h5`
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.smish};
   font-weight: normal;
   letter-spacing: 0.05em;
-  color: ${colors.lightSlate};
+  color: ${colors.lightestSlate};
   margin-bottom: 30px;
   svg {
     width: 15px;
@@ -236,15 +245,8 @@ const Jobs = ({ data }) => {
                 aria-labelledby={`tab-${i}`}
                 tabIndex={activeTabId === i ? '0' : '-1'}
                 hidden={activeTabId !== i}>
-                <StyledJobTitle>
-                  <span>{title}</span>
-                  <StyledCompany>
-                    <span>&nbsp;@&nbsp;</span>
-                    <p target="_blank" rel="nofollow noopener noreferrer">
-                      {company}
-                    </p>
-                  </StyledCompany>
-                </StyledJobTitle>
+                <StyledJobTitle>{title}</StyledJobTitle>
+                <StyledCompany>{company}</StyledCompany>
                 <StyledJobDetails>
                   <span>{range}</span>
                 </StyledJobDetails>

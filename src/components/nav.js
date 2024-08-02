@@ -8,7 +8,7 @@ import { navLinks, navHeight } from '@config';
 import { Menu } from '@components';
 import { IconLogo } from '@components/icons';
 import styled from 'styled-components';
-import { theme, mixins, media } from '@styles';
+import { theme, mixins, media, Dot } from '@styles';
 const { colors, fontSizes, fonts, loaderDelay } = theme;
 
 const StyledContainer = styled.header`
@@ -146,12 +146,6 @@ const StyledListItem = styled.li`
   // Removed the :before section that added the numbers
 `;
 
-const StyledDot = styled.span`
-  color: ${colors.green}; // Ensuring the dot uses the specified green color
-  padding-right: 5px; // Adds some space between the dot and the text
-  font-family: ${fonts.SFMono}; // Maintains the same font as the list
-`;
-
 const StyledListLink = styled(Link)`
   padding: 12px 10px;
   display: flex; // This ensures the dot and the name align properly
@@ -282,7 +276,7 @@ class Nav extends Component {
                         key={i}
                         style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
                         <StyledListLink to={url}>
-                          <StyledDot>.</StyledDot>
+                          <Dot>.</Dot>
                           {name}
                         </StyledListLink>
                       </StyledListItem>
