@@ -67,7 +67,7 @@ const StyledTabButton = styled.button`
   height: ${theme.tabHeight}px;
   padding: 0 20px 2px;
   transition: ${theme.transition};
-  border-left: 2px solid ${colors.lightestNavy};
+  border-left: 2px solid ${colors.lightestGray};
   text-align: left;
   white-space: nowrap;
   font-family: ${fonts.SFMono};
@@ -79,12 +79,12 @@ const StyledTabButton = styled.button`
     padding: 0 15px;
     text-align: center;
     border-left: 0;
-    border-bottom: 2px solid ${colors.lightestNavy};
+    border-bottom: 2px solid ${colors.lightestGray};
     min-width: 120px;
   `};
   &:hover,
   &:focus {
-    background-color: ${colors.lightNavy};
+    background-color: ${colors.lightGray};
   }
 `;
 const StyledHighlight = styled.span`

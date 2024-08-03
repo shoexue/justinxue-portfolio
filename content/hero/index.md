@@ -1,5 +1,5 @@
 ---
 title: "hey! i'm..."
 name: 'Alvina.'
-subtitle: 'i can occasionally code :)'
+subtitle: 'i can somewhat code :)'
 ---
