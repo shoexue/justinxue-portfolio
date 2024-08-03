@@ -95,11 +95,12 @@ const mixins = {
   bigButton: css`
     color: ${colors.green};
     background-color: transparent;
-    border: 1px solid ${colors.green};
+    border: 1.5px solid ${colors.green};
     border-radius: ${theme.borderRadius};
-    padding: 1.25rem 1.75rem;
-    font-size: ${fontSizes.sm};
-    font-family: ${fonts.SFMono};
+    padding: 1.15rem 1.75rem;
+    font-size: ${fontSizes.xl};
+    font-weight: 600;
+    font-family: ${fonts.Calibre};
     line-height: 1;
     text-decoration: none;
     cursor: pointer;

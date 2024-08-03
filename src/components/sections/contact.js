@@ -13,6 +13,10 @@ const StyledContainer = styled(Section)`
   a {
     ${mixins.inlineLink};
   }
+  div {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.md};
+  }
 `;
 const StyledHeading = styled(Heading)`
   display: block;
@@ -46,14 +50,14 @@ const StyledResumeLink = styled.a`
   && {
     margin-top: 50px;
     color: ${colors.lightSlate};
-    font-size: ${fontSizes.lg};
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
     transition: color 0.3s ease;
     text-decoration: none;
 
     &:hover,
     &:focus {
       color: ${colors.green};
-      text-decoration: none;
     }
   }
 `;

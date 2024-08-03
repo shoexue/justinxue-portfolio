@@ -53,6 +53,8 @@ const StyledDescription = styled.div`
   `};
   p {
     margin: 0;
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
   }
   a {
     ${mixins.inlineLink};

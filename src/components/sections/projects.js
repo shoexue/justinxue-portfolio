@@ -97,6 +97,8 @@ const StyledProjectName = styled.h5`
 `;
 const StyledProjectDescription = styled.div`
   font-size: 17px;
+  font-family: ${fonts.SFMono};
+  font-size: ${fontSizes.sm};
   color: ${colors.lightSlate};
   a {
     ${mixins.inlineLink};
