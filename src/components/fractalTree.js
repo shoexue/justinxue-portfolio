@@ -9,9 +9,9 @@ const Canvas = styled.canvas`
 const FractalTree = () => {
   const canvasRef = useRef(null);
   const [angle, setAngle] = useState(0.45);
-  const maxAngle = 2; // Allow wider angles
-  const minAngle = 0; // Minimum angle
-  const speed = 0.01; // Slower animation speed
+  const maxAngle = 1.7; // Allow wider angles
+  const minAngle = 0.1; // Minimum angle
+  const speed = 0.008; // Slower animation speed
   const [animating, setAnimating] = useState(false);
   let increment = speed;
 

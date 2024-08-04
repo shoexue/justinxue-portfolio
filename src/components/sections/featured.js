@@ -107,23 +107,23 @@ const StyledFeaturedImg = styled(Img)`
   border-radius: ${theme.borderRadius};
   position: relative;
   mix-blend-mode: multiply;
-  filter: grayscale(100%) contrast(1) brightness(90%);
+  filter: grayscale(100%) contrast(1) brightness(90%); // Start with black and white
+  transition: filter 0.3s ease-out; // Smooth transition for filter changes
   ${media.tablet`
     object-fit: cover;
     width: auto;
     height: 100%;
-    filter: grayscale(100%) contrast(1) brightness(80%);
   `};
 `;
+
 const StyledImgContainer = styled.a`
   ${mixins.boxShadow};
   grid-column: 6 / -1;
   grid-row: 1 / -1;
   position: relative;
   z-index: 1;
-  background-color: ${colors.green};
   border-radius: ${theme.radius + 1}px;
-  transition: ${theme.transition};
+  transition: background 0.3s, filter 0.3s ease-out;
   ${media.tablet`height: 100%;`};
   ${media.thone`
     grid-column: 1 / -1;
@@ -132,25 +132,9 @@ const StyledImgContainer = styled.a`
   &:hover,
   &:focus {
     background: transparent;
-    &:before,
     ${StyledFeaturedImg} {
-      background: transparent;
-      filter: none;
+      filter: none; // Remove the black and white filter on hover
     }
-  }
-  &:before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 3;
-    transition: ${theme.transition};
-    background-color: ${colors.bg};
-    mix-blend-mode: screen;
   }
 `;
 const StyledProject = styled.div`

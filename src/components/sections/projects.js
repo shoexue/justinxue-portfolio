@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import sr from '@utils/sr';
@@ -17,19 +16,21 @@ const StyledContainer = styled(Section)`
 const StyledTitle = styled.h4`
   margin: 0 auto;
   font-size: ${fontSizes.h3};
+  color: ${colors.slate};
   ${media.tablet`font-size: 24px;`};
   a {
     display: block;
   }
 `;
-const StyledArchiveLink = styled(Link)`
-  ${mixins.inlineLink};
-  text-align: center;
+const StyledSubtext = styled.p`
   margin: 0 auto;
-  font-family: ${fonts.SFMono};
   font-size: ${fontSizes.sm};
-  &:after {
-    bottom: 0.1em;
+  margin-top: 5px;
+  font-family: ${fonts.SFMono};
+  color: ${colors.slate};
+  ${media.tablet`font-size: 24px;`};
+  a {
+    display: block;
   }
 `;
 const StyledGrid = styled.div`
@@ -139,14 +140,12 @@ const Projects = ({ data }) => {
   const projects = data.filter(({ node }) => node);
   const projectsToShow = projects;
   const archiveText = `// archives`;
+  const descriptionText = `// just some more of my projects`;
 
   return (
     <StyledContainer>
       <StyledTitle ref={revealTitle}>{archiveText}</StyledTitle>
-      <StyledArchiveLink to="/archive" ref={revealArchiveLink}>
-        see a complete list of all my projects
-      </StyledArchiveLink>
-
+      <StyledSubtext>{descriptionText}</StyledSubtext>
       <StyledGrid>
         <TransitionGroup className="projects">
           {projectsToShow &&
