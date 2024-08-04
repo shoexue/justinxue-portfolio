@@ -1,5 +1,5 @@
 ---
-title: "hey! i'm..."
-name: 'Alvina.'
-subtitle: 'i can somewhat code :)'
+title: 'print("hello world!")'
+name: "I'm Alvina."
+subtitle: '... and i can somewhat code :)'
 ---

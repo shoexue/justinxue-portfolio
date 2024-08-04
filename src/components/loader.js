@@ -1,95 +1,84 @@
-import React, { useState, useEffect } from 'react';
-import Helmet from 'react-helmet';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import anime from 'animejs';
-import { IconLoader } from '@components/icons';
-import styled from 'styled-components';
-import { theme, mixins } from '@styles';
+import styled, { keyframes } from 'styled-components';
+import { theme } from '@styles';
 const { colors } = theme;
 
-const StyledContainer = styled.div`
-  ${mixins.flexCenter};
-  background-color: ${colors.darkBg};
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 99;
+const rotateY = keyframes`
+  0%, 50%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(2vw);
+  }
+  75% {
+    transform: translateY(2vw);
+  }
 `;
-const StyledLogo = styled.div`
-  width: max-content;
-  max-width: 100px;
-  transition: ${theme.transition};
-  opacity: ${props => (props.isMounted ? 1 : 0)};
-  svg {
-    width: 100%;
-    height: 100%;
-    display: block;
-    margin: 0 auto;
-    fill: none;
-    user-select: none;
-    #B {
-      opacity: 0;
-    }
+
+const rotateX = keyframes`
+  0%, 50%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2vw);
+  }
+  75% {
+    transform: translateY(-2vw);
+  }
+`;
+
+const StyledLoaderContainer = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: ${colors.bg};
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StyledLoader = styled.div`
+  position: relative;
+  width: 10vw;
+  height: 5vw;
+  padding: 1.5vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StyledDot = styled.span`
+  position: absolute;
+  height: 0.8vw;
+  width: 0.8vw;
+  border-radius: 50%;
+  background-color: ${colors.green};
+  &:nth-child(1) {
+    animation: ${rotateY} 0.7s infinite linear;
+  }
+  &:nth-child(2) {
+    animation: ${rotateX} 0.7s infinite linear;
   }
 `;
 
 const Loader = ({ finishLoading }) => {
-  const animate = () => {
-    const loader = anime.timeline({
-      complete: () => finishLoading(),
-    });
-
-    loader
-      .add({
-        targets: '#logo path',
-        delay: 300,
-        duration: 1500,
-        easing: 'easeInOutQuart',
-        strokeDashoffset: [anime.setDashoffset, 0],
-      })
-      .add({
-        targets: '#logo #B',
-        duration: 700,
-        easing: 'easeInOutQuart',
-        opacity: 1,
-      })
-      .add({
-        targets: '#logo',
-        delay: 500,
-        duration: 300,
-        easing: 'easeInOutQuart',
-        opacity: 0,
-        scale: 0.1,
-      })
-      .add({
-        targets: '.loader',
-        duration: 200,
-        easing: 'easeInOutQuart',
-        opacity: 0,
-        zIndex: -1,
-      });
-  };
-
-  const [isMounted, setIsMounted] = useState(false);
-
   useEffect(() => {
-    const timeout = setTimeout(() => setIsMounted(true), 10);
-    animate();
+    const timeout = setTimeout(() => {
+      finishLoading();
+    }, 1000); // Set this to the desired loader display duration
     return () => clearTimeout(timeout);
-  }, []);
+  }, [finishLoading]);
 
   return (
-    <StyledContainer className="loader">
-      <Helmet bodyAttributes={{ class: `hidden` }} />
-
-      <StyledLogo isMounted={isMounted}>
-        <IconLoader />
-      </StyledLogo>
-    </StyledContainer>
+    <StyledLoaderContainer className="loader-div">
+      <StyledLoader>
+        <StyledDot />
+        <StyledDot />
+      </StyledLoader>
+    </StyledLoaderContainer>
   );
 };
 

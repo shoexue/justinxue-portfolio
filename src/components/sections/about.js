@@ -46,10 +46,11 @@ const StyledPic = styled.div`
 const StyledAvatar = styled(Img)`
   position: relative;
   mix-blend-mode: multiply;
-  filter: grayscale(100%) contrast(1);
+  filter: grayscale(100%) contrast(1); // Start in grayscale
   border-radius: ${theme.borderRadius};
-  transition: ${theme.transition};
+  transition: ${theme.transition}; // Ensure transitions are set to animate changes
 `;
+
 const StyledAvatarLink = styled.a`
   ${mixins.boxShadow};
   width: 100%;
@@ -57,27 +58,8 @@ const StyledAvatarLink = styled.a`
   border-radius: ${theme.borderRadius};
   background-color: ${colors.lightestSlate};
   margin-left: -20px;
-  &:hover,
-  &:focus {
-    background: transparent;
-    &:after {
-      top: 15px;
-      left: 15px;
-    }
-    ${StyledAvatar} {
-      filter: none;
-      mix-blend-mode: normal;
-    }
-  }
-  &:before,
-  &:after {
-    content: '';
-    display: block;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: ${theme.borderRadius};
-    transition: ${theme.transition};
+  &:hover ${StyledAvatar}, &:focus ${StyledAvatar} {
+    filter: none; // Remove filter on hover/focus, showing the image in full color
   }
   &:before {
     top: 0;
@@ -94,6 +76,7 @@ const StyledAvatarLink = styled.a`
     z-index: -1;
   }
 `;
+
 const TechnologyContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
