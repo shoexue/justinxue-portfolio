@@ -61,20 +61,6 @@ const StyledAvatarLink = styled.a`
   &:hover ${StyledAvatar}, &:focus ${StyledAvatar} {
     filter: none; // Remove filter on hover/focus, showing the image in full color
   }
-  &:before {
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: ${colors.bg};
-    mix-blend-mode: screen;
-  }
-  &:after {
-    border: 2px solid ${colors.green};
-    top: 10px;
-    left: 10px;
-    z-index: -1;
-  }
 `;
 
 const TechnologyContainer = styled.div`
@@ -138,7 +124,7 @@ const About = ({ data, technologiesData }) => {
         </StyledContent>
         <StyledPic>
           <StyledAvatarLink href={github}>
-            <StyledAvatar fluid={avatar.childImageSharp.fluid} alt="Avatar" />
+            <StyledAvatar fluid={frontmatter.avatar.childImageSharp.fluid} alt="Avatar" />
           </StyledAvatarLink>
         </StyledPic>
       </StyledFlexContainer>
