@@ -1,8 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Img from 'gatsby-image';
-import sr from '@utils/sr';
-import { srConfig } from '@config';
 import { FormattedIcon } from '@components/icons';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading, Dot } from '@styles';
@@ -11,6 +9,7 @@ const { colors, fontSizes, fonts } = theme;
 const StyledContainer = styled(Section)`
   ${mixins.flexCenter};
   flex-direction: column;
+  overflow: hidden;
   align-items: flex-start;
 `;
 const StyledContent = styled.div`
@@ -137,59 +136,80 @@ const StyledImgContainer = styled.a`
     }
   }
 `;
+const StyledProjectContainer = styled.div`
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(12, 1fr);
+  grid-gap: 10px;
+  display: grid;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
 const StyledProject = styled.div`
   display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(12, 1fr);
-  align-items: center;
-  margin-bottom: 100px;
+  min-width: 60vw;
+  margin-right: 30px;
+  margin-left: 30px;
   ${media.thone`
     margin-bottom: 70px;
+    grid-template-columns: repeat(1, 1fr);
   `};
   &:last-of-type {
     margin-bottom: 0;
   }
-  &:nth-of-type(odd) {
-    ${StyledContent} {
-      grid-column: 7 / -1;
-      text-align: right;
-      ${media.thone`
-        grid-column: 1 / -1;
-        padding: 40px 40px 30px;
-      `};
-      ${media.phablet`padding: 30px 25px 20px;`};
-    }
-    ${StyledTechList} {
-      justify-content: flex-end;
-      li {
-        margin-left: ${theme.margin};
-        margin-right: 0;
-      }
-    }
-    ${StyledLinkWrapper} {
-      justify-content: flex-end;
-      margin-left: 0;
-      margin-right: -10px;
-    }
-    ${StyledImgContainer} {
-      grid-column: 1 / 8;
-      ${media.tablet`height: 100%;`};
-      ${media.thone`
-        grid-column: 1 / -1;
-        opacity: 0.25;
-      `};
-    }
+`;
+const StyledGridBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  align-items: center;
+  justify-contents: center;
+`;
+const StyledScrollingWrapper = styled.div`
+  display: flex;
+  overflow-x: auto;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  &::-webkit-scrollbar {
+    display: none; // Optionally hide the scrollbar
   }
 `;
 
 const Featured = ({ data }) => {
   const featuredProjects = data.filter(({ node }) => node);
-
   const revealTitle = useRef(null);
-  const revealProjects = useRef([]);
+  const scrollingRef = useRef(null);
+  const [isPaused, setIsPaused] = useState(false);
+
+  const scrollContainer = () => {
+    if (!isPaused && scrollingRef.current) {
+      scrollingRef.current.scrollLeft += 1;
+    }
+  };
+
   useEffect(() => {
-    sr.reveal(revealTitle.current, srConfig());
-    revealProjects.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
+    const interval = setInterval(scrollContainer, 20); // Adjust speed as needed
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  useEffect(() => {
+    const handleMouseOver = () => setIsPaused(true);
+    const handleMouseOut = () => setIsPaused(false);
+
+    const scrollDiv = scrollingRef.current;
+    if (scrollDiv) {
+      scrollDiv.addEventListener('mouseover', handleMouseOver);
+      scrollDiv.addEventListener('mouseout', handleMouseOut);
+    }
+
+    return () => {
+      if (scrollDiv) {
+        scrollDiv.removeEventListener('mouseover', handleMouseOver);
+        scrollDiv.removeEventListener('mouseout', handleMouseOut);
+      }
+    };
   }, []);
 
   return (
@@ -198,69 +218,72 @@ const Featured = ({ data }) => {
         <Dot>.</Dot>
         projects ()
       </Heading>
+      <StyledScrollingWrapper ref={scrollingRef}>
+        <StyledGridBox>
+          {featuredProjects &&
+            featuredProjects.map(({ node }, i) => {
+              const { frontmatter, html } = node;
+              const { external, title, tech, github, cover } = frontmatter;
 
-      <div>
-        {featuredProjects &&
-          featuredProjects.map(({ node }, i) => {
-            const { frontmatter, html } = node;
-            const { external, title, tech, github, cover } = frontmatter;
+              return (
+                <StyledProject key={i}>
+                  <StyledProjectContainer>
+                    <StyledContent>
+                      <StyledProjectName>
+                        {external ? (
+                          <a
+                            href={external}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                            aria-label="External Link">
+                            {title}
+                          </a>
+                        ) : (
+                          title
+                        )}
+                      </StyledProjectName>
+                      <StyledDescription dangerouslySetInnerHTML={{ __html: html }} />
+                      {tech && (
+                        <StyledTechList>
+                          {tech.map((tech, i) => (
+                            <li key={i}>{tech}</li>
+                          ))}
+                        </StyledTechList>
+                      )}
+                      <StyledLinkWrapper>
+                        {github && (
+                          <a
+                            href={github}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                            aria-label="GitHub Link">
+                            <FormattedIcon name="GitHub" />
+                          </a>
+                        )}
+                        {external && (
+                          <a
+                            href={external}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                            aria-label="External Link">
+                            <FormattedIcon name="External" />
+                          </a>
+                        )}
+                      </StyledLinkWrapper>
+                    </StyledContent>
 
-            return (
-              <StyledProject key={i} ref={el => (revealProjects.current[i] = el)}>
-                <StyledContent>
-                  <StyledProjectName>
-                    {external ? (
-                      <a
-                        href={external}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        aria-label="External Link">
-                        {title}
-                      </a>
-                    ) : (
-                      title
-                    )}
-                  </StyledProjectName>
-                  <StyledDescription dangerouslySetInnerHTML={{ __html: html }} />
-                  {tech && (
-                    <StyledTechList>
-                      {tech.map((tech, i) => (
-                        <li key={i}>{tech}</li>
-                      ))}
-                    </StyledTechList>
-                  )}
-                  <StyledLinkWrapper>
-                    {github && (
-                      <a
-                        href={github}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        aria-label="GitHub Link">
-                        <FormattedIcon name="GitHub" />
-                      </a>
-                    )}
-                    {external && (
-                      <a
-                        href={external}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        aria-label="External Link">
-                        <FormattedIcon name="External" />
-                      </a>
-                    )}
-                  </StyledLinkWrapper>
-                </StyledContent>
-
-                <StyledImgContainer
-                  href={external ? external : github ? github : '#'}
-                  target="_blank"
-                  rel="nofollow noopener noreferrer">
-                  <StyledFeaturedImg fluid={cover.childImageSharp.fluid} alt={title} />
-                </StyledImgContainer>
-              </StyledProject>
-            );
-          })}
-      </div>
+                    <StyledImgContainer
+                      href={external ? external : github ? github : '#'}
+                      target="_blank"
+                      rel="nofollow noopener noreferrer">
+                      <StyledFeaturedImg fluid={cover.childImageSharp.fluid} alt={title} />
+                    </StyledImgContainer>
+                  </StyledProjectContainer>
+                </StyledProject>
+              );
+            })}
+        </StyledGridBox>
+      </StyledScrollingWrapper>
     </StyledContainer>
   );
 };
