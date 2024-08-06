@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import Carousel from 'react-bootstrap/Carousel';
 import PropTypes from 'prop-types';
 import Img from 'gatsby-image';
 import { FormattedIcon } from '@components/icons';
@@ -218,7 +219,7 @@ const Featured = ({ data }) => {
         <Dot>.</Dot>
         projects ()
       </Heading>
-      <StyledScrollingWrapper ref={scrollingRef}>
+      <StyledScrollingWrapper>
         <StyledGridBox>
           {featuredProjects &&
             featuredProjects.map(({ node }, i) => {
@@ -227,6 +228,17 @@ const Featured = ({ data }) => {
 
               return (
                 <StyledProject key={i}>
+                  <Carousel>
+                    <Carousel.Item>
+                      <h1>hi</h1>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                      <h1>hi</h1>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                      <h1>hi</h1>
+                    </Carousel.Item>
+                  </Carousel>
                   <StyledProjectContainer>
                     <StyledContent>
                       <StyledProjectName>
@@ -235,7 +247,8 @@ const Featured = ({ data }) => {
                             href={external}
                             target="_blank"
                             rel="nofollow noopener noreferrer"
-                            aria-label="External Link">
+                            aria-label="External Link"
+                          >
                             {title}
                           </a>
                         ) : (
@@ -256,7 +269,8 @@ const Featured = ({ data }) => {
                             href={github}
                             target="_blank"
                             rel="nofollow noopener noreferrer"
-                            aria-label="GitHub Link">
+                            aria-label="GitHub Link"
+                          >
                             <FormattedIcon name="GitHub" />
                           </a>
                         )}
@@ -265,17 +279,18 @@ const Featured = ({ data }) => {
                             href={external}
                             target="_blank"
                             rel="nofollow noopener noreferrer"
-                            aria-label="External Link">
+                            aria-label="External Link"
+                          >
                             <FormattedIcon name="External" />
                           </a>
                         )}
                       </StyledLinkWrapper>
                     </StyledContent>
-
                     <StyledImgContainer
                       href={external ? external : github ? github : '#'}
                       target="_blank"
-                      rel="nofollow noopener noreferrer">
+                      rel="nofollow noopener noreferrer"
+                    >
                       <StyledFeaturedImg fluid={cover.childImageSharp.fluid} alt={title} />
                     </StyledImgContainer>
                   </StyledProjectContainer>
