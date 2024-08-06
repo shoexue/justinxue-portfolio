@@ -1,5 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
-// import { Swiper, SwiperSlide } from "swiper/react";
+import React, { useRef } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+// import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 import 'swiper/swiper-bundle.min.css';
 import 'swiper/swiper.min.css';
 import PropTypes from 'prop-types';
@@ -161,59 +162,59 @@ const StyledProject = styled.div`
     margin-bottom: 0;
   }
 `;
-const StyledGridBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  overflow-x: auto;
-  align-items: center;
-  justify-contents: center;
-`;
-const StyledScrollingWrapper = styled.div`
-  display: flex;
-  overflow-x: auto;
-  width: 100%;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  &::-webkit-scrollbar {
-    display: none; // Optionally hide the scrollbar
-  }
-`;
+// const StyledGridBox = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   overflow-x: auto;
+//   align-items: center;
+//   justify-contents: center;
+// `;
+// const StyledScrollingWrapper = styled.div`
+//   display: flex;
+//   overflow-x: auto;
+//   width: 100%;
+//   -webkit-overflow-scrolling: touch;
+//   scroll-snap-type: x mandatory;
+//   scroll-behavior: smooth;
+//   &::-webkit-scrollbar {
+//     display: none; // Optionally hide the scrollbar
+//   }
+// `;
 
 const Featured = ({ data }) => {
   const featuredProjects = data.filter(({ node }) => node);
   const revealTitle = useRef(null);
-  const scrollingRef = useRef(null);
-  const [isPaused, setIsPaused] = useState(false);
+  // const scrollingRef = useRef(null);
+  // const [isPaused, setIsPaused] = useState(false);
 
-  const scrollContainer = () => {
-    if (!isPaused && scrollingRef.current) {
-      scrollingRef.current.scrollLeft += 1;
-    }
-  };
+  // const scrollContainer = () => {
+  //   if (!isPaused && scrollingRef.current) {
+  //     scrollingRef.current.scrollLeft += 1;
+  //   }
+  // };
 
-  useEffect(() => {
-    const interval = setInterval(scrollContainer, 20); // Adjust speed as needed
-    return () => clearInterval(interval);
-  }, [isPaused]);
+  // useEffect(() => {
+  //   const interval = setInterval(scrollContainer, 20); // Adjust speed as needed
+  //   return () => clearInterval(interval);
+  // }, [isPaused]);
 
-  useEffect(() => {
-    const handleMouseOver = () => setIsPaused(true);
-    const handleMouseOut = () => setIsPaused(false);
+  // useEffect(() => {
+  //   const handleMouseOver = () => setIsPaused(true);
+  //   const handleMouseOut = () => setIsPaused(false);
 
-    const scrollDiv = scrollingRef.current;
-    if (scrollDiv) {
-      scrollDiv.addEventListener('mouseover', handleMouseOver);
-      scrollDiv.addEventListener('mouseout', handleMouseOut);
-    }
+  //   const scrollDiv = scrollingRef.current;
+  //   if (scrollDiv) {
+  //     scrollDiv.addEventListener('mouseover', handleMouseOver);
+  //     scrollDiv.addEventListener('mouseout', handleMouseOut);
+  //   }
 
-    return () => {
-      if (scrollDiv) {
-        scrollDiv.removeEventListener('mouseover', handleMouseOver);
-        scrollDiv.removeEventListener('mouseout', handleMouseOut);
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (scrollDiv) {
+  //       scrollDiv.removeEventListener('mouseover', handleMouseOver);
+  //       scrollDiv.removeEventListener('mouseout', handleMouseOut);
+  //     }
+  //   };
+  // }, []);
 
   return (
     <StyledContainer id="projects">
@@ -221,15 +222,26 @@ const Featured = ({ data }) => {
         <Dot>.</Dot>
         projects ()
       </Heading>
-      <StyledScrollingWrapper>
-        <StyledGridBox>
-          {featuredProjects &&
-            featuredProjects.map(({ node }, i) => {
-              const { frontmatter, html } = node;
-              const { external, title, tech, github, cover } = frontmatter;
+      {/* <StyledScrollingWrapper> */}
+      {/* <StyledGridBox> */}
+      <Swiper
+        centeredSlides={true}
+        slidesPerView={3}
+        // modules={[Navigation, Pagination, Scrollbar, A11y]}
+        spaceBetween={50}
+        navigation
+        loop
+        scrollbar={{ draggable: true }}
+        pagination={{ clickable: true }}
+      >
+        {featuredProjects &&
+          featuredProjects.map(({ node }, i) => {
+            const { frontmatter, html } = node;
+            const { external, title, tech, github, cover } = frontmatter;
 
-              return (
-                <StyledProject key={i}>
+            return (
+              <StyledProject key={i}>
+                <SwiperSlide>
                   <StyledProjectContainer>
                     <StyledContent>
                       <StyledProjectName>
@@ -285,11 +297,13 @@ const Featured = ({ data }) => {
                       <StyledFeaturedImg fluid={cover.childImageSharp.fluid} alt={title} />
                     </StyledImgContainer>
                   </StyledProjectContainer>
-                </StyledProject>
-              );
-            })}
-        </StyledGridBox>
-      </StyledScrollingWrapper>
+                </SwiperSlide>
+              </StyledProject>
+            );
+          })}
+      </Swiper>
+      {/* </StyledGridBox> */}
+      {/* </StyledScrollingWrapper> */}
     </StyledContainer>
   );
 };
