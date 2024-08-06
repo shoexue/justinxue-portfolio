@@ -9,7 +9,7 @@ import { FormattedIcon } from '@components/icons';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading, Dot } from '@styles';
 const { colors, fontSizes, fonts } = theme;
-
+// https://swiper6.vercel.app/swiper-api#autoplay
 // Install modules
 SwiperCore.use([Navigation, Pagination, Scrollbar]);
 
