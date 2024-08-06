@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-// import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+import SwiperCore, { Navigation, Pagination, Scrollbar } from 'swiper/core';
 import 'swiper/swiper-bundle.min.css';
 import 'swiper/swiper.min.css';
 import PropTypes from 'prop-types';
@@ -9,6 +9,9 @@ import { FormattedIcon } from '@components/icons';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading, Dot } from '@styles';
 const { colors, fontSizes, fonts } = theme;
+
+// Install modules
+SwiperCore.use([Navigation, Pagination, Scrollbar]);
 
 const StyledContainer = styled(Section)`
   ${mixins.flexCenter};
@@ -227,7 +230,7 @@ const Featured = ({ data }) => {
       <Swiper
         centeredSlides={true}
         slidesPerView={3}
-        // modules={[Navigation, Pagination, Scrollbar, A11y]}
+        autoplay
         spaceBetween={50}
         navigation
         loop
