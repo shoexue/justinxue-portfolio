@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import Carousel from 'react-bootstrap/Carousel';
+// import { Swiper, SwiperSlide } from "swiper/react";
+import 'swiper/swiper-bundle.min.css';
+import 'swiper/swiper.min.css';
 import PropTypes from 'prop-types';
 import Img from 'gatsby-image';
 import { FormattedIcon } from '@components/icons';
@@ -228,17 +230,6 @@ const Featured = ({ data }) => {
 
               return (
                 <StyledProject key={i}>
-                  <Carousel>
-                    <Carousel.Item>
-                      <h1>hi</h1>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                      <h1>hi</h1>
-                    </Carousel.Item>
-                    <Carousel.Item>
-                      <h1>hi</h1>
-                    </Carousel.Item>
-                  </Carousel>
                   <StyledProjectContainer>
                     <StyledContent>
                       <StyledProjectName>

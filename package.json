@@ -37,7 +37,6 @@
   "dependencies": {
     "animejs": "^3.1.0",
     "babel-plugin-styled-components": "^1.10.6",
-    "bootstrap": "^5.3.3",
     "gatsby": "^2.18.7",
     "gatsby-image": "^2.2.34",
     "gatsby-plugin-google-analytics": "^2.1.29",
@@ -59,11 +58,11 @@
     "prismjs": "^1.17.1",
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
-    "react-bootstrap": "^2.10.4",
     "react-dom": "^16.10.2",
     "react-helmet": "^5.2.1",
     "react-transition-group": "^4.3.0",
     "scrollreveal": "^4.0.5",
+    "slider": "^1.0.4",
     "smooth-scroll": "^16.1.0",
     "styled-components": "^4.4.0"
   },
