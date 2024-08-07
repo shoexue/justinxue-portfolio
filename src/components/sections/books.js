@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper/core';
 import 'swiper/swiper-bundle.min.css';
 import PropTypes from 'prop-types';
-import Img from 'gatsby-image';
+// import Img from 'gatsby-image';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading } from '@styles';
 const { colors } = theme;
@@ -81,43 +81,43 @@ const StyledBookName = styled.h5`
 //     ${mixins.inlineLink};
 //   }
 // `;
-const StyledBooksImg = styled(Img)`
-  width: 100%;
-  max-width: 100%;
-  vertical-align: middle;
-  border-radius: ${theme.borderRadius};
-  position: relative;
-  mix-blend-mode: multiply;
-  filter: grayscale(100%) contrast(1) brightness(90%); // Start with black and white
-  transition: filter 0.3s ease-out; // Smooth transition for filter changes
-  ${media.tablet`
-    object-fit: cover;
-    width: auto;
-    height: 100%;
-  `};
-`;
+// const StyledBooksImg = styled(Img)`
+//   width: 100%;
+//   max-width: 100%;
+//   vertical-align: middle;
+//   border-radius: ${theme.borderRadius};
+//   position: relative;
+//   mix-blend-mode: multiply;
+//   filter: grayscale(100%) contrast(1) brightness(90%); // Start with black and white
+//   transition: filter 0.3s ease-out; // Smooth transition for filter changes
+//   ${media.tablet`
+//     object-fit: cover;
+//     width: auto;
+//     height: 100%;
+//   `};
+// `;
 
-const StyledImgContainer = styled.a`
-  ${mixins.boxShadow};
-  grid-column: 6 / -1;
-  grid-row: 1 / -1;
-  position: relative;
-  z-index: 1;
-  border-radius: ${theme.radius + 1}px;
-  transition: background 0.3s, filter 0.3s ease-out;
-  ${media.tablet`height: 100%;`};
-  ${media.thone`
-    grid-column: 1 / -1;
-    opacity: 0.25;
-  `};
-  &:hover,
-  &:focus {
-    background: transparent;
-    ${StyledBooksImg} {
-      filter: none; // Remove the black and white filter on hover
-    }
-  }
-`;
+// const StyledImgContainer = styled.a`
+//   ${mixins.boxShadow};
+//   grid-column: 6 / -1;
+//   grid-row: 1 / -1;
+//   position: relative;
+//   z-index: 1;
+//   border-radius: ${theme.radius + 1}px;
+//   transition: background 0.3s, filter 0.3s ease-out;
+//   ${media.tablet`height: 100%;`};
+//   ${media.thone`
+//     grid-column: 1 / -1;
+//     opacity: 0.25;
+//   `};
+//   &:hover,
+//   &:focus {
+//     background: transparent;
+//     ${StyledBooksImg} {
+//       filter: none; // Remove the black and white filter on hover
+//     }
+//   }
+// `;
 const StyledBookContainer = styled.div`
   grid-column: 1 / -1;
   grid-template-columns: repeat(12, 1fr);
@@ -164,7 +164,7 @@ const Books = ({ data }) => {
         {featuredBooks &&
           featuredBooks.map(({ node }, i) => {
             const { frontmatter } = node;
-            const { name, author, cover } = frontmatter;
+            const { name, author } = frontmatter;
 
             return (
               <StyledBook key={i}>
@@ -174,9 +174,9 @@ const Books = ({ data }) => {
                       <StyledBookName>{name}</StyledBookName>
                       <StyledBookName>{author}</StyledBookName>
                     </StyledContent>
-                    <StyledImgContainer>
-                      <StyledBooksImg fluid={cover} alt={cover} />
-                    </StyledImgContainer>
+                    {/* <StyledImgContainer>
+                      <StyledBooksImg fluid={cover.childImageSharp.fluid} alt={name} />
+                    </StyledImgContainer> */}
                   </StyledBookContainer>
                 </SwiperSlide>
               </StyledBook>

@@ -145,7 +145,7 @@ const Projects = ({ data }) => {
   return (
     <StyledContainer>
       <StyledTitle ref={revealTitle}>{archiveText}</StyledTitle>
-      <StyledSubtext>{descriptionText}</StyledSubtext>
+      <StyledSubtext ref={revealTitle}>{descriptionText}</StyledSubtext>
       <StyledGrid>
         <TransitionGroup className="projects">
           {projectsToShow &&
@@ -160,7 +160,8 @@ const Projects = ({ data }) => {
                     tabIndex="0"
                     style={{
                       transitionDelay: `0ms`,
-                    }}>
+                    }}
+                  >
                     <StyledProjectInner>
                       <header>
                         <StyledProjectHeader>
@@ -173,7 +174,8 @@ const Projects = ({ data }) => {
                                 href={github}
                                 target="_blank"
                                 rel="nofollow noopener noreferrer"
-                                aria-label="GitHub Link">
+                                aria-label="GitHub Link"
+                              >
                                 <FormattedIcon name="GitHub" />
                               </StyledIconLink>
                             )}
@@ -182,7 +184,8 @@ const Projects = ({ data }) => {
                                 href={external}
                                 target="_blank"
                                 rel="nofollow noopener noreferrer"
-                                aria-label="External Link">
+                                aria-label="External Link"
+                              >
                                 <FormattedIcon name="External" />
                               </StyledIconLink>
                             )}

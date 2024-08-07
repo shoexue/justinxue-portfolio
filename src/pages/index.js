@@ -116,7 +116,6 @@ export const pageQuery = graphql`
         node {
           frontmatter {
             name
-            author
             cover {
               childImageSharp {
                 fluid(maxWidth: 700, quality: 90, traceSVG: { color: "#64ffda" }) {
@@ -124,6 +123,7 @@ export const pageQuery = graphql`
                 }
               }
             }
+            author
           }
         }
       }
