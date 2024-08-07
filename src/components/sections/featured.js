@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation, Pagination, Scrollbar } from 'swiper/core';
+import SwiperCore, { Navigation, Pagination, Scrollbar, Autoplay } from 'swiper/core';
 import 'swiper/swiper-bundle.min.css';
-import 'swiper/swiper.min.css';
+// import 'swiper/swiper.min.css';
 import PropTypes from 'prop-types';
 import Img from 'gatsby-image';
 import { FormattedIcon } from '@components/icons';
@@ -11,7 +11,7 @@ import { theme, mixins, media, Section, Heading, Dot } from '@styles';
 const { colors, fontSizes, fonts } = theme;
 // https://swiper6.vercel.app/swiper-api#autoplay
 // Install modules
-SwiperCore.use([Navigation, Pagination, Scrollbar]);
+SwiperCore.use([Navigation, Pagination, Scrollbar, Autoplay]);
 
 const StyledContainer = styled(Section)`
   ${mixins.flexCenter};
@@ -27,8 +27,12 @@ const StyledContent = styled.div`
     grid-column: 1 / -1;
     padding: 40px 40px 30px;
     z-index: 5;
+    max-width: 70vw;
   `};
-  ${media.phablet`padding: 30px 25px 20px;`};
+  ${media.phablet`
+    padding: 30px 25px 20px;
+    max-width: 70vw;
+    `};
 `;
 const StyledProjectName = styled.h5`
   font-size: 28px;
@@ -61,6 +65,7 @@ const StyledDescription = styled.div`
     margin: 0;
     font-family: ${fonts.SFMono};
     font-size: ${fontSizes.sm};
+    max-width: 70vw;
   }
   a {
     ${mixins.inlineLink};
@@ -187,37 +192,6 @@ const StyledProject = styled.div`
 const Featured = ({ data }) => {
   const featuredProjects = data.filter(({ node }) => node);
   const revealTitle = useRef(null);
-  // const scrollingRef = useRef(null);
-  // const [isPaused, setIsPaused] = useState(false);
-
-  // const scrollContainer = () => {
-  //   if (!isPaused && scrollingRef.current) {
-  //     scrollingRef.current.scrollLeft += 1;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   const interval = setInterval(scrollContainer, 20); // Adjust speed as needed
-  //   return () => clearInterval(interval);
-  // }, [isPaused]);
-
-  // useEffect(() => {
-  //   const handleMouseOver = () => setIsPaused(true);
-  //   const handleMouseOut = () => setIsPaused(false);
-
-  //   const scrollDiv = scrollingRef.current;
-  //   if (scrollDiv) {
-  //     scrollDiv.addEventListener('mouseover', handleMouseOver);
-  //     scrollDiv.addEventListener('mouseout', handleMouseOut);
-  //   }
-
-  //   return () => {
-  //     if (scrollDiv) {
-  //       scrollDiv.removeEventListener('mouseover', handleMouseOver);
-  //       scrollDiv.removeEventListener('mouseout', handleMouseOut);
-  //     }
-  //   };
-  // }, []);
 
   return (
     <StyledContainer id="projects">
@@ -230,12 +204,15 @@ const Featured = ({ data }) => {
       <Swiper
         centeredSlides={true}
         slidesPerView={3}
+        modules={[Pagination, Navigation]}
         autoplay
         spaceBetween={50}
         navigation
         loop
         scrollbar={{ draggable: true }}
-        pagination={{ clickable: true }}
+        pagination={{
+          dynamicBullets: true,
+        }}
       >
         {featuredProjects &&
           featuredProjects.map(({ node }, i) => {

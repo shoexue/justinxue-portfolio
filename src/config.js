@@ -1,8 +1,8 @@
 module.exports = {
   siteTitle: 'Alvina Yang',
-  siteDescription: 'A student at the University of Toronto who can sometimes code.',
+  siteDescription: 'A student at the University of Toronto who can sometimes code :)',
   siteKeywords: 'Alvina Yang, Alvina',
-  siteUrl: 'https://yashitanamdeo.github.io/',
+  siteUrl: 'https://alvinayang.com/',
   siteLanguage: 'en_US',
   googleAnalyticsID: 'UA-45666519-2',
   googleVerification: 'DCl7VAf9tcz6eD9gb67NfkNnJ1PKRNcg8qQiwpbx9Lk',

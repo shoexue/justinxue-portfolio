@@ -21,7 +21,7 @@ import msIcon144x144 from '@images/favicons/ms-icon-144x144.png';
 
 const Head = ({ metadata }) => (
   <Helmet>
-    <html lang="en" prefix="og: http://ogp.me/ns#" />
+    <html lang="en" />
     <title itemProp="name" lang="en">
       {metadata.title}
     </title>
