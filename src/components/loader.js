@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
-import { theme } from '@styles';
+import { theme, media } from '@styles';
 const { colors } = theme;
 
 const rotateY = keyframes`
@@ -25,6 +25,29 @@ const rotateX = keyframes`
   }
   75% {
     transform: translateY(-2vw);
+  }
+`;
+const rotateYSmall = keyframes`
+  0%, 50%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(4vw);
+  }
+  75% {
+    transform: translateY(4vw);
+  }
+`;
+
+const rotateXSmall = keyframes`
+  0%, 50%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4vw);
+  }
+  75% {
+    transform: translateY(-4vw);
   }
 `;
 
@@ -52,8 +75,8 @@ const StyledLoader = styled.div`
 
 const StyledDot = styled.span`
   position: absolute;
-  height: 0.8vw;
-  width: 0.8vw;
+  height: 10px;
+  width: 10px;
   border-radius: 50%;
   background-color: ${colors.green};
   &:nth-child(1) {
@@ -62,6 +85,16 @@ const StyledDot = styled.span`
   &:nth-child(2) {
     animation: ${rotateX} 0.7s infinite linear;
   }
+  ${media.phablet`
+    height: 7px;
+    width: 7px;
+    &:nth-child(1) {
+    animation: ${rotateYSmall} 0.7s infinite linear;
+    }
+    &:nth-child(2) {
+      animation: ${rotateXSmall} 0.7s infinite linear;
+    }
+  `};
 `;
 
 const Loader = ({ finishLoading }) => {
