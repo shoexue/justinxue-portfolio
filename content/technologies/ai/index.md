@@ -1,5 +1,5 @@
 ---
-title: 'Machine Learning'
+title: 'machine learning'
 technologies:
   - TensorFlow
   - Pytorch

@@ -45,6 +45,7 @@ const StyledTitle = styled.h4`
 const StyledEmailLink = styled.a`
   ${mixins.bigButton};
   margin-top: 50px;
+  font-size: ${fontSizes.md} !important;
 `;
 const StyledResumeLink = styled.a`
   && {

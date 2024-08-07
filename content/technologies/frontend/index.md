@@ -1,5 +1,5 @@
 ---
-title: 'Frontend'
+title: 'front-end'
 technologies:
   - React
   - Flutter/Dart

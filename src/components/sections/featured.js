@@ -1,27 +1,38 @@
 import React, { useRef } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Navigation, Pagination, Scrollbar, Autoplay } from 'swiper/core';
+import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper/core';
 import 'swiper/swiper-bundle.min.css';
-// import 'swiper/swiper.min.css';
 import PropTypes from 'prop-types';
 import Img from 'gatsby-image';
 import { FormattedIcon } from '@components/icons';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, Heading, Dot } from '@styles';
 const { colors, fontSizes, fonts } = theme;
-// https://swiper6.vercel.app/swiper-api#autoplay
 // Install modules
-SwiperCore.use([Navigation, Pagination, Scrollbar, Autoplay]);
+SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 const StyledContainer = styled(Section)`
   ${mixins.flexCenter};
   flex-direction: column;
   overflow: hidden;
   align-items: flex-start;
+
+  .swiper-container {
+    max-width: 100%;
+  }
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: ${colors.transWhite};
+    width: 10px;
+  }
+  .swiper-pagination-bullet {
+    background-color: ${colors.green};
+  }
 `;
 const StyledContent = styled.div`
+  padding-left: 10px;
   position: relative;
-  grid-column: 1 / 7;
+  grid-column: 1 / 8;
   grid-row: 1 / -1;
   ${media.thone`
     grid-column: 1 / -1;
@@ -156,6 +167,7 @@ const StyledProjectContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  margin-bottom: 15px;
 `;
 const StyledProject = styled.div`
   display: grid;
@@ -170,24 +182,6 @@ const StyledProject = styled.div`
     margin-bottom: 0;
   }
 `;
-// const StyledGridBox = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   overflow-x: auto;
-//   align-items: center;
-//   justify-contents: center;
-// `;
-// const StyledScrollingWrapper = styled.div`
-//   display: flex;
-//   overflow-x: auto;
-//   width: 100%;
-//   -webkit-overflow-scrolling: touch;
-//   scroll-snap-type: x mandatory;
-//   scroll-behavior: smooth;
-//   &::-webkit-scrollbar {
-//     display: none; // Optionally hide the scrollbar
-//   }
-// `;
 
 const Featured = ({ data }) => {
   const featuredProjects = data.filter(({ node }) => node);
@@ -199,17 +193,14 @@ const Featured = ({ data }) => {
         <Dot>.</Dot>
         projects ()
       </Heading>
-      {/* <StyledScrollingWrapper> */}
-      {/* <StyledGridBox> */}
       <Swiper
         centeredSlides={true}
-        slidesPerView={3}
+        slidesPerView={1}
         modules={[Pagination, Navigation]}
         autoplay
         spaceBetween={50}
         navigation
         loop
-        scrollbar={{ draggable: true }}
         pagination={{
           dynamicBullets: true,
         }}
@@ -282,8 +273,6 @@ const Featured = ({ data }) => {
             );
           })}
       </Swiper>
-      {/* </StyledGridBox> */}
-      {/* </StyledScrollingWrapper> */}
     </StyledContainer>
   );
 };

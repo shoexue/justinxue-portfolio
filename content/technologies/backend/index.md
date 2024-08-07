@@ -1,5 +1,5 @@
 ---
-title: 'Languages'
+title: 'languages'
 technologies:
   - Python
   - Java
