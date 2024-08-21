@@ -12,7 +12,7 @@ const FractalTree = () => {
   const maxAngle = 1.7; // Allow wider angles
   const minAngle = 0.1; // Minimum angle
   const speed = 0.008; // Slower animation speed
-  const [animating, setAnimating] = useState(false);
+  const [animating, setAnimating] = useState(true);
   let increment = speed;
 
   const isMobile = window.innerWidth <= 768; // Using 768px as the breakpoint for mobile devices
@@ -21,7 +21,6 @@ const FractalTree = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     const canvasHeight = window.innerHeight; // Get viewport height for sizing
-    // const canvasWidth = canvas.width;
 
     if (isMobile) {
       canvas.width = window.innerWidth * 2;
