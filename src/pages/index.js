@@ -1,17 +1,7 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
-import {
-  Layout,
-  Hero,
-  About,
-  Jobs,
-  Featured,
-  Projects,
-  Contact,
-  Education,
-  Books,
-} from '@components';
+import { Layout, Hero, About, Jobs, Featured, Projects, Contact, Education } from '@components';
 import styled from 'styled-components';
 import { Main } from '@styles';
 
@@ -28,7 +18,6 @@ const IndexPage = ({ location, data }) => (
       <Education data={data.education.edges}></Education>
       <Featured data={data.featured.edges} />
       <Projects data={data.projects.edges} />
-      <Books data={data.books.edges} />
       <Contact data={data.contact.edges} />
     </StyledMainContainer>
   </Layout>
@@ -111,23 +100,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    books: allMarkdownRemark(filter: { fileAbsolutePath: { regex: "/books/" } }) {
-      edges {
-        node {
-          frontmatter {
-            name
-            cover {
-              childImageSharp {
-                fluid(maxWidth: 700, quality: 90, traceSVG: { color: "#64ffda" }) {
-                  ...GatsbyImageSharpFluid_withWebp_tracedSVG
-                }
-              }
-            }
-            author
-          }
-        }
-      }
-    }
+
     projects: allMarkdownRemark(
       filter: {
         fileAbsolutePath: { regex: "/projects/" }
