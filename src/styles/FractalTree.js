@@ -10,7 +10,7 @@ const FractalTreeContainer = styled.div`
   margin: 0; /* Remove default margins */
   padding: 0; /* Remove default padding */
   overflow: show; /* Prevent overflow */
-  background-color: transparent; /* Set background to black */
+  background-color: transparent; 
 `;
 
 export default FractalTreeContainer;

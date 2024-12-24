@@ -105,7 +105,12 @@ function epiCycles(pFIVE, time, runningX, runningY, rotation, fourier, maxRadius
   let sumY = runningY;
 
   pFIVE.noFill();
-  pFIVE.stroke(128, 128, 128, 100);
+
+  // **Modified: Lighter Grey for Epicycles**
+  pFIVE.stroke(200, 200, 200, 150); // Changed from (128, 128, 128, 100) to lighter grey with higher alpha
+
+  // **Modified: Thicker Epicycles**
+  pFIVE.strokeWeight(1.5); // Slightly thicker lines
 
   for (let i = 0; i < fourier.length; i++) {
     let prevX = sumX;
@@ -148,8 +153,14 @@ function epiCycles(pFIVE, time, runningX, runningY, rotation, fourier, maxRadius
     if (dispY2 < 0) dispY2 = 0;
     if (dispY2 > CANVAS_H) dispY2 = CANVAS_H;
 
+    // **Modified: Thicker Lines from Epicycles to Path**
+    pFIVE.strokeWeight(1); // Slightly thicker lines for better visibility
     pFIVE.line(midX, midY, dispX2, dispY2);
+    pFIVE.strokeWeight(1.5); // Reset to epicycles' strokeWeight
   }
+
+  // Reset strokeWeight to default after drawing epicycles
+  pFIVE.strokeWeight(1.5);
 
   return pFIVE.createVector(sumX, sumY);
 }
@@ -196,9 +207,6 @@ const FractalTree = () => {
       let userTime = 0;
       let userPath = [];
       let userStartedDrawing = false; // if true => hide GitHub
-
-      // Hard-coded maximum radius for user epicycles
-      const userMaxRadius = 50; // Reduced max radius
 
       // Variables to store canvas dimensions
       let canvasWidth = 700;
@@ -334,16 +342,19 @@ const FractalTree = () => {
           }
 
           if (userStartedDrawing && userFourierX.length > 0 && userFourierY.length > 0) {
-            // Assuming userOffset is already at canvas center
-            userOffset.x = canvasWidth / 2;
-            userOffset.y = canvasHeight / 2;
+            // Recalculate userOffset based on canvas center minus centroid
+            let { minX, maxX, minY, maxY } = getBoundingBox(userPoints);
+            let centerX = (minX + maxX) / 2;
+            let centerY = (minY + maxY) / 2;
+
+            userOffset.x = canvasWidth / 2 - centerX;
+            userOffset.y = canvasHeight / 2 - centerY;
           }
         };
       };
 
       pFIVE.draw = function () {
         pFIVE.clear();
-        pFIVE.background(0); // Set background to black
 
         // If user hasn't started drawing => show GitHub shape
         if (!userStartedDrawing && githubFourierX.length > 0 && githubFourierY.length > 0) {
@@ -367,16 +378,22 @@ const FractalTree = () => {
           let v = pFIVE.createVector(vx.x, vy.y);
           githubPath.push(v);
 
+          // **Modified: Thicker Lines from Epicycles to Path**
+          pFIVE.strokeWeight(2); // Slightly thicker lines
           pFIVE.stroke(128, 128, 128, 200);
           pFIVE.line(vx.x, vx.y, v.x, v.y);
           pFIVE.line(vy.x, vy.y, v.x, v.y);
+          pFIVE.strokeWeight(1.5); // Reset to epicycles' strokeWeight
 
+          // **Path Drawing**
           pFIVE.stroke("#8FFF5A");
+          pFIVE.strokeWeight(2); // Slightly thicker path line
           pFIVE.beginShape();
           for (let i = 0; i < githubPath.length; i++) {
             pFIVE.vertex(githubPath[i].x, githubPath[i].y);
           }
           pFIVE.endShape();
+          pFIVE.strokeWeight(1.5); // Reset to epicycles' strokeWeight
 
           let dt = pFIVE.TWO_PI / githubFourierX.length;
           githubTime += dt;
@@ -389,12 +406,14 @@ const FractalTree = () => {
         // If user is drawing => show stroke in real-time
         if (userIsDrawing && userPoints.length > 1) {
           pFIVE.stroke("#8FFF5A");
+          pFIVE.strokeWeight(2); // Slightly thicker stroke for real-time drawing
           pFIVE.noFill();
           pFIVE.beginShape();
           for (let i = 0; i < userPoints.length; i++) {
             pFIVE.vertex(userPoints[i].x, userPoints[i].y);
           }
           pFIVE.endShape();
+          pFIVE.strokeWeight(1.5); // Reset to epicycles' strokeWeight
         }
 
         // If user has a Fourier => animate it
@@ -407,7 +426,7 @@ const FractalTree = () => {
             userOffset.y,
             0,
             userFourierX,
-            50 // <-- reduced max radius for the user
+            70, // <-- reduced max radius for the user
           );
           let vy = epiCycles(
             pFIVE,
@@ -416,22 +435,28 @@ const FractalTree = () => {
             userOffset.y,
             pFIVE.HALF_PI,
             userFourierY,
-            50 // <-- reduced max radius for the user
+            70 // <-- reduced max radius for the user
           );
 
           let v = pFIVE.createVector(vx.x, vy.y);
           userPath.push(v);
 
+          // **Modified: Thicker Lines from Epicycles to Path**
+          pFIVE.strokeWeight(2); // Slightly thicker lines
           pFIVE.stroke(128, 128, 128, 200);
           pFIVE.line(vx.x, vx.y, v.x, v.y);
           pFIVE.line(vy.x, vy.y, v.x, v.y);
+          pFIVE.strokeWeight(1.5); // Reset to epicycles' strokeWeight
 
+          // **Path Drawing**
           pFIVE.stroke("#8FFF5A");
+          pFIVE.strokeWeight(2); // Slightly thicker path line
           pFIVE.beginShape();
           for (let i = 0; i < userPath.length; i++) {
             pFIVE.vertex(userPath[i].x, userPath[i].y);
           }
           pFIVE.endShape();
+          pFIVE.strokeWeight(1.5); // Reset to epicycles' strokeWeight
 
           let dt = pFIVE.TWO_PI / userFourierX.length;
           userTime += dt;
@@ -451,7 +476,7 @@ const FractalTree = () => {
 
   return (
     <div
-      style={{ width: "90%", height: "90%", backgroundColor: "black" }}
+      style={{ width: "80%", height: "90%", backgroundColor: "transparent" }} // Changed backgroundColor to "transparent" to match p5 background
       ref={sketchRef}
     />
   );
