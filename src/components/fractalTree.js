@@ -6,10 +6,6 @@ import { theme } from '@styles';
 
 const { colors, fontSizes, fonts } = theme;
 
-/********************************************************************/
-/********************* HELPER FUNCTIONS (DO NOT CONDENSE) ***********/
-/********************************************************************/
-
 /**
  * @function dft
  * Discrete Fourier Transform of an array of points (numbers).
@@ -110,7 +106,7 @@ function getCenterOffset(points, canvasWidth, canvasHeight) {
 /**
  * @function epiCycles
  * Draws epicycles in subtle gray. Returns the final (x, y) coordinate
- * of the sum. Optionally clamp radius for the user drawing.
+ * of the sum.
  */
 function epiCycles(p5, time, runningX, runningY, rotation, fourier, maxRadius = null) {
   const CANVAS_W = p5.width;
@@ -120,8 +116,8 @@ function epiCycles(p5, time, runningX, runningY, rotation, fourier, maxRadius = 
   let sumY = runningY;
 
   p5.noFill();
-  p5.stroke(200, 200, 200, 150); // lighter grey
-  p5.strokeWeight(1.5); // thicker epicycles
+  p5.stroke(200, 200, 200, 150);
+  p5.strokeWeight(1.5);
 
   for (let i = 1; i < fourier.length; i++) {
     const prevX = sumX;
@@ -174,10 +170,6 @@ function epiCycles(p5, time, runningX, runningY, rotation, fourier, maxRadius = 
   p5.strokeWeight(1.5);
   return p5.createVector(sumX, sumY);
 }
-
-/********************************************************************/
-/******************** STYLED COMPONENTS *****************************/
-/********************************************************************/
 
 const StyledCanvasMessage = styled.p`
   margin-top: 20px;
@@ -251,15 +243,10 @@ const StyledContainer = styled.div`
   width: 100%;
 `;
 
-/********************************************************************/
-/******************** MAIN REACT COMPONENT **************************/
-/********************************************************************/
-
 const FractalTree = () => {
   const sketchRef = useRef(null);
   const p5InstanceRef = useRef(null);
 
-  // We'll do a dynamic import so it doesn't break SSR (window is not defined)
   useEffect(() => {
     import('p5')
       .then(p5Module => {
@@ -272,10 +259,6 @@ const FractalTree = () => {
 `;
 
         const sketch = p5 => {
-          // (Inside this function is where you define p5's setup/draw logic)
-          // We'll move the entire mouse/touch logic, etc. here.
-
-          // Keep all your code for generating the shape, plus the DFT usage.
           let githubFourierX = [];
           let githubFourierY = [];
           let githubOffset = { x: 0, y: 0 };
@@ -625,11 +608,9 @@ const FractalTree = () => {
           };
         };
 
-        // Create the p5 instance
         const p5Instance = new p5(sketch);
         p5InstanceRef.current = p5Instance;
 
-        // Cleanup on unmount
         return () => {
           if (p5InstanceRef.current) {
             p5InstanceRef.current.remove();
@@ -641,14 +622,13 @@ const FractalTree = () => {
       });
   }, []);
 
-  // Reset logic
+  // Reset
   const handleReset = () => {
     if (p5InstanceRef.current && p5InstanceRef.current.resetSketch) {
       p5InstanceRef.current.resetSketch();
     }
   };
 
-  // Final return of the React component
   return (
     <StyledContainer>
       <StyledCanvasWrapper ref={sketchRef} />
