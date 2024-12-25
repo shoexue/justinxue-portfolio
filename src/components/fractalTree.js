@@ -6,10 +6,6 @@ import { theme } from '@styles';
 
 const { colors, fontSizes, fonts } = theme;
 
-/********************************************************************/
-/********************** HELPER FUNCTIONS (DO NOT CONDENSE) *********/
-/********************************************************************/
-
 /**
  * @function dft
  * Discrete Fourier Transform of an array of points (numbers).
@@ -175,10 +171,6 @@ function epiCycles(p5, time, runningX, runningY, rotation, fourier, maxRadius = 
   return p5.createVector(sumX, sumY);
 }
 
-/********************************************************************/
-/******************** STYLED COMPONENTS *****************************/
-/********************************************************************/
-
 const StyledCanvasMessage = styled.p`
   margin-top: 20px;
   font-family: ${fonts.SFMono};
@@ -225,33 +217,38 @@ const StyledDescription = styled.p`
 `;
 
 const StyledCanvasWrapper = styled.div`
-  width: 80% !important;
+  width: 80%;
   height: 45vh;
   background-color: rgba(16, 16, 16, 0.4);
   margin-bottom: 20px;
 
   ${media.desktop`
-    width: 80% !important;
+    width: 80%;
     height: 45vh;
   `}
+
   ${media.tablet`
-    width: 80% !important;
+    width: 85%;
     height: 40vh;
   `}
+
   ${media.thone`
-    width: 80% !important;
+    width: 90%;
     height: 35vh;
   `}
+
   ${media.phablet`
-    width: 80% !important;
+    width: 95%;
     height: 30vh;
   `}
+
   ${media.phone`
-    width: 80% !important;
+    width: 95%;
     height: 30vh;
   `}
+
   ${media.tiny`
-    width: 80% !important;
+    width: 100%;
     height: 25vh;
   `}
 `;
@@ -262,10 +259,6 @@ const StyledContainer = styled.div`
   align-items: center;
   width: 100%;
 `;
-
-/********************************************************************/
-/******************** MAIN REACT COMPONENT **************************/
-/********************************************************************/
 
 const FractalTree = () => {
   const sketchRef = useRef(null);
@@ -282,7 +275,7 @@ const FractalTree = () => {
   <path d="m438.22802734 8.64404297 2.27796102.01614785C456.0040156 8.77030667 471.50200226 8.88575912 487 9l1 74H373v30c-.31725084 6.79191715-.68434585 13.54339728-1.21484375 20.31640625-.1340483 1.81113676-.2677386 3.62230004-.40110779 5.43348694-1.73708105 23.13566429-4.01533407 46.22731558-6.24952698 69.31907654-3.1583017 32.53054037-3.1583017 32.53054037-5.39624023 65.13415527l-.11914254 2.19875908c-3.22130518 55.55383246-3.22130518 55.55383246 19.22070504 104.66061592 9.37009413 8.89105047 21.76634487 12.340019 34.41015625 12.25l2.52539062-.01708984C429.208001 392.03268869 440.78264788 387.90533259 451 379c11.26132693-12.96758858 15.32433614-28.24336145 17-45 1-1 1-1 2.85766601-1.1135254.79075928.00523683 1.58151856.01047364 2.39624024.01586915l2.58789062.00976563L478.5625 332.9375l2.73242187.01367188c2.23509126.01182588 4.4700525.02830592 6.70507813.04882812-1.10257854 41.56721092-15.57447568 85.2754681-46.15625 114.5390625-20.96312864 18.141169-45.69601446 24.6354905-72.96875 23.2734375C343.9384704 468.46382686 322.32160136 458.23536004 306 439c-31.22093618-40.18120485-20.86996242-98.11862161-17.296875-145.1171875l.25427246-3.3701477c2.29512125-30.2190082 5.28677093-60.3734356 8.24050903-90.53344727.98253895-10.03408238 1.9593943-20.06869247 2.92709351-30.10421753l.3791809-3.9251709c2.04614445-21.27110944 3.78260271-42.55636996 5.29122925-63.87219238l.22810364-3.1904297c.13861384-1.94916172.27431497-3.8985338.40646362-5.84814452l.18452454-2.60595703.15376282-2.24368286C307.02418121 85.77153717 307.52316495 83.38417524 308 81H204l-2.16015625 25.51171875C185.35798795 300.9089659 185.35798795 300.9089659 146 450l-2.25 3.125c-11.63596458 12.16487205-26.43985822 17.72021218-43 18.25-14.73397065-.2522432-27.89755814-5.55105243-38.625-15.6875-11.23892025-12.01121495-15.741093-26.57329341-15.39453125-42.81640625 1.17385351-16.85925836 12.75550768-30.86009794 22.66210937-43.76171875C129.37666895 290.39392167 152.47683642 199.6198937 157 82c-32.39023849-1.72994096-67.85956152-2.52099316-94 20l-2.12109375 1.65625c-11.28629657 9.23246444-18.24917083 22.33371275-25.41308594 34.7915039-1.46217257 2.53422199-2.96100992 5.04323066-4.4658203 7.5522461-.58523439 1.04414063-1.17046876 2.08828125-1.7734375 3.1640625-3.11265542 2.56657552-5.40881005 2.20443029-9.33203126 1.91992188L17.25 150.8125l-2.69140625-.21289062C12.36931206 150.4230544 10.18501065 150.22250036 8 150c2.51095654-7.82877361 5.44722978-15.46876978 8.4375-23.125 1.0813857-2.77318193 2.16194462-5.54668522 3.2421875-8.3203125l.8351593-2.14239502c1.8805432-4.83253353 3.72636882-9.67727187 5.5554657-14.52947998C42.73173784 57.79325949 42.73173784 57.79325949 55 44"/>
 `;
 
-        const sketch = (p5) => {
+        const sketch = p5 => {
           let githubFourierX = [];
           let githubFourierY = [];
           let githubOffset = { x: 0, y: 0 };
@@ -313,17 +306,6 @@ const FractalTree = () => {
 
             const cnv = p5.createCanvas(canvasWidth, canvasHeight);
             cnv.parent(sketchRef.current);
-
-            // This ensures p5 won't interpret scrolling as changing its coordinate system
-            // We still allow scrolling, but do not affect the drawn animation.
-            cnv.style('position', 'absolute');
-
-            // We do not fix it, so it can scroll with the page, but p5 won't use the
-            // scrolled offsets for drawing calculations automatically.
-            cnv.style('top', '0px');
-            cnv.style('left', '0px');
-
-            // We keep normal events
             cnv.style('touch-action', 'none');
             p5.frameRate(60);
             p5.background(0);
@@ -489,8 +471,6 @@ const FractalTree = () => {
 
           p5.touchMoved = function(event) {
             if (userIsDrawing && p5.touches && p5.touches.length > 0) {
-              // We do not need special offset for the animation fix here, because
-              // the problem is with the epicycle drawing, not user strokes.
               const tx = p5.touches[0].x;
               const ty = p5.touches[0].y;
               if (tx >= 0 && tx <= p5.width && ty >= 0 && ty <= p5.height) {
@@ -512,7 +492,7 @@ const FractalTree = () => {
               const { offsetX: newOffsetX, offsetY: newOffsetY } = getCenterOffset(
                 githubPath.map(v => ({ x: v.x, y: v.y })),
                 canvasWidth,
-                canvasHeight
+                canvasHeight,
               );
               githubOffset.x = newOffsetX;
               githubOffset.y = newOffsetY;
@@ -546,21 +526,8 @@ const FractalTree = () => {
 
           // DRAW
           p5.draw = function() {
-            // Clear each frame
             p5.clear();
 
-            // Here is the crucial fix for the epicycle animation distortion.
-            // We push a matrix, translate by the canvas's offset in the page,
-            // then draw. This means p5 will *not* shift the drawing if user scrolls.
-            // We do absolute positioning so that the page scroll does not
-            // shift the location of the epicycle calculations.
-            p5.push();
-
-            // Because we set canvas to absolute and top/left=0,
-            // p5's (0,0) is always top-left of the page, so the animation won't shift.
-            // There's no additional offset needed. We just do normal drawing now.
-
-            // If user hasn't started => show GitHub shape
             if (!userStartedDrawing && githubFourierX.length > 0 && githubFourierY.length > 0) {
               const vx = epiCycles(
                 p5,
@@ -568,7 +535,7 @@ const FractalTree = () => {
                 githubOffset.x,
                 githubOffset.y,
                 0,
-                githubFourierX
+                githubFourierX,
               );
               const vy = epiCycles(
                 p5,
@@ -576,7 +543,7 @@ const FractalTree = () => {
                 githubOffset.x,
                 githubOffset.y,
                 p5.HALF_PI,
-                githubFourierY
+                githubFourierY,
               );
 
               const v = p5.createVector(vx.x, vy.y);
@@ -597,7 +564,7 @@ const FractalTree = () => {
               p5.endShape();
               p5.strokeWeight(1.5);
 
-              const speed = 1;
+              const speed = 2;
               const dt = (p5.TWO_PI / githubFourierX.length) * speed;
               githubTime += dt;
               if (githubTime > p5.TWO_PI * 2) {
@@ -606,7 +573,6 @@ const FractalTree = () => {
               }
             }
 
-            // If user is drawing => real-time stroke
             if (userIsDrawing && userPoints.length > 1) {
               p5.stroke('#8FFF5A');
               p5.strokeWeight(2);
@@ -619,7 +585,6 @@ const FractalTree = () => {
               p5.strokeWeight(1.5);
             }
 
-            // If user has a Fourier => animate it
             if (!userIsDrawing && userFourierX.length > 0 && userFourierY.length > 0) {
               const vx = epiCycles(p5, userTime, userOffset.x, userOffset.y, 0, userFourierX, 70);
               const vy = epiCycles(
@@ -629,7 +594,7 @@ const FractalTree = () => {
                 userOffset.y,
                 p5.HALF_PI,
                 userFourierY,
-                70
+                70,
               );
 
               const v = p5.createVector(vx.x, vy.y);
@@ -657,8 +622,6 @@ const FractalTree = () => {
                 userPath.length = 0;
               }
             }
-
-            p5.pop(); // restore matrix
           };
         };
 
@@ -676,6 +639,7 @@ const FractalTree = () => {
       });
   }, []);
 
+  // Reset
   const handleReset = () => {
     if (p5InstanceRef.current && p5InstanceRef.current.resetSketch) {
       p5InstanceRef.current.resetSketch();
