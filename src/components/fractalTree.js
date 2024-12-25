@@ -174,7 +174,7 @@ function epiCycles(p5, time, runningX, runningY, rotation, fourier, maxRadius = 
 const StyledCanvasMessage = styled.p`
   margin-top: 20px;
   font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.md};
+  font-size: ${fontSizes.lg};
   color: ${colors.white};
 `;
 
@@ -196,6 +196,23 @@ const StyledResetButton = styled.button`
     color: ${colors.darkBg};
     background-color: ${colors.green};
     outline: none;
+  }
+`;
+
+const StyledDescription = styled.p`
+  margin-top: 1px;
+  font-family: ${fonts.SFMono};
+  font-size: ${fontSizes.smish};
+  color: ${colors.white};
+  text-align: center;
+
+  a {
+    color: ${colors.green};
+    text-decoration: none;
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+    }
   }
 `;
 
@@ -636,6 +653,19 @@ const FractalTree = () => {
         <StyledCanvasMessage>
           Draw something to see it transformed into a Fourier series animation!
         </StyledCanvasMessage>
+        <StyledDescription>
+          Confused? This{' '}
+          <a
+            href="https://www.youtube.com/watch?v=r6sGWTCMz2k&t=1s"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            video
+          </a>{' '}
+          can explain Fourier series much better than I can.
+          <br />
+          <em>tldw:</em> circles + math + drawings = ✨
+        </StyledDescription>
         <StyledResetButton onClick={handleReset}>Reset</StyledResetButton>
       </div>
     </StyledContainer>
