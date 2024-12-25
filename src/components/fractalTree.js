@@ -22,9 +22,9 @@ function dft(pFIVE, points) {
     }
     re /= numPoints;
     im /= numPoints;
-    let freq = k;
-    let amp = pFIVE.sqrt(re * re + im * im);
-    let phase = pFIVE.atan2(im, re);
+    const freq = k;
+    const amp = pFIVE.sqrt(re * re + im * im);
+    const phase = pFIVE.atan2(im, re);
     fourierCoef[k] = { re, im, freq, amp, phase };
   }
   return fourierCoef;
@@ -36,14 +36,14 @@ function dft(pFIVE, points) {
  * returns an array of arrays of sampled points.
  */
 function pathfinderSVG(pathTags, factor) {
-  let arr = [];
+  const arr = [];
   for (let j = 0; j < pathTags.length; j++) {
     arr.push([]);
-    let path = pathTags[j];
-    let pathLength = path.getTotalLength();
-    let n_points = Math.floor(pathLength / factor);
+    const path = pathTags[j];
+    const pathLength = path.getTotalLength();
+    const n_points = Math.floor(pathLength / factor);
     for (let i = 0; i < n_points; i++) {
-      let point = path.getPointAtLength((i / n_points) * pathLength);
+      const point = path.getPointAtLength((i / n_points) * pathLength);
       arr[j].push(point);
     }
   }
@@ -64,10 +64,18 @@ function getBoundingBox(points) {
   let minY = points[0].y;
   let maxY = points[0].y;
   for (let i = 1; i < points.length; i++) {
-    if (points[i].x < minX) minX = points[i].x;
-    if (points[i].x > maxX) maxX = points[i].x;
-    if (points[i].y < minY) minY = points[i].y;
-    if (points[i].y > maxY) maxY = points[i].y;
+    if (points[i].x < minX) {
+      minX = points[i].x;
+    }
+    if (points[i].x > maxX) {
+      maxX = points[i].x;
+    }
+    if (points[i].y < minY) {
+      minY = points[i].y;
+    }
+    if (points[i].y > maxY) {
+      maxY = points[i].y;
+    }
   }
   return { minX, maxX, minY, maxY };
 }
@@ -79,8 +87,8 @@ function getBoundingBox(points) {
  */
 function getCenterOffset(points, canvasWidth, canvasHeight) {
   const { minX, maxX, minY, maxY } = getBoundingBox(points);
-  let centerX = (minX + maxX) / 2;
-  let centerY = (minY + maxY) / 2;
+  const centerX = (minX + maxX) / 2;
+  const centerY = (minY + maxY) / 2;
   return { offsetX: canvasWidth / 2 - centerX, offsetY: canvasHeight / 2 - centerY };
 }
 
@@ -102,27 +110,27 @@ function epiCycles(pFIVE, time, runningX, runningY, rotation, fourier, maxRadius
   pFIVE.strokeWeight(1.5); // Thicker epicycles
 
   for (let i = 1; i < fourier.length; i++) {
-    let prevX = sumX;
-    let prevY = sumY;
+    const prevX = sumX;
+    const prevY = sumY;
 
-    let freq = fourier[i].freq;
-    let radius = fourier[i].amp;
-    let phase = fourier[i].phase;
+    const freq = fourier[i].freq;
+    const radius = fourier[i].amp;
+    const phase = fourier[i].phase;
 
     sumX += radius * Math.cos(freq * time + phase + rotation);
     sumY += radius * Math.sin(freq * time + phase + rotation);
 
-    let midX = (prevX + sumX) / 2;
-    let midY = (prevY + sumY) / 2;
+    const midX = (prevX + sumX) / 2;
+    const midY = (prevY + sumY) / 2;
 
     let clampedRadius = radius;
     if (maxRadius !== null && clampedRadius > maxRadius) {
       clampedRadius = maxRadius;
     }
 
-    let maxR_H = Math.min(midX, CANVAS_W - midX);
-    let maxR_V = Math.min(midY, CANVAS_H - midY);
-    let maxR = Math.max(0, Math.min(maxR_H, maxR_V));
+    const maxR_H = Math.min(midX, CANVAS_W - midX);
+    const maxR_V = Math.min(midY, CANVAS_H - midY);
+    const maxR = Math.max(0, Math.min(maxR_H, maxR_V));
     if (clampedRadius > maxR) {
       clampedRadius = maxR;
     }
@@ -131,10 +139,18 @@ function epiCycles(pFIVE, time, runningX, runningY, rotation, fourier, maxRadius
 
     let dispX2 = sumX;
     let dispY2 = sumY;
-    if (dispX2 < 0) dispX2 = 0;
-    if (dispX2 > CANVAS_W) dispX2 = CANVAS_W;
-    if (dispY2 < 0) dispY2 = 0;
-    if (dispY2 > CANVAS_H) dispY2 = CANVAS_H;
+    if (dispX2 < 0) {
+      dispX2 = 0;
+    }
+    if (dispX2 > CANVAS_W) {
+      dispX2 = CANVAS_W;
+    }
+    if (dispY2 < 0) {
+      dispY2 = 0;
+    }
+    if (dispY2 > CANVAS_H) {
+      dispY2 = CANVAS_H;
+    }
 
     pFIVE.strokeWeight(1);
     pFIVE.line(prevX, prevY, sumX, sumY);
@@ -238,13 +254,13 @@ const FractalTree = () => {
       let githubFourierY = [];
       let githubOffset = { x: 0, y: 0 };
       let githubTime = 0;
-      let githubPath = [];
+      const githubPath = [];
 
       let userIsDrawing = false;
-      let userPoints = [];
+      const userPoints = [];
       let userFourierX = [];
       let userFourierY = [];
-      let userOffset = { x: 0, y: 0 };
+      const userOffset = { x: 0, y: 0 };
       let userTime = 0;
       let userPath = [];
       let userStartedDrawing = false;
@@ -257,7 +273,7 @@ const FractalTree = () => {
       let originalFourierY = [];
       let originalOffset = { x: 0, y: 0 };
 
-      pFIVE.setup = function () {
+      pFIVE.setup = function() {
         const parent = sketchRef.current;
         const rect = parent.getBoundingClientRect();
         canvasWidth = rect.width;
@@ -268,7 +284,7 @@ const FractalTree = () => {
 
         // This line allows only the canvas to consume pointer events (and not the entire page).
         // p5 will handle the 'touch' or 'mouse' events ONLY inside the canvas area.
-        cnv.style('touch-action', 'none');  // This is crucial to allow scrolling outside canvas.
+        cnv.style('touch-action', 'none'); // This is crucial to allow scrolling outside canvas.
 
         pFIVE.frameRate(60);
         pFIVE.background(0);
@@ -279,23 +295,23 @@ const FractalTree = () => {
 
         // Add a check to ensure there are path tags
         if (pathTags.length === 0) {
-          console.error("No <path> elements found in the SVG data.");
+          console.error('No <path> elements found in the SVG data.');
           return;
         }
 
         const sampleFactor = 3;
-        let allPathSketches = pathfinderSVG(pathTags, sampleFactor);
+        const allPathSketches = pathfinderSVG(pathTags, sampleFactor);
 
         // Check if any paths were returned
         if (allPathSketches.length === 0 || !allPathSketches[0].length) {
-          console.error("pathSketch is undefined or empty.");
+          console.error('pathSketch is undefined or empty.');
           return;
         }
 
-        let pathSketch = allPathSketches[0];
+        const pathSketch = allPathSketches[0];
 
         // Convert to array of { x, y } points
-        let svgPoints = [];
+        const svgPoints = [];
         const scaleFactor = Math.min(canvasWidth, canvasHeight) / 700;
         for (let i = 0; i < pathSketch.length; i++) {
           svgPoints.push({
@@ -304,12 +320,12 @@ const FractalTree = () => {
           });
         }
 
-        let { offsetX, offsetY } = getCenterOffset(svgPoints, canvasWidth, canvasHeight);
+        const { offsetX, offsetY } = getCenterOffset(svgPoints, canvasWidth, canvasHeight);
         githubOffset.x = offsetX + 90;
         githubOffset.y = offsetY + 100;
 
-        let xArr = svgPoints.map(pt => pt.x);
-        let yArr = svgPoints.map(pt => pt.y);
+        const xArr = svgPoints.map(pt => pt.x);
+        const yArr = svgPoints.map(pt => pt.y);
         githubFourierX = dft(pFIVE, xArr);
         githubFourierY = dft(pFIVE, yArr);
 
@@ -319,7 +335,7 @@ const FractalTree = () => {
       };
 
       //--------------- Mouse Events ---------------
-      pFIVE.mousePressed = function () {
+      pFIVE.mousePressed = function() {
         // Only start drawing if inside canvas
         if (
           pFIVE.mouseX >= 0 &&
@@ -339,15 +355,15 @@ const FractalTree = () => {
         }
       };
 
-      pFIVE.mouseReleased = function () {
+      pFIVE.mouseReleased = function() {
         if (userIsDrawing) {
           userIsDrawing = false;
           if (userPoints.length > 1) {
-            let { minX, maxX, minY, maxY } = getBoundingBox(userPoints);
-            let centerX = (minX + maxX) / 2;
-            let centerY = (minY + maxY) / 2;
+            const { minX, maxX, minY, maxY } = getBoundingBox(userPoints);
+            const centerX = (minX + maxX) / 2;
+            const centerY = (minY + maxY) / 2;
 
-            let shiftedPoints = userPoints.map(pt => ({
+            const shiftedPoints = userPoints.map(pt => ({
               x: pt.x - centerX,
               y: pt.y - centerY,
             }));
@@ -355,8 +371,8 @@ const FractalTree = () => {
             userOffset.x = canvasWidth / 2;
             userOffset.y = canvasHeight / 2;
 
-            let ux = shiftedPoints.map(pt => pt.x);
-            let uy = shiftedPoints.map(pt => pt.y);
+            const ux = shiftedPoints.map(pt => pt.x);
+            const uy = shiftedPoints.map(pt => pt.y);
 
             userFourierX = dft(pFIVE, ux);
             userFourierY = dft(pFIVE, uy);
@@ -366,7 +382,7 @@ const FractalTree = () => {
         }
       };
 
-      pFIVE.mouseDragged = function () {
+      pFIVE.mouseDragged = function() {
         if (userIsDrawing) {
           if (
             pFIVE.mouseX >= 0 &&
@@ -380,12 +396,12 @@ const FractalTree = () => {
       };
 
       //--------------- Touch Events ---------------
-      pFIVE.touchStarted = function (event) {
+      pFIVE.touchStarted = function(event) {
         // Only if the touch is inside the canvas, prevent default
         // so that we don't scroll the page from inside the canvas.
         if (pFIVE.touches && pFIVE.touches.length > 0) {
-          let tx = pFIVE.touches[0].x;
-          let ty = pFIVE.touches[0].y;
+          const tx = pFIVE.touches[0].x;
+          const ty = pFIVE.touches[0].y;
           if (tx >= 0 && tx <= pFIVE.width && ty >= 0 && ty <= pFIVE.height) {
             userIsDrawing = true;
             userStartedDrawing = true;
@@ -403,15 +419,15 @@ const FractalTree = () => {
         }
       };
 
-      pFIVE.touchEnded = function (event) {
+      pFIVE.touchEnded = function(event) {
         if (userIsDrawing) {
           userIsDrawing = false;
           if (userPoints.length > 1) {
-            let { minX, maxX, minY, maxY } = getBoundingBox(userPoints);
-            let centerX = (minX + maxX) / 2;
-            let centerY = (minY + maxY) / 2;
+            const { minX, maxX, minY, maxY } = getBoundingBox(userPoints);
+            const centerX = (minX + maxX) / 2;
+            const centerY = (minY + maxY) / 2;
 
-            let shiftedPoints = userPoints.map(pt => ({
+            const shiftedPoints = userPoints.map(pt => ({
               x: pt.x - centerX,
               y: pt.y - centerY,
             }));
@@ -419,8 +435,8 @@ const FractalTree = () => {
             userOffset.x = canvasWidth / 2;
             userOffset.y = canvasHeight / 2;
 
-            let ux = shiftedPoints.map(pt => pt.x);
-            let uy = shiftedPoints.map(pt => pt.y);
+            const ux = shiftedPoints.map(pt => pt.x);
+            const uy = shiftedPoints.map(pt => pt.y);
 
             userFourierX = dft(pFIVE, ux);
             userFourierY = dft(pFIVE, uy);
@@ -440,10 +456,10 @@ const FractalTree = () => {
         }
       };
 
-      pFIVE.touchMoved = function (event) {
+      pFIVE.touchMoved = function(event) {
         if (userIsDrawing && pFIVE.touches && pFIVE.touches.length > 0) {
-          let tx = pFIVE.touches[0].x;
-          let ty = pFIVE.touches[0].y;
+          const tx = pFIVE.touches[0].x;
+          const ty = pFIVE.touches[0].y;
           if (tx >= 0 && tx <= pFIVE.width && ty >= 0 && ty <= pFIVE.height) {
             userPoints.push({ x: tx, y: ty });
 
@@ -454,7 +470,7 @@ const FractalTree = () => {
       };
 
       //--------------- Window Resize ---------------
-      pFIVE.windowResized = function () {
+      pFIVE.windowResized = function() {
         const parent = sketchRef.current;
         const rect = parent.getBoundingClientRect();
         canvasWidth = rect.width;
@@ -462,19 +478,19 @@ const FractalTree = () => {
         pFIVE.resizeCanvas(canvasWidth, canvasHeight);
 
         if (!userStartedDrawing && githubFourierX.length > 0 && githubFourierY.length > 0) {
-          let { offsetX: newOffsetX, offsetY: newOffsetY } = getCenterOffset(
+          const { offsetX: newOffsetX, offsetY: newOffsetY } = getCenterOffset(
             githubPath.map(v => ({ x: v.x, y: v.y })),
             canvasWidth,
-            canvasHeight
+            canvasHeight,
           );
           githubOffset.x = newOffsetX;
           githubOffset.y = newOffsetY;
         }
 
         if (userStartedDrawing && userFourierX.length > 0 && userFourierY.length > 0) {
-          let { minX, maxX, minY, maxY } = getBoundingBox(userPoints);
-          let centerX = (minX + maxX) / 2;
-          let centerY = (minY + maxY) / 2;
+          const { minX, maxX, minY, maxY } = getBoundingBox(userPoints);
+          const centerX = (minX + maxX) / 2;
+          const centerY = (minY + maxY) / 2;
 
           userOffset.x = canvasWidth / 2 - centerX;
           userOffset.y = canvasHeight / 2 - centerY;
@@ -482,7 +498,7 @@ const FractalTree = () => {
       };
 
       //--------------- Reset ---------------
-      pFIVE.resetSketch = function () {
+      pFIVE.resetSketch = function() {
         userStartedDrawing = false;
         userPoints.length = 0;
         userFourierX.length = 0;
@@ -498,15 +514,29 @@ const FractalTree = () => {
       };
 
       //--------------- Draw Loop ---------------
-      pFIVE.draw = function () {
+      pFIVE.draw = function() {
         pFIVE.clear();
 
         // Show GitHub shape if user hasn't drawn yet
         if (!userStartedDrawing && githubFourierX.length > 0 && githubFourierY.length > 0) {
-          let vx = epiCycles(pFIVE, githubTime, githubOffset.x, githubOffset.y, 0, githubFourierX);
-          let vy = epiCycles(pFIVE, githubTime, githubOffset.x, githubOffset.y, pFIVE.HALF_PI, githubFourierY);
+          const vx = epiCycles(
+            pFIVE,
+            githubTime,
+            githubOffset.x,
+            githubOffset.y,
+            0,
+            githubFourierX,
+          );
+          const vy = epiCycles(
+            pFIVE,
+            githubTime,
+            githubOffset.x,
+            githubOffset.y,
+            pFIVE.HALF_PI,
+            githubFourierY,
+          );
 
-          let v = pFIVE.createVector(vx.x, vy.y);
+          const v = pFIVE.createVector(vx.x, vy.y);
           githubPath.push(v);
 
           pFIVE.strokeWeight(2);
@@ -524,8 +554,8 @@ const FractalTree = () => {
           pFIVE.endShape();
           pFIVE.strokeWeight(1.5);
 
-          let speed = 2;
-          let dt = (pFIVE.TWO_PI / githubFourierX.length) * speed;
+          const speed = 2;
+          const dt = (pFIVE.TWO_PI / githubFourierX.length) * speed;
           githubTime += dt;
           if (githubTime > pFIVE.TWO_PI * 2) {
             githubTime = 0;
@@ -548,18 +578,18 @@ const FractalTree = () => {
 
         // Animate user’s Fourier
         if (!userIsDrawing && userFourierX.length > 0 && userFourierY.length > 0) {
-          let vx = epiCycles(pFIVE, userTime, userOffset.x, userOffset.y, 0, userFourierX, 70);
-          let vy = epiCycles(
+          const vx = epiCycles(pFIVE, userTime, userOffset.x, userOffset.y, 0, userFourierX, 70);
+          const vy = epiCycles(
             pFIVE,
             userTime,
             userOffset.x + 100,
             userOffset.y,
             pFIVE.HALF_PI,
             userFourierY,
-            70
+            70,
           );
 
-          let v = pFIVE.createVector(vx.x, vy.y);
+          const v = pFIVE.createVector(vx.x, vy.y);
           userPath.push(v);
 
           pFIVE.strokeWeight(1);
@@ -577,7 +607,7 @@ const FractalTree = () => {
           pFIVE.endShape();
           pFIVE.strokeWeight(1);
 
-          let dt = pFIVE.TWO_PI / userFourierX.length;
+          const dt = pFIVE.TWO_PI / userFourierX.length;
           userTime += dt;
           if (userTime > pFIVE.TWO_PI * 2) {
             userTime = 0;
@@ -587,7 +617,7 @@ const FractalTree = () => {
       };
     }
 
-    let myp5 = new p5(sketch);
+    const myp5 = new p5(sketch);
     p5InstanceRef.current = myp5;
 
     return () => {
