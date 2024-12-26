@@ -1,5 +1,5 @@
 ---
-date: '2024-09-10'
+date: '2024-05-10'
 title: 'Software Development Student'
 company: 'Blackberry QNX'
 location: Ottawa, ON, Canada

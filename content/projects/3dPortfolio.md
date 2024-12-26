@@ -1,8 +1,6 @@
 ---
 date: '2024'
 title: '3d portfolio website'
-cover: 'portfoliowebsite.jpg'
-external: 'https://unkept.alvinayang.com/'
 tech:
   - ReactJS
   - Tailwind CSS

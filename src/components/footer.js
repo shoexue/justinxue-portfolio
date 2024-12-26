@@ -90,7 +90,7 @@ const Footer = () => {
           target="_blank"
           rel="nofollow noopener noreferrer">
           <div>
-            Built by Alvina Yang<br></br>
+            Built by Alvina Yang with ❤️<br></br>
           </div>
 
           {githubInfo.stars && githubInfo.forks && (
