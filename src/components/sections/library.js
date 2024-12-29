@@ -1,5 +1,3 @@
-// src/components/sections/library.js
-
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
@@ -10,7 +8,7 @@ import { Heading, Section, Dot, media, theme } from '@styles';
 const { colors, fontSizes, fonts } = theme;
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
-import '@splidejs/splide/dist/css/splide.min.css';
+import '@splidejs/splide/dist/css/splide.min.css'; 
 
 const initAnimation = keyframes`
   0% {
@@ -46,8 +44,8 @@ const StyledHeading = styled(Heading)`
 
 const StyledSplide = styled(Splide)`
   .splide__track {
-    overflow-x: hidden; /* Hide horizontal overflow */
-    overflow-y: visible; /* Allow vertical overflow to show highlights */
+    overflow-x: hidden; 
+    overflow-y: visible; 
   }
 
   .splide__list {
@@ -80,8 +78,10 @@ const Book = styled.div`
   transition: transform 1s ease;
   animation: 1s ease 0s 1 ${initAnimation};
 
-  &:hover {
-    transform: rotateY(-8deg);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: rotateY(-8deg);
+    }
   }
 `;
 
@@ -94,7 +94,7 @@ const FrontCoverImage = styled.img`
   transform: translateZ(15px);
   border-radius: 0 2px 2px 0;
   box-shadow: 5px 3px 20px rgba(102, 102, 102, 0.5);
-  object-fit: fill; /* Ensures image fits within container without clipping */
+  object-fit: fill; 
   display: block;
 `;
 
@@ -153,38 +153,42 @@ const Library = ({ title, images }) => {
   const revealHeading = useRef(null);
   const revealSubtext = useRef(null);
   const revealCarousel = useRef(null);
-  const splideRef = useRef(null); // Reference to Splide instance
-  const [paused, setPaused] = useState(false); // Carousel pause state
-  const [activeBooks, setActiveBooks] = useState({}); // State to track active book animations
+  const splideRef = useRef(null); 
+
+  const [activeBooks, setActiveBooks] = useState({}); 
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Initialize ScrollReveal animations
     sr.reveal(revealHeading.current, srConfig());
     sr.reveal(revealSubtext.current, srConfig());
     sr.reveal(revealCarousel.current, srConfig());
+
+    // Detect if the device is mobile based on window width
+    const handleResize = () => {
+      if (typeof window !== 'undefined') {
+        setIsMobile(window.innerWidth <= 768); 
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize); 
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleBookClick = index => {
-    // Detect if the device is touch-capable
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-    if (!isTouchDevice) {return;} // Do nothing if not a touch device
-
-    // Toggle the pause state
-    if (splideRef.current) {
-      if (paused) {
-        splideRef.current.splide.play(); // Resume AutoScroll
-      } else {
-        splideRef.current.splide.pause(); // Pause AutoScroll
-      }
-      setPaused(!paused); // Update the paused state
+    if (isMobile) {
+      setActiveBooks(prev => {
+        const isActive = prev[index];
+        const updatedActiveBooks = { ...prev, [index]: !isActive };
+        const anyActive = Object.values(updatedActiveBooks).some(val => val);
+        if (anyActive) {
+          splideRef.current?.splide?.Components?.AutoScroll?.pause(); 
+        } else {
+          splideRef.current?.splide?.Components?.AutoScroll?.play(); 
+        }
+        return updatedActiveBooks;
+      });
     }
-
-    // Toggle the active state for the clicked book
-    setActiveBooks(prev => ({
-      ...prev,
-      [index]: !prev[index],
-    }));
   };
 
   const duplicatedImages = [...images, ...images];
@@ -221,9 +225,9 @@ const Library = ({ title, images }) => {
 
       <div className="carousel-container" ref={revealCarousel}>
         <StyledSplide
+          ref={splideRef}
           options={splideOptions}
           extensions={{ AutoScroll }}
-          ref={splideRef} // Assign the Splide instance to the ref
         >
           {duplicatedImages.map(({ node }, index) => {
             const imageSrc = node.childImageSharp?.fluid?.src || node.publicURL;
@@ -232,8 +236,16 @@ const Library = ({ title, images }) => {
               <SplideSlide key={index}>
                 <BookContainer>
                   <BookPages
-                    onClick={() => handleBookClick(index)} // Handle clicks on books
-                    active={activeBooks[index]} // Apply active state for animation
+                    onClick={() => handleBookClick(index)} 
+                    active={activeBooks[index]} 
+                    tabIndex="0" 
+                    role="button" 
+                    aria-pressed={activeBooks[index]} 
+                    onKeyPress={e => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        handleBookClick(index);
+                      }
+                    }}
                   >
                     <FrontCoverImage src={imageSrc} alt={`Book Cover ${index + 1}`} />
                   </BookPages>
