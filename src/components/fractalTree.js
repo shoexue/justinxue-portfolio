@@ -5,11 +5,6 @@ import media from '../styles/media';
 import { theme } from '@styles';
 
 const { colors, fontSizes, fonts } = theme;
-
-/********************************************************************/
-/********************* HELPER FUNCTIONS (DO NOT CONDENSE) ***********/
-/********************************************************************/
-
 /**
  * @function dft
  * Discrete Fourier Transform of an array of numeric points.
@@ -122,9 +117,6 @@ function epiCycles(p5, time, runningX, runningY, rotation, fourier) {
   return p5.createVector(sumX, sumY);
 }
 
-/********************************************************************/
-/******************** STYLED COMPONENTS *****************************/
-/********************************************************************/
 
 const StyledCanvasMessage = styled.p`
   margin-top: 20px;
@@ -204,9 +196,6 @@ const StyledContainer = styled.div`
   width: 100%;
 `;
 
-/********************************************************************/
-/******************** MAIN REACT COMPONENT **************************/
-/********************************************************************/
 
 const FractalTree = () => {
   const sketchRef = useRef(null);
@@ -343,7 +332,6 @@ const FractalTree = () => {
 
           // TOUCH
           p5.touchStarted = function(e) {
-            // if not drawing => let default scrolling happen
             if (!isDrawingEnabledRef.current) {
               return;
             }
@@ -358,12 +346,11 @@ const FractalTree = () => {
                 userFourierY.length = 0;
                 userPath.length = 0;
                 userTime = 0;
-                e.preventDefault(); // block scrolling now that we want to draw
+                e.preventDefault(); 
               }
             }
           };
           p5.touchMoved = function(e) {
-            // if not drawing => let default scrolling happen
             if (!isDrawingEnabledRef.current) {
               return;
             }
@@ -372,7 +359,7 @@ const FractalTree = () => {
               const ty = p5.touches[0].y;
               if (tx >= 0 && tx <= p5.width && ty >= 0 && ty <= p5.height) {
                 userPoints.push({ x: tx, y: ty });
-                e.preventDefault(); // keep blocking scrolling
+                e.preventDefault(); 
               }
             }
           };
@@ -387,7 +374,7 @@ const FractalTree = () => {
                   p5.mouseY >= 0 &&
                   p5.mouseY <= p5.height
                 ) {
-                  e.preventDefault(); // finalize blocking
+                  e.preventDefault(); 
                 }
               }
             }
@@ -398,7 +385,6 @@ const FractalTree = () => {
             for (let i = 0; i < userPoints.length; i++) {
               userTransformed.push({ x: userPoints[i].x, y: userPoints[i].y });
             }
-            // center at (0,0)
             const { minX, maxX, minY, maxY } = getBoundingBox(userTransformed);
             const centerX = (minX + maxX) / 2;
             const centerY = (minY + maxY) / 2;
@@ -438,7 +424,6 @@ const FractalTree = () => {
           p5.draw = function() {
             p5.clear();
 
-            // conditionally apply 'touch-action: none' only when drawing
             if (isDrawingEnabledRef.current) {
               p5.select('canvas')?.style('touch-action', 'none');
             } else {
@@ -540,16 +525,12 @@ const FractalTree = () => {
   // Toggling
   const handleToggle = () => {
     if (isDrawingEnabled) {
-      // Switch back to pi drawing
       setIsDrawingEnabled(false);
-      // Reset the sketch to pi
       if (p5InstanceRef.current && p5InstanceRef.current.resetSketch) {
         p5InstanceRef.current.resetSketch();
       }
     } else {
-      // Enable user drawing
       setIsDrawingEnabled(true);
-      // Optionally clear or background reset
       if (p5InstanceRef.current) {
         p5InstanceRef.current.background(0);
       }
