@@ -50,7 +50,7 @@ const StyledEmailLink = styled.a`
 const StyledResumeLink = styled.a`
   && {
     margin-top: 50px;
-    color: ${colors.lightSlate};
+    color: ${colors.green};
     font-family: ${fonts.SFMono};
     font-size: ${fontSizes.sm};
     transition: color 0.3s ease;

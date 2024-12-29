@@ -14,4 +14,5 @@ export { default as Projects } from './sections/projects';
 export { default as Contact } from './sections/contact';
 export { default as Education } from './sections/education';
 export { default as FractalTree } from './fractalTree';
-export { default as Books } from './sections/books';
+export { default as Library } from './sections/library';
+

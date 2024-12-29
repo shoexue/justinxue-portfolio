@@ -39,6 +39,10 @@ module.exports = {
       url: '/#projects',
     },
     {
+      name: 'library ()',
+      url: '/#library',
+    },
+    {
       name: 'contact ()',
       url: '/#contact',
     },

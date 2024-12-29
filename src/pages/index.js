@@ -1,7 +1,17 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import PropTypes from 'prop-types';
-import { Layout, Hero, About, Jobs, Featured, Projects, Contact, Education } from '@components';
+import {
+  Layout,
+  Hero,
+  About,
+  Jobs,
+  Featured,
+  Projects,
+  Contact,
+  Education,
+  Library,
+} from '@components';
 import styled from 'styled-components';
 import { Main } from '@styles';
 
@@ -9,19 +19,25 @@ const StyledMainContainer = styled(Main)`
   counter-reset: section;
 `;
 
-const IndexPage = ({ location, data }) => (
-  <Layout location={location}>
-    <StyledMainContainer className="fillHeight">
-      <Hero data={data.hero.edges} />
-      <About data={data.about.edges} technologiesData={data.technologies.edges} />
-      <Jobs data={data.jobs.edges} />
-      <Education data={data.education.edges}></Education>
-      <Featured data={data.featured.edges} />
-      <Projects data={data.projects.edges} />
-      <Contact data={data.contact.edges} />
-    </StyledMainContainer>
-  </Layout>
-);
+const IndexPage = ({ location, data }) => {
+  // Extract the library title from the fetched data
+  const libraryTitle = data.libraryTitle.edges[0].node.frontmatter.title;
+
+  return (
+    <Layout location={location}>
+      <StyledMainContainer className="fillHeight">
+        <Hero data={data.hero.edges} />
+        <About data={data.about.edges} technologiesData={data.technologies.edges} />
+        <Jobs data={data.jobs.edges} />
+        <Education data={data.education.edges} />
+        <Featured data={data.featured.edges} />
+        <Projects data={data.projects.edges} />
+        <Library title={libraryTitle} images={data.libraryImages.edges} />
+        <Contact data={data.contact.edges} />
+      </StyledMainContainer>
+    </Layout>
+  );
+};
 
 IndexPage.propTypes = {
   location: PropTypes.object.isRequired,
@@ -155,6 +171,30 @@ export const pageQuery = graphql`
             range
           }
           html
+        }
+      }
+    }
+    libraryTitle: allMarkdownRemark(filter: { fileAbsolutePath: { regex: "/books/index.md/" } }) {
+      edges {
+        node {
+          frontmatter {
+            title
+          }
+        }
+      }
+    }
+    libraryImages: allFile(
+      filter: { relativeDirectory: { eq: "books" }, extension: { regex: "/(jpg|jpeg|png)/" } }
+      sort: { fields: name, order: ASC }
+    ) {
+      edges {
+        node {
+          childImageSharp {
+            original {
+              src
+            }
+          }
+          publicURL
         }
       }
     }

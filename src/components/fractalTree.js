@@ -6,10 +6,6 @@ import { theme } from '@styles';
 
 const { colors, fontSizes, fonts } = theme;
 
-/********************************************************************/
-/********************* HELPER FUNCTIONS (DO NOT CONDENSE) ***********/
-/********************************************************************/
-
 /**
  * @function dft
  * Discrete Fourier Transform of an array of numeric points.
@@ -74,10 +70,10 @@ function getBoundingBox(points) {
   let maxY = points[0].y;
 
   for (let i = 1; i < points.length; i++) {
-    if (points[i].x < minX) minX = points[i].x;
-    if (points[i].x > maxX) maxX = points[i].x;
-    if (points[i].y < minY) minY = points[i].y;
-    if (points[i].y > maxY) maxY = points[i].y;
+    if (points[i].x < minX) {minX = points[i].x;}
+    if (points[i].x > maxX) {maxX = points[i].x;}
+    if (points[i].y < minY) {minY = points[i].y;}
+    if (points[i].y > maxY) {maxY = points[i].y;}
   }
 
   return { minX, maxX, minY, maxY };
@@ -132,10 +128,6 @@ function epiCycles(p5, time, runningX, runningY, rotation, fourier, maxRadius = 
   p5.strokeWeight(1.5);
   return p5.createVector(sumX, sumY);
 }
-
-/********************************************************************/
-/******************** STYLED COMPONENTS *****************************/
-/********************************************************************/
 
 const StyledCanvasMessage = styled.p`
   margin-top: 20px;
@@ -262,14 +254,13 @@ const FractalTree = () => {
 
           // User shape
           let userIsDrawing = false;
-          const userPoints = []; // Raw user drawing
-          const userTransformed = []; // Centered user points (no scaling)
+          const userPoints = []; 
+          const userTransformed = []; 
           let userFourierX = [];
           let userFourierY = [];
           let userTime = 0;
           const userPath = [];
-          let userStartedDrawing = false;
-          let hasUserDFT = false; // Indicates if user has drawn and DFT is done
+          let hasUserDFT = false; 
 
           // Store original pi points for reset
           const originalpiPoints = [];
@@ -313,15 +304,12 @@ const FractalTree = () => {
               originalpiPoints.push({ x: pathSketch[i].x, y: pathSketch[i].y });
             }
 
-            // Transform pi points: scale and center at (0,0)
-            // First, scale
             for (let i = 0; i < originalpiPoints.length; i++) {
               const sx = originalpiPoints[i].x * initialScaleFactor;
               const sy = originalpiPoints[i].y * initialScaleFactor;
               piTransformed.push({ x: sx, y: sy });
             }
 
-            // Then, center at (0,0)
             const { minX, maxX, minY, maxY } = getBoundingBox(piTransformed);
             const centerX = (minX + maxX) / 2;
             const centerY = (minY + maxY) / 2;
@@ -331,7 +319,6 @@ const FractalTree = () => {
               piTransformed[i].y -= centerY;
             }
 
-            // Perform DFT on pi shape
             const xArr = piTransformed.map(pt => pt.x);
             const yArr = piTransformed.map(pt => pt.y);
             piFourierX = dft(p5, xArr);
@@ -363,7 +350,6 @@ const FractalTree = () => {
             if (userIsDrawing) {
               userIsDrawing = false;
               if (userPoints.length > 1) {
-                // Perform transformation and DFT on user-drawn points
                 transformUserPoints();
               }
             }
@@ -430,19 +416,11 @@ const FractalTree = () => {
             }
           };
 
-          /**
-           * Transform and perform DFT on user-drawn points.
-           * **Modification:** Removed scaling for user's drawing.
-           */
           function transformUserPoints() {
             userTransformed.length = 0;
-            // Removed scaling to retain original size
-            // const scaleFactor = initialScaleFactor; // No scaling
-
-            // Copy user points as is (no scaling)
             for (let i = 0; i < userPoints.length; i++) {
-              const sx = userPoints[i].x; // No scaling applied
-              const sy = userPoints[i].y; // No scaling applied
+              const sx = userPoints[i].x; 
+              const sy = userPoints[i].y; 
               userTransformed.push({ x: sx, y: sy });
             }
 
@@ -516,7 +494,7 @@ const FractalTree = () => {
                 const vy = epiCycles(p5, piTime, currentOffsetX, currentOffsetY, p5.HALF_PI, piFourierY);
 
                 const v = p5.createVector(vx.x, vy.y);
-                piPath.push({ x: v.x - currentOffsetX, y: v.y - currentOffsetY }); // Store relative
+                piPath.push({ x: v.x - currentOffsetX, y: v.y - currentOffsetY }); 
 
                 p5.strokeWeight(2);
                 p5.stroke(128, 128, 128, 200);
@@ -586,11 +564,9 @@ const FractalTree = () => {
           };
         };
 
-        // Create the p5 instance
         const myp5 = new p5(sketch);
         p5InstanceRef.current = myp5;
 
-        // Cleanup on unmount
         return () => {
           if (p5InstanceRef.current) {
             p5InstanceRef.current.remove();
@@ -605,16 +581,12 @@ const FractalTree = () => {
   // Handle toggle button click
   const handleToggle = () => {
     if (isDrawingEnabled) {
-      // Stop drawing
       setIsDrawingEnabled(false);
-      // Reset the sketch to pi drawing
       if (p5InstanceRef.current && p5InstanceRef.current.resetSketch) {
         p5InstanceRef.current.resetSketch();
       }
     } else {
-      // Start drawing
       setIsDrawingEnabled(true);
-      // Optionally, clear the canvas
       if (p5InstanceRef.current) {
         p5InstanceRef.current.background(0);
       }
