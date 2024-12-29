@@ -6,6 +6,10 @@ import { theme } from '@styles';
 
 const { colors, fontSizes, fonts } = theme;
 
+/********************************************************************/
+/********************* HELPER FUNCTIONS (DO NOT CONDENSE) ***********/
+/********************************************************************/
+
 /**
  * @function dft
  * Discrete Fourier Transform of an array of numeric points.
@@ -36,8 +40,8 @@ function dft(p5, points) {
 
 /**
  * @function pathfinderSVG
- * Takes an HTMLCollection of <path> elements from an SVG and
- * returns an array of arrays of sampled points.
+ * Takes an HTMLCollection of <path> elements from an SVG
+ * and returns an array of arrays of sampled points.
  */
 function pathfinderSVG(pathTags, factor) {
   const arr = [];
@@ -56,11 +60,10 @@ function pathfinderSVG(pathTags, factor) {
 
 /**
  * @function getBoundingBox
- * Given an array of points like [{ x, y }, ...],
- * returns { minX, maxX, minY, maxY }.
+ * Returns { minX, maxX, minY, maxY } for an array of { x, y }.
  */
 function getBoundingBox(points) {
-  if (!points || points.length < 1) {
+  if (!points || !points.length) {
     return { minX: 0, maxX: 0, minY: 0, maxY: 0 };
   }
 
@@ -70,36 +73,27 @@ function getBoundingBox(points) {
   let maxY = points[0].y;
 
   for (let i = 1; i < points.length; i++) {
-    if (points[i].x < minX) {minX = points[i].x;}
-    if (points[i].x > maxX) {maxX = points[i].x;}
-    if (points[i].y < minY) {minY = points[i].y;}
-    if (points[i].y > maxY) {maxY = points[i].y;}
+    if (points[i].x < minX) {
+      minX = points[i].x;
+    }
+    if (points[i].x > maxX) {
+      maxX = points[i].x;
+    }
+    if (points[i].y < minY) {
+      minY = points[i].y;
+    }
+    if (points[i].y > maxY) {
+      maxY = points[i].y;
+    }
   }
-
   return { minX, maxX, minY, maxY };
 }
 
 /**
- * @function getCenterOffset
- * Takes an array of points and returns an (offsetX, offsetY)
- * to center them on the given canvas size.
- */
-function getCenterOffset(points, canvasWidth, canvasHeight) {
-  const { minX, maxX, minY, maxY } = getBoundingBox(points);
-  const centerX = (minX + maxX) / 2;
-  const centerY = (minY + maxY) / 2;
-
-  return {
-    offsetX: canvasWidth / 2 - centerX,
-    offsetY: canvasHeight / 2 - centerY,
-  };
-}
-
-/**
  * @function epiCycles
- * Renders epicycles. Returns final sum point for x,y.
+ * Renders epicycles; returns final sum point (x, y).
  */
-function epiCycles(p5, time, runningX, runningY, rotation, fourier, maxRadius = null) {
+function epiCycles(p5, time, runningX, runningY, rotation, fourier) {
   let sumX = runningX;
   let sumY = runningY;
 
@@ -124,10 +118,13 @@ function epiCycles(p5, time, runningX, runningY, rotation, fourier, maxRadius = 
     p5.line(prevX, prevY, sumX, sumY);
     p5.strokeWeight(1.5);
   }
-
   p5.strokeWeight(1.5);
   return p5.createVector(sumX, sumY);
 }
+
+/********************************************************************/
+/******************** STYLED COMPONENTS *****************************/
+/********************************************************************/
 
 const StyledCanvasMessage = styled.p`
   margin-top: 20px;
@@ -175,33 +172,27 @@ const StyledDescription = styled.p`
 `;
 
 const StyledCanvasWrapper = styled.div`
-  width: 80%;
+  width: 80% !important;
   height: 45vh;
   background-color: rgba(16, 16, 16, 0.4);
   margin-bottom: 20px;
 
   ${media.desktop`
-    width: 80%;
     height: 45vh;
   `}
   ${media.tablet`
-    width: 85%;
     height: 40vh;
   `}
   ${media.thone`
-    width: 90%;
     height: 35vh;
   `}
   ${media.phablet`
-    width: 95%;
     height: 30vh;
   `}
   ${media.phone`
-    width: 95%;
     height: 30vh;
   `}
   ${media.tiny`
-    width: 100%;
     height: 25vh;
   `}
 `;
@@ -221,11 +212,10 @@ const FractalTree = () => {
   const sketchRef = useRef(null);
   const p5InstanceRef = useRef(null);
 
-  // State to manage drawing toggle
+  // Toggle for enabling user drawing
   const [isDrawingEnabled, setIsDrawingEnabled] = useState(false);
   const isDrawingEnabledRef = useRef(isDrawingEnabled);
 
-  // Update the ref whenever the state changes
   useEffect(() => {
     isDrawingEnabledRef.current = isDrawingEnabled;
   }, [isDrawingEnabled]);
@@ -235,99 +225,84 @@ const FractalTree = () => {
       .then(p5Module => {
         const p5 = p5Module.default;
 
-        // The raw SVG data
+        // The pi shape
         const svgData = `
 <svg xmlns="http://www.w3.org/2000/svg" width="496" height="480">
   <path d="m438.22802734 8.64404297 2.27796102.01614785C456.0040156 8.77030667 471.50200226 8.88575912 487 9l1 74H373v30c-.31725084 6.79191715-.68434585 13.54339728-1.21484375 20.31640625-.1340483 1.81113676-.2677386 3.62230004-.40110779 5.43348694-1.73708105 23.13566429-4.01533407 46.22731558-6.24952698 69.31907654-3.1583017 32.53054037-3.1583017 32.53054037-5.39624023 65.13415527l-.11914254 2.19875908c-3.22130518 55.55383246-3.22130518 55.55383246 19.22070504 104.66061592 9.37009413 8.89105047 21.76634487 12.340019 34.41015625 12.25l2.52539062-.01708984C429.208001 392.03268869 440.78264788 387.90533259 451 379c11.26132693-12.96758858 15.32433614-28.24336145 17-45 1-1 1-1 2.85766601-1.1135254.79075928.00523683 1.58151856.01047364 2.39624024.01586915l2.58789062.00976563L478.5625 332.9375l2.73242187.01367188c2.23509126.01182588 4.4700525.02830592 6.70507813.04882812-1.10257854 41.56721092-15.57447568 85.2754681-46.15625 114.5390625-20.96312864 18.141169-45.69601446 24.6354905-72.96875 23.2734375C343.9384704 468.46382686 322.32160136 458.23536004 306 439c-31.22093618-40.18120485-20.86996242-98.11862161-17.296875-145.1171875l.25427246-3.3701477c2.29512125-30.2190082 5.28677093-60.3734356 8.24050903-90.53344727.98253895-10.03408238 1.9593943-20.06869247 2.92709351-30.10421753l.3791809-3.9251709c2.04614445-21.27110944 3.78260271-42.55636996 5.29122925-63.87219238l.22810364-3.1904297c.13861384-1.94916172.27431497-3.8985338.40646362-5.84814452l.18452454-2.60595703.15376282-2.24368286C307.02418121 85.77153717 307.52316495 83.38417524 308 81H204l-2.16015625 25.51171875C185.35798795 300.9089659 185.35798795 300.9089659 146 450l-2.25 3.125c-11.63596458 12.16487205-26.43985822 17.72021218-43 18.25-14.73397065-.2522432-27.89755814-5.55105243-38.625-15.6875-11.23892025-12.01121495-15.741093-26.57329341-15.39453125-42.81640625 1.17385351-16.85925836 12.75550768-30.86009794 22.66210937-43.76171875C129.37666895 290.39392167 152.47683642 199.6198937 157 82c-32.39023849-1.72994096-67.85956152-2.52099316-94 20l-2.12109375 1.65625c-11.28629657 9.23246444-18.24917083 22.33371275-25.41308594 34.7915039-1.46217257 2.53422199-2.96100992 5.04323066-4.4658203 7.5522461-.58523439 1.04414063-1.17046876 2.08828125-1.7734375 3.1640625-3.11265542 2.56657552-5.40881005 2.20443029-9.33203126 1.91992188L17.25 150.8125l-2.69140625-.21289062C12.36931206 150.4230544 10.18501065 150.22250036 8 150c2.51095654-7.82877361 5.44722978-15.46876978 8.4375-23.125 1.0813857-2.77318193 2.16194462-5.54668522 3.2421875-8.3203125l.8351593-2.14239502c1.8805432-4.83253353 3.72636882-9.67727187 5.5554657-14.52947998C42.73173784 57.79325949 42.73173784 57.79325949 55 44"/>
-</svg>
 `;
-        // Define the sketch
-        const sketch = p5 => {
-          let canvasWidth; let canvasHeight;
 
-          // pi shape
-          const piTransformed = []; // Scaled and centered points
+        const sketch = p5 => {
+          let canvasWidth;
+          let canvasHeight;
+
+          // pi shape data
+          const piTransformed = [];
           let piFourierX = [];
           let piFourierY = [];
           let piTime = 0;
           const piPath = [];
 
-          // User shape
+          // user shape data
           let userIsDrawing = false;
-          const userPoints = []; 
-          const userTransformed = []; 
+          const userPoints = [];
+          const userTransformed = [];
           let userFourierX = [];
           let userFourierY = [];
           let userTime = 0;
           const userPath = [];
-          let hasUserDFT = false; 
+          let hasUserDFT = false;
 
-          // Store original pi points for reset
-          const originalpiPoints = [];
-
-          // Initial Scaling Factor based on initial canvas size
           let initialScaleFactor = 1;
 
-          // Setup function
           p5.setup = function() {
             const parent = sketchRef.current;
             const rect = parent.getBoundingClientRect();
             canvasWidth = rect.width;
             canvasHeight = rect.height;
-
             initialScaleFactor = Math.min(canvasWidth, canvasHeight) / 700;
 
             const cnv = p5.createCanvas(canvasWidth, canvasHeight);
             cnv.parent(sketchRef.current);
-            cnv.style('touch-action', 'none'); // Only handle events inside the canvas
+
             p5.frameRate(30);
             p5.background(0);
 
-            // Parse SVG
+            // parse svg
             const parser = new DOMParser();
             const doc = parser.parseFromString(svgData, 'image/svg+xml');
             const pathTags = doc.getElementsByTagName('path');
-            if (pathTags.length === 0) {
-              console.error('No <path> elements found in the SVG data.');
-              return;
+            if (!pathTags.length) {
+              return console.error('No <path> elements found.');
             }
+
             const sampleFactor = 3;
             const allPathSketches = pathfinderSVG(pathTags, sampleFactor);
-            if (allPathSketches.length === 0 || !allPathSketches[0].length) {
-              console.error('No path data found in the SVG.');
-              return;
+            if (!allPathSketches.length || !allPathSketches[0].length) {
+              return console.error('No path data found in the SVG.');
             }
             const pathSketch = allPathSketches[0];
 
-            // Store original pi points
+            // scale + center pi
             for (let i = 0; i < pathSketch.length; i++) {
-              originalpiPoints.push({ x: pathSketch[i].x, y: pathSketch[i].y });
-            }
-
-            for (let i = 0; i < originalpiPoints.length; i++) {
-              const sx = originalpiPoints[i].x * initialScaleFactor;
-              const sy = originalpiPoints[i].y * initialScaleFactor;
+              const sx = pathSketch[i].x * initialScaleFactor;
+              const sy = pathSketch[i].y * initialScaleFactor;
               piTransformed.push({ x: sx, y: sy });
             }
-
             const { minX, maxX, minY, maxY } = getBoundingBox(piTransformed);
             const centerX = (minX + maxX) / 2;
             const centerY = (minY + maxY) / 2;
-
             for (let i = 0; i < piTransformed.length; i++) {
               piTransformed[i].x -= centerX;
               piTransformed[i].y -= centerY;
             }
-
+            // DFT
             const xArr = piTransformed.map(pt => pt.x);
             const yArr = piTransformed.map(pt => pt.y);
             piFourierX = dft(p5, xArr);
             piFourierY = dft(p5, yArr);
           };
 
-          /**
-           * MOUSE EVENTS
-           */
+          // MOUSE
           p5.mousePressed = function() {
             if (
               isDrawingEnabledRef.current &&
@@ -337,7 +312,6 @@ const FractalTree = () => {
               p5.mouseY <= p5.height
             ) {
               userIsDrawing = true;
-              userStartedDrawing = true;
               userPoints.length = 0;
               userTransformed.length = 0;
               userFourierX.length = 0;
@@ -367,32 +341,45 @@ const FractalTree = () => {
             }
           };
 
-          /**
-           * TOUCH EVENTS
-           */
-          p5.touchStarted = function(event) {
+          // TOUCH
+          p5.touchStarted = function(e) {
+            // if not drawing => let default scrolling happen
+            if (!isDrawingEnabledRef.current) {
+              return;
+            }
             if (p5.touches && p5.touches.length > 0) {
               const tx = p5.touches[0].x;
               const ty = p5.touches[0].y;
-              if (isDrawingEnabledRef.current && tx >= 0 && tx <= p5.width && ty >= 0 && ty <= p5.height) {
+              if (tx >= 0 && tx <= p5.width && ty >= 0 && ty <= p5.height) {
                 userIsDrawing = true;
-                userStartedDrawing = true;
                 userPoints.length = 0;
                 userTransformed.length = 0;
                 userFourierX.length = 0;
                 userFourierY.length = 0;
                 userPath.length = 0;
                 userTime = 0;
-
-                event.preventDefault();
+                e.preventDefault(); // block scrolling now that we want to draw
               }
             }
           };
-          p5.touchEnded = function(event) {
+          p5.touchMoved = function(e) {
+            // if not drawing => let default scrolling happen
+            if (!isDrawingEnabledRef.current) {
+              return;
+            }
+            if (userIsDrawing && p5.touches && p5.touches.length > 0) {
+              const tx = p5.touches[0].x;
+              const ty = p5.touches[0].y;
+              if (tx >= 0 && tx <= p5.width && ty >= 0 && ty <= p5.height) {
+                userPoints.push({ x: tx, y: ty });
+                e.preventDefault(); // keep blocking scrolling
+              }
+            }
+          };
+          p5.touchEnded = function(e) {
             if (userIsDrawing) {
               userIsDrawing = false;
               if (userPoints.length > 1) {
-                // Perform transformation and DFT on user-drawn points
                 transformUserPoints();
                 if (
                   p5.mouseX >= 0 &&
@@ -400,18 +387,8 @@ const FractalTree = () => {
                   p5.mouseY >= 0 &&
                   p5.mouseY <= p5.height
                 ) {
-                  event.preventDefault();
+                  e.preventDefault(); // finalize blocking
                 }
-              }
-            }
-          };
-          p5.touchMoved = function(event) {
-            if (userIsDrawing && p5.touches && p5.touches.length > 0 && isDrawingEnabledRef.current) {
-              const tx = p5.touches[0].x;
-              const ty = p5.touches[0].y;
-              if (tx >= 0 && tx <= p5.width && ty >= 0 && ty <= p5.height) {
-                userPoints.push({ x: tx, y: ty });
-                event.preventDefault();
               }
             }
           };
@@ -419,16 +396,12 @@ const FractalTree = () => {
           function transformUserPoints() {
             userTransformed.length = 0;
             for (let i = 0; i < userPoints.length; i++) {
-              const sx = userPoints[i].x; 
-              const sy = userPoints[i].y; 
-              userTransformed.push({ x: sx, y: sy });
+              userTransformed.push({ x: userPoints[i].x, y: userPoints[i].y });
             }
-
-            // Center user points at (0,0)
+            // center at (0,0)
             const { minX, maxX, minY, maxY } = getBoundingBox(userTransformed);
             const centerX = (minX + maxX) / 2;
             const centerY = (minY + maxY) / 2;
-
             for (let i = 0; i < userTransformed.length; i++) {
               userTransformed[i].x -= centerX;
               userTransformed[i].y -= centerY;
@@ -437,24 +410,14 @@ const FractalTree = () => {
             const uy = userTransformed.map(pt => pt.y);
             userFourierX = dft(p5, ux);
             userFourierY = dft(p5, uy);
-
             hasUserDFT = true;
             userPath.length = 0;
             userTime = 0;
           }
 
-          /**
-           * @function resetSketch
-           * Resets everything back to original pi shape, user shape cleared.
-           */
           p5.resetSketch = function() {
-            // Reset pi path and time
             piPath.length = 0;
             piTime = 0;
-
-            // Reset user data
-            userIsDrawing = false;
-            userStartedDrawing = false;
             userPoints.length = 0;
             userTransformed.length = 0;
             userFourierX.length = 0;
@@ -464,37 +427,35 @@ const FractalTree = () => {
             hasUserDFT = false;
           };
 
-          /**
-           * WINDOW RESIZE
-           */
           p5.windowResized = function() {
             const parent = sketchRef.current;
             const rect = parent.getBoundingClientRect();
-            const newWidth = rect.width;
-            const newHeight = rect.height;
-            p5.resizeCanvas(newWidth, newHeight);
-            canvasWidth = newWidth;
-            canvasHeight = newHeight;
+            canvasWidth = rect.width;
+            canvasHeight = rect.height;
+            p5.resizeCanvas(canvasWidth, canvasHeight);
           };
 
-          /**
-           * DRAW LOOP
-           */
           p5.draw = function() {
             p5.clear();
 
-            // Current center of the canvas
-            const currentOffsetX = canvasWidth / 2;
-            const currentOffsetY = canvasHeight / 2;
+            // conditionally apply 'touch-action: none' only when drawing
+            if (isDrawingEnabledRef.current) {
+              p5.select('canvas')?.style('touch-action', 'none');
+            } else {
+              p5.select('canvas')?.style('touch-action', 'auto');
+            }
+
+            const cx = canvasWidth / 2;
+            const cy = canvasHeight / 2;
 
             if (!isDrawingEnabledRef.current) {
-              // Show pi animation
+              // show pi shape
               if (piFourierX.length > 0 && piFourierY.length > 0) {
-                const vx = epiCycles(p5, piTime, currentOffsetX, currentOffsetY, 0, piFourierX);
-                const vy = epiCycles(p5, piTime, currentOffsetX, currentOffsetY, p5.HALF_PI, piFourierY);
+                const vx = epiCycles(p5, piTime, cx, cy, 0, piFourierX);
+                const vy = epiCycles(p5, piTime, cx, cy, p5.HALF_PI, piFourierY);
 
                 const v = p5.createVector(vx.x, vy.y);
-                piPath.push({ x: v.x - currentOffsetX, y: v.y - currentOffsetY }); 
+                piPath.push({ x: v.x - cx, y: v.y - cy });
 
                 p5.strokeWeight(2);
                 p5.stroke(128, 128, 128, 200);
@@ -505,7 +466,7 @@ const FractalTree = () => {
                 p5.stroke(colors.green);
                 p5.beginShape();
                 for (let i = 0; i < piPath.length; i++) {
-                  p5.vertex(piPath[i].x + currentOffsetX, piPath[i].y + currentOffsetY);
+                  p5.vertex(piPath[i].x + cx, piPath[i].y + cy);
                 }
                 p5.endShape();
                 p5.strokeWeight(1);
@@ -519,7 +480,7 @@ const FractalTree = () => {
                 }
               }
             } else {
-              // Show user drawing
+              // user drawing
               if (userIsDrawing && userPoints.length > 1) {
                 p5.stroke(colors.green);
                 p5.strokeWeight(2);
@@ -533,11 +494,11 @@ const FractalTree = () => {
               }
 
               if (hasUserDFT && userFourierX.length > 0 && userFourierY.length > 0) {
-                const vx = epiCycles(p5, userTime, currentOffsetX, currentOffsetY, 0, userFourierX);
-                const vy = epiCycles(p5, userTime, currentOffsetX, currentOffsetY, p5.HALF_PI, userFourierY);
+                const vx = epiCycles(p5, userTime, cx, cy, 0, userFourierX);
+                const vy = epiCycles(p5, userTime, cx, cy, p5.HALF_PI, userFourierY);
 
                 const v = p5.createVector(vx.x, vy.y);
-                userPath.push({ x: v.x - currentOffsetX, y: v.y - currentOffsetY }); // Store relative
+                userPath.push({ x: v.x - cx, y: v.y - cy });
 
                 p5.strokeWeight(1);
                 p5.stroke(128, 128, 128, 200);
@@ -548,7 +509,7 @@ const FractalTree = () => {
                 p5.stroke(colors.green);
                 p5.beginShape();
                 for (let i = 0; i < userPath.length; i++) {
-                  p5.vertex(userPath[i].x + currentOffsetX, userPath[i].y + currentOffsetY);
+                  p5.vertex(userPath[i].x + cx, userPath[i].y + cy);
                 }
                 p5.endShape();
                 p5.strokeWeight(1);
@@ -573,20 +534,22 @@ const FractalTree = () => {
           }
         };
       })
-      .catch(err => {
-        console.error('Failed to load p5:', err);
-      });
+      .catch(err => console.error('Failed to load p5:', err));
   }, []);
 
-  // Handle toggle button click
+  // Toggling
   const handleToggle = () => {
     if (isDrawingEnabled) {
+      // Switch back to pi drawing
       setIsDrawingEnabled(false);
+      // Reset the sketch to pi
       if (p5InstanceRef.current && p5InstanceRef.current.resetSketch) {
         p5InstanceRef.current.resetSketch();
       }
     } else {
+      // Enable user drawing
       setIsDrawingEnabled(true);
+      // Optionally clear or background reset
       if (p5InstanceRef.current) {
         p5InstanceRef.current.background(0);
       }
@@ -598,7 +561,8 @@ const FractalTree = () => {
       <StyledCanvasWrapper ref={sketchRef} />
       <div style={{ textAlign: 'center' }}>
         <StyledCanvasMessage>
-          Draw something (one continuous line) to see it transformed into a Fourier series animation!
+          Draw something (one continuous line) to see it transformed into a Fourier series
+          animation!
         </StyledCanvasMessage>
         <StyledDescription>
           Confused? This{' '}
