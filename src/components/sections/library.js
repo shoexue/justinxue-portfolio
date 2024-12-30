@@ -8,7 +8,7 @@ import { Heading, Section, Dot, media, theme } from '@styles';
 const { colors, fontSizes, fonts } = theme;
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
-import '@splidejs/splide/dist/css/splide.min.css'; 
+import '@splidejs/splide/dist/css/splide.min.css';
 
 const initAnimation = keyframes`
   0% {
@@ -44,8 +44,7 @@ const StyledHeading = styled(Heading)`
 
 const StyledSplide = styled(Splide)`
   .splide__track {
-    overflow-x: hidden; 
-    overflow-y: visible; 
+    overflow: hidden;
   }
 
   .splide__list {
@@ -94,7 +93,7 @@ const FrontCoverImage = styled.img`
   transform: translateZ(15px);
   border-radius: 0 2px 2px 0;
   box-shadow: 5px 3px 20px rgba(102, 102, 102, 0.5);
-  object-fit: fill; 
+  object-fit: fill;
   display: block;
 `;
 
@@ -153,9 +152,9 @@ const Library = ({ title, images }) => {
   const revealHeading = useRef(null);
   const revealSubtext = useRef(null);
   const revealCarousel = useRef(null);
-  const splideRef = useRef(null); 
+  const splideRef = useRef(null);
 
-  const [activeBooks, setActiveBooks] = useState({}); 
+  const [activeBooks, setActiveBooks] = useState({});
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -166,12 +165,12 @@ const Library = ({ title, images }) => {
     // Detect if the device is mobile based on window width
     const handleResize = () => {
       if (typeof window !== 'undefined') {
-        setIsMobile(window.innerWidth <= 768); 
+        setIsMobile(window.innerWidth <= 768);
       }
     };
 
     handleResize();
-    window.addEventListener('resize', handleResize); 
+    window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -182,9 +181,9 @@ const Library = ({ title, images }) => {
         const updatedActiveBooks = { ...prev, [index]: !isActive };
         const anyActive = Object.values(updatedActiveBooks).some(val => val);
         if (anyActive) {
-          splideRef.current?.splide?.Components?.AutoScroll?.pause(); 
+          splideRef.current?.splide?.Components?.AutoScroll?.pause();
         } else {
-          splideRef.current?.splide?.Components?.AutoScroll?.play(); 
+          splideRef.current?.splide?.Components?.AutoScroll?.play();
         }
         return updatedActiveBooks;
       });
@@ -224,11 +223,7 @@ const Library = ({ title, images }) => {
       </TransitionGroup>
 
       <div className="carousel-container" ref={revealCarousel}>
-        <StyledSplide
-          ref={splideRef}
-          options={splideOptions}
-          extensions={{ AutoScroll }}
-        >
+        <StyledSplide ref={splideRef} options={splideOptions} extensions={{ AutoScroll }}>
           {duplicatedImages.map(({ node }, index) => {
             const imageSrc = node.childImageSharp?.fluid?.src || node.publicURL;
 
@@ -236,11 +231,11 @@ const Library = ({ title, images }) => {
               <SplideSlide key={index}>
                 <BookContainer>
                   <BookPages
-                    onClick={() => handleBookClick(index)} 
-                    active={activeBooks[index]} 
-                    tabIndex="0" 
-                    role="button" 
-                    aria-pressed={activeBooks[index]} 
+                    onClick={() => handleBookClick(index)}
+                    active={activeBooks[index]}
+                    tabIndex="0"
+                    role="button"
+                    aria-pressed={activeBooks[index]}
                     onKeyPress={e => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         handleBookClick(index);
