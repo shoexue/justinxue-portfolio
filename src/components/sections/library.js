@@ -29,7 +29,7 @@ const StyledLibraryContainer = styled(Section)`
 
 const StyledSubtext = styled.p`
   margin: 0 auto;
-  font-size: ${fontSizes.md};
+  font-size: ${fontSizes.sm};
   margin-top: 5px;
   margin-bottom: 1rem;
   text-align: left;
