@@ -32,7 +32,7 @@ const IndexPage = ({ location, data }) => {
         <Education data={data.education.edges} />
         <Featured data={data.featured.edges} />
         <Projects data={data.projects.edges} />
-        <Library title={libraryTitle} images={data.libraryImages.edges} />
+        {/* <Library title={libraryTitle} images={data.libraryImages.edges} /> */}
         <Contact data={data.contact.edges} />
       </StyledMainContainer>
     </Layout>
