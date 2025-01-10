@@ -67,7 +67,7 @@ export const pageQuery = graphql`
             title
             avatar {
               childImageSharp {
-                fluid(maxWidth: 700, quality: 100) {
+                fluid(maxWidth: 3000, quality: 100) {
                   ...GatsbyImageSharpFluid_withWebp_tracedSVG
                 }
               }

@@ -117,7 +117,6 @@ function epiCycles(p5, time, runningX, runningY, rotation, fourier) {
   return p5.createVector(sumX, sumY);
 }
 
-
 const StyledCanvasMessage = styled.p`
   margin-top: 20px;
   font-family: ${fonts.SFMono};
@@ -164,7 +163,7 @@ const StyledDescription = styled.p`
 `;
 
 const StyledCanvasWrapper = styled.div`
-  width: 80% !important;
+  width: 90% !important;
   height: 45vh;
   background-color: rgba(16, 16, 16, 0.4);
   margin-bottom: 20px;
@@ -195,7 +194,6 @@ const StyledContainer = styled.div`
   align-items: center;
   width: 100%;
 `;
-
 
 const FractalTree = () => {
   const sketchRef = useRef(null);
@@ -346,7 +344,7 @@ const FractalTree = () => {
                 userFourierY.length = 0;
                 userPath.length = 0;
                 userTime = 0;
-                e.preventDefault(); 
+                e.preventDefault();
               }
             }
           };
@@ -359,7 +357,7 @@ const FractalTree = () => {
               const ty = p5.touches[0].y;
               if (tx >= 0 && tx <= p5.width && ty >= 0 && ty <= p5.height) {
                 userPoints.push({ x: tx, y: ty });
-                e.preventDefault(); 
+                e.preventDefault();
               }
             }
           };
@@ -374,7 +372,7 @@ const FractalTree = () => {
                   p5.mouseY >= 0 &&
                   p5.mouseY <= p5.height
                 ) {
-                  e.preventDefault(); 
+                  e.preventDefault();
                 }
               }
             }
