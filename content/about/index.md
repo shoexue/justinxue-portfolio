@@ -13,4 +13,4 @@ A bit about me:
 - I'm currently working as a Software Engineer intern on the AI/ML team at [Seismic](https://seismic.com/).
 - I'm interested in a lot of topics in Human-Computer interaction, namely the intersection of LLMs and Education.
 - I love coffee (I've been to nearly 100 coffee shops in Toronto).
-- I'm an avid reader and my favourite authors are Donna Tartt and Elif Shafak!
+- I'm also an avid reader. My favourite authors are Donna Tartt and Elif Shafak!
