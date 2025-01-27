@@ -83,9 +83,9 @@ const Contact = ({ data }) => {
         {buttonText}
       </StyledEmailLink>
       <div />
-      <StyledResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
+      {/* <StyledResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
         little souvenir? download my resume
-      </StyledResumeLink>
+      </StyledResumeLink> */}
     </StyledContainer>
   );
 };
