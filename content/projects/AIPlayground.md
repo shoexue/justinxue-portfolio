@@ -1,8 +1,7 @@
 ---
 date: '2023'
 title: 'ai playground'
-cover: 'AiPlayground.png'
-github: 'https://github.com/CSC207-2023Y-UofT/ai-playground'
+external: 'https://github.com/CSC207-2023Y-UofT/ai-playground'
 tech:
   - Java
   - JavaFX

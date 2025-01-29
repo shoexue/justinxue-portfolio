@@ -1,8 +1,7 @@
 ---
 date: '2025'
-title: 'Locked In'
-cover: 'Locked IN.jpg'
-github: 'https://github.com/alvina-yang/LeetcodeLock'
+title: 'locked in'
+external    : 'https://github.com/alvina-yang/LeetcodeLock'
 tech:
   - Python
   - TypeScript
