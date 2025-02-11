@@ -67,9 +67,7 @@ export const pageQuery = graphql`
             title
             avatar {
               childImageSharp {
-                fluid(maxWidth: 3000, quality: 100) {
-                  ...GatsbyImageSharpFluid_withWebp_tracedSVG
-                }
+                gatsbyImageData(width: 3000, quality: 100, placeholder: BLURRED)
               }
             }
           }
@@ -79,7 +77,7 @@ export const pageQuery = graphql`
     }
     jobs: allMarkdownRemark(
       filter: { fileAbsolutePath: { regex: "/jobs/[^/]+/index\\.md$/" } }
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
     ) {
       edges {
         node {
@@ -100,7 +98,7 @@ export const pageQuery = graphql`
     }
     featured: allMarkdownRemark(
       filter: { fileAbsolutePath: { regex: "/featured/" } }
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
     ) {
       edges {
         node {
@@ -108,9 +106,7 @@ export const pageQuery = graphql`
             title
             cover {
               childImageSharp {
-                fluid(maxWidth: 700, quality: 100) {
-                  ...GatsbyImageSharpFluid_withWebp_tracedSVG
-                }
+                gatsbyImageData(width: 700, quality: 100, placeholder: BLURRED)
               }
             }
             tech
@@ -127,7 +123,7 @@ export const pageQuery = graphql`
         fileAbsolutePath: { regex: "/projects/" }
         frontmatter: { showInProjects: { ne: false } }
       }
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
     ) {
       edges {
         node {
@@ -165,7 +161,7 @@ export const pageQuery = graphql`
     }
     education: allMarkdownRemark(
       filter: { fileAbsolutePath: { regex: "/education/" } }
-      sort: { fields: [frontmatter___date], order: DESC }
+      sort: { frontmatter: { date: DESC } }
     ) {
       edges {
         node {
@@ -190,7 +186,7 @@ export const pageQuery = graphql`
     }
     libraryImages: allFile(
       filter: { relativeDirectory: { eq: "books" }, extension: { regex: "/(jpg|jpeg|png)/" } }
-      sort: { fields: name, order: ASC }
+      sort: { name: ASC }
     ) {
       edges {
         node {

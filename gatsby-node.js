@@ -21,6 +21,14 @@ exports.createSchemaCustomization = ({ actions }) => {
     type Blog {
       content: String
     }
+    type Site {
+      siteMetadata: SiteMetadata!
+    }
+    type SiteMetadata {
+      title: String!
+      description: String!
+      author: String!
+    }
   `;
 
   createTypes(typeDefs);
@@ -66,7 +74,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
     {
       postsRemark: allMarkdownRemark(
         filter: { fileAbsolutePath: { regex: "/posts/" } }
-        sort: { order: DESC, fields: [frontmatter___date] }
+        sort: { frontmatter: { date: DESC } }
         limit: 1000
       ) {
         edges {
@@ -78,7 +86,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
         }
       }
       tagsGroup: allMarkdownRemark(limit: 2000) {
-        group(field: frontmatter___tags) {
+        group(field: { frontmatter: { tags: SELECT } }) {
           fieldValue
         }
       }
