@@ -9,3 +9,5 @@ package-lock.json
 .DS_Store
 
 .vscode/
+node_modules/
+next-portfolio/node_modules/
