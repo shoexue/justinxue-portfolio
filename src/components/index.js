@@ -15,4 +15,5 @@ export { default as Contact } from './sections/contact';
 export { default as Education } from './sections/education';
 export { default as FractalTree } from './fractalTree';
 export { default as Library } from './sections/library';
+export { default as Modal } from './modal';
 

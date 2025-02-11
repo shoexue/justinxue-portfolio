@@ -7,6 +7,56 @@
 const path = require('path');
 const _ = require('lodash');
 
+// Add schema customization
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions;
+
+  const typeDefs = `
+    type MarkdownRemark implements Node {
+      fields: Fields
+    }
+    type Fields {
+      blog: Blog
+    }
+    type Blog {
+      content: String
+    }
+  `;
+
+  createTypes(typeDefs);
+};
+
+exports.onCreateNode = ({ node, actions }) => {
+  const { createNodeField } = actions;
+  
+  // Check if it's a job markdown file (but not a blog post)
+  if (
+    node.internal.type === 'MarkdownRemark' &&
+    node.fileAbsolutePath.includes('/jobs/') &&
+    node.fileAbsolutePath.endsWith('/index.md') &&
+    !node.fileAbsolutePath.includes('/blog/')
+  ) {
+    // Try to find a blog directory
+    const jobPath = node.fileAbsolutePath.replace('/index.md', '');
+    const fs = require('fs');
+    const blogPath = path.join(jobPath, 'blog');
+    
+    if (fs.existsSync(blogPath)) {
+      const blogIndexPath = path.join(blogPath, 'index.md');
+      if (fs.existsSync(blogIndexPath)) {
+        const blogContent = fs.readFileSync(blogIndexPath, 'utf8');
+        createNodeField({
+          node,
+          name: 'blog',
+          value: {
+            content: blogContent,
+          },
+        });
+      }
+    }
+  }
+};
+
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
   const postTemplate = path.resolve(`src/templates/post.js`);

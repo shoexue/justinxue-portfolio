@@ -78,7 +78,7 @@ export const pageQuery = graphql`
       }
     }
     jobs: allMarkdownRemark(
-      filter: { fileAbsolutePath: { regex: "/jobs/" } }
+      filter: { fileAbsolutePath: { regex: "/jobs/[^/]+/index\\.md$/" } }
       sort: { fields: [frontmatter___date], order: DESC }
     ) {
       edges {
@@ -88,6 +88,11 @@ export const pageQuery = graphql`
             company
             location
             range
+          }
+          fields {
+            blog {
+              content
+            }
           }
           html
         }
