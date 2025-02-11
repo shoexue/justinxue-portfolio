@@ -1,0 +1,181 @@
+'use client'
+
+import React, { useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
+import Image from 'next/image'
+import sr from '../../utils/sr'
+import styled from 'styled-components'
+import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
+const { colors, fontSizes, fonts } = theme
+
+const StyledContainer = styled(Section)`
+  position: relative;
+`
+const StyledFlexContainer = styled.div`
+  ${mixins.flexBetween};
+  align-items: flex-start;
+  margin-bottom: 15%;
+  ${media.tablet`display: block;`};
+`
+const StyledContent = styled.div`
+  width: 60%;
+  height: 100%;
+  align-items: flex;
+  max-width: 480px;
+  font-family: ${fonts.SFMono};
+  font-size: ${fontSizes.md};
+  ${media.tablet`width: 100%;`};
+  a {
+    ${mixins.inlineLink};
+  }
+`
+const StyledPic = styled.div`
+  position: relative;
+  width: 40%;
+  max-width: 300px;
+  margin-left: 60px;
+  margin-bottom: 10px;
+  ${media.tablet`margin: 60px auto 0;`};
+  ${media.phablet`width: 70%;`};
+  a {
+    &:focus {
+      outline: 0;
+    }
+  }
+`
+const StyledAvatar = styled.div`
+  position: relative;
+  mix-blend-mode: multiply;
+  filter: grayscale(100%) contrast(1);
+  border-radius: ${theme.borderRadius};
+  transition: ${theme.transition};
+  width: 100%;
+  height: 100%;
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: ${theme.borderRadius};
+  }
+`
+
+const StyledAvatarLink = styled.a`
+  ${mixins.boxShadow};
+  width: 100%;
+  position: relative;
+  border-radius: ${theme.borderRadius};
+  background-color: ${colors.lightestSlate};
+  margin-left: -20px;
+  &:hover ${StyledAvatar}, &:focus ${StyledAvatar} {
+    filter: none;
+  }
+`
+
+const TechnologyContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+`
+
+const TechnologyItem = styled.div`
+  flex: 1;
+  min-width: 200px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+
+  h4 {
+    color: ${colors.green};
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 5%;
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+  }
+
+  div {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.smish};
+  }
+
+  li {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.smish};
+    color: ${colors.green};
+    &:before {
+      content: '▹';
+      color: ${colors.green};
+      margin-right: 10px;
+    }
+  }
+`
+
+const About = ({ data, technologiesData }) => {
+  const { frontmatter, html } = data[0]
+  const { title, avatar } = frontmatter
+  const revealContainer = useRef(null)
+
+  useEffect(() => {
+    if (sr) {
+      sr.reveal(revealContainer.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'bottom',
+        viewFactor: 0.25,
+      })
+    }
+  }, [])
+
+  return (
+    <StyledContainer id="about" ref={revealContainer}>
+      <Heading>
+        <Dot>.</Dot>
+        {title}
+      </Heading>
+      <StyledFlexContainer>
+        <StyledContent>
+          <div dangerouslySetInnerHTML={{ __html: html }} />
+        </StyledContent>
+        <StyledPic>
+          <StyledAvatarLink href="https://github.com/alvina-yang" target="_blank" rel="noopener noreferrer">
+            <StyledAvatar>
+              <Image
+                src={avatar}
+                alt="Avatar"
+                width={300}
+                height={300}
+                quality={95}
+                priority
+              />
+            </StyledAvatar>
+          </StyledAvatarLink>
+        </StyledPic>
+      </StyledFlexContainer>
+      <Heading>Here's my tech stack!</Heading>
+      <TechnologyContainer>
+        {technologiesData.map(({ frontmatter, html }, i) => (
+          <TechnologyItem key={i}>
+            <h4>{frontmatter.title}</h4>
+            <div dangerouslySetInnerHTML={{ __html: html }} />
+            <ul>
+              {frontmatter.technologies.map((tech, index) => (
+                <li key={index}>{tech}</li>
+              ))}
+            </ul>
+          </TechnologyItem>
+        ))}
+      </TechnologyContainer>
+    </StyledContainer>
+  )
+}
+
+About.propTypes = {
+  data: PropTypes.array.isRequired,
+  technologiesData: PropTypes.array.isRequired,
+}
+
+export default About 
