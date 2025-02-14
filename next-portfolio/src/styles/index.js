@@ -13,7 +13,6 @@ import Footer from './Footer'
 import Header from './Header'
 import Dot from './Dot'
 import FractalTreeContainer from './FractalTree'
-import styled from 'styled-components'
 
 export {
   GlobalStyle,
@@ -29,12 +28,4 @@ export {
   Header,
   Dot,
   FractalTreeContainer,
-}
-
-export const FractalTreeContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  position: relative;
-  margin-top: 50px;
-  margin-bottom: 50px;
-` 
+} 

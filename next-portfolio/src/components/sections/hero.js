@@ -101,7 +101,7 @@ const Hero = ({ data }) => {
             return (
               <CSSTransition key={i} classNames="fadeup" timeout={2000} nodeRef={refs.current[i]}>
                 <div style={{ transitionDelay: `${i + 1}00ms` }} ref={refs.current[i]}>
-                  {item}
+                  {item()}
                 </div>
               </CSSTransition>
             )
