@@ -7,8 +7,9 @@ const nextConfig = {
   images: {
     domains: ['raw.githubusercontent.com'],
   },
-  // We'll keep the same output directory as Gatsby
-  distDir: 'public',
+  experimental: {
+    appDir: true,
+  },
 }
 
 module.exports = nextConfig 

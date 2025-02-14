@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import Image from 'next/image'
-import sr from '../../utils/sr'
+import useScrollReveal from '../../utils/sr'
 import styled from 'styled-components'
 import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
 const { colors, fontSizes, fonts } = theme
@@ -117,9 +117,10 @@ const About = ({ data, technologiesData }) => {
   const { frontmatter, html } = data[0]
   const { title, avatar } = frontmatter
   const revealContainer = useRef(null)
+  const sr = useScrollReveal()
 
   useEffect(() => {
-    if (sr) {
+    if (sr && revealContainer.current) {
       sr.reveal(revealContainer.current, {
         duration: 500,
         distance: '20px',
@@ -128,7 +129,7 @@ const About = ({ data, technologiesData }) => {
         viewFactor: 0.25,
       })
     }
-  }, [])
+  }, [sr])
 
   return (
     <StyledContainer id="about" ref={revealContainer}>

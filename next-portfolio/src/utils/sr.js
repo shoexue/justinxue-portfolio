@@ -1,8 +1,18 @@
 'use client'
 
-import ScrollReveal from 'scrollreveal'
+import { useEffect, useState } from 'react'
 
-const isSSR = typeof window === 'undefined'
-const sr = isSSR ? null : ScrollReveal()
+export default function useScrollReveal() {
+  const [sr, setSr] = useState(null)
 
-export default sr 
+  useEffect(() => {
+    async function initScrollReveal() {
+      const ScrollReveal = (await import('scrollreveal')).default
+      setSr(ScrollReveal())
+    }
+    
+    initScrollReveal()
+  }, [])
+
+  return sr
+} 

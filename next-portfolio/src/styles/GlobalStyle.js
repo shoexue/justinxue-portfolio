@@ -7,6 +7,7 @@ import mixins from './mixins'
 import FontFaces from './fonts'
 import TransitionStyles from './TransitionStyles'
 import PrismStyles from './PrismStyles'
+
 const { colors, fontSizes, fonts } = theme
 
 const GlobalStyle = createGlobalStyle`

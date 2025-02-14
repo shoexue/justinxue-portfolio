@@ -1,6 +1,6 @@
 'use client'
 
-import { hex2rgba } from '@/utils'
+import { hex2rgba } from '../utils'
 
 const ACCENT = '#8FFF5A'
 const DARK_BG = '#101010'

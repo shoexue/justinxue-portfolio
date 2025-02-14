@@ -1,0 +1,38 @@
+{
+  "node": {
+    "00393eecea9836977edfaf95176655a42f841f34bf": {
+      "workers": {
+        "app/api/content/route": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fayang%2FProjects%2Falvina-yang.github.io%2Fnext-portfolio%2Fsrc%2Flib%2Fdata.js%22%2C%5B%5B%2200393eecea9836977edfaf95176655a42f841f34bf%22%2C%22getAllContent%22%5D%2C%5B%2240deb0f19648077fbe2e298d3a9d6871ae2ed3c5f8%22%2C%22getContentData%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fayang%2FProjects%2Falvina-yang.github.io%2Fnext-portfolio%2Fsrc%2Flib%2Fdata.js%22%2C%5B%5B%2200393eecea9836977edfaf95176655a42f841f34bf%22%2C%22getAllContent%22%5D%2C%5B%2240deb0f19648077fbe2e298d3a9d6871ae2ed3c5f8%22%2C%22getContentData%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/api/content/route": "rsc",
+        "app/page": "rsc"
+      }
+    },
+    "40deb0f19648077fbe2e298d3a9d6871ae2ed3c5f8": {
+      "workers": {
+        "app/api/content/route": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fayang%2FProjects%2Falvina-yang.github.io%2Fnext-portfolio%2Fsrc%2Flib%2Fdata.js%22%2C%5B%5B%2200393eecea9836977edfaf95176655a42f841f34bf%22%2C%22getAllContent%22%5D%2C%5B%2240deb0f19648077fbe2e298d3a9d6871ae2ed3c5f8%22%2C%22getContentData%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        },
+        "app/page": {
+          "moduleId": "(rsc)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22%2FUsers%2Fayang%2FProjects%2Falvina-yang.github.io%2Fnext-portfolio%2Fsrc%2Flib%2Fdata.js%22%2C%5B%5B%2200393eecea9836977edfaf95176655a42f841f34bf%22%2C%22getAllContent%22%5D%2C%5B%2240deb0f19648077fbe2e298d3a9d6871ae2ed3c5f8%22%2C%22getContentData%22%5D%5D%5D%5D&__client_imported__=!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/api/content/route": "rsc",
+        "app/page": "rsc"
+      }
+    }
+  },
+  "edge": {},
+  "encryptionKey": "TUibAHbqyl3jeEZvl1JpZvW1uVA56iLzyndA9OqNAos="
+}

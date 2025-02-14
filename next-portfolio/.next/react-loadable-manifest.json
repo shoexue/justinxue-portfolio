@@ -1,0 +1,14 @@
+{
+  "components/fractalTree.js -> p5": {
+    "id": "components/fractalTree.js -> p5",
+    "files": [
+      "static/chunks/_app-pages-browser_node_modules_p5_lib_p5_min_js.js"
+    ]
+  },
+  "utils/sr.js -> scrollreveal": {
+    "id": "utils/sr.js -> scrollreveal",
+    "files": [
+      "static/chunks/_app-pages-browser_node_modules_scrollreveal_dist_scrollreveal_es_js.js"
+    ]
+  }
+}
