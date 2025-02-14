@@ -8,7 +8,9 @@ const nextConfig = {
     domains: ['raw.githubusercontent.com'],
   },
   experimental: {
-    appDir: true,
+    serverActions: {
+      allowedOrigins: ['localhost:3000']
+    }
   },
 }
 

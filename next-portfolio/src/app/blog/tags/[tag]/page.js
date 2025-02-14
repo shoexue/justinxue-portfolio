@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Layout } from '@/components'
 import styled from 'styled-components'
@@ -28,15 +28,37 @@ const StyledTagsContainer = styled(Main)`
   }
 `
 
-async function getPostsByTag(tag) {
-  const res = await fetch(`/api/tags/${tag}`)
-  if (!res.ok) throw new Error('Failed to fetch posts')
-  return res.json()
-}
-
-export default async function Tag({ params }) {
+export default function Tag({ params }) {
   const { tag } = params
-  const posts = await getPostsByTag(tag)
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch(`/api/tags/${tag}`)
+        if (!res.ok) {
+          throw new Error('Failed to fetch posts')
+        }
+        const data = await res.json()
+        setPosts(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPosts()
+  }, [tag])
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+  if (error) {
+    return <div>Error: {error}</div>
+  }
 
   return (
     <Layout>

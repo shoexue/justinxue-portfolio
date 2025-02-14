@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Layout } from '@/components'
 import styled from 'styled-components'
@@ -71,15 +71,41 @@ const StyledPostContent = styled.div`
   }
 `
 
-async function getPost(slug) {
-  const res = await fetch(`/api/posts/${slug}`)
-  if (!res.ok) throw new Error('Failed to fetch post')
-  return res.json()
-}
-
-export default async function Post({ params }) {
+export default function Post({ params }) {
   const { slug } = params
-  const post = await getPost(slug)
+  const [post, setPost] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const res = await fetch(`/api/posts/${slug}`)
+        if (!res.ok) {
+          throw new Error('Failed to fetch post')
+        }
+        const data = await res.json()
+        setPost(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPost()
+  }, [slug])
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+  if (error) {
+    return <div>Error: {error}</div>
+  }
+  if (!post) {
+    return <div>Post not found</div>
+  }
+
   const { frontmatter, html } = post
 
   return (

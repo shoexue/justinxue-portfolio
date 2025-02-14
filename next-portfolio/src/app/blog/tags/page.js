@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Layout } from '@/components'
 import styled from 'styled-components'
@@ -25,14 +25,36 @@ const StyledTagsContainer = styled(Main)`
   }
 `
 
-async function getTags() {
-  const res = await fetch('/api/tags')
-  if (!res.ok) throw new Error('Failed to fetch tags')
-  return res.json()
-}
+export default function Tags() {
+  const [tags, setTags] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-export default async function Tags() {
-  const tags = await getTags()
+  useEffect(() => {
+    const fetchTags = async () => {
+      try {
+        const res = await fetch('/api/tags')
+        if (!res.ok) {
+          throw new Error('Failed to fetch tags')
+        }
+        const data = await res.json()
+        setTags(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchTags()
+  }, [])
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+  if (error) {
+    return <div>Error: {error}</div>
+  }
 
   return (
     <Layout>

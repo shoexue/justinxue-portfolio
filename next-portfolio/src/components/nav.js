@@ -1,13 +1,14 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { theme, mixins, media } from '../styles'
 import { Menu } from '.'
 import { IconLogo } from './icons'
+import { FormattedIcon } from '@/components/icons'
 const { colors, fontSizes, fonts } = theme
 
 const navLinks = [
@@ -36,18 +37,21 @@ const StyledContainer = styled.header`
   position: fixed;
   top: 0;
   padding: 0px 50px;
-  background-color: ${colors.lightGray};
+  background-color: ${colors.bg};
   transition: ${theme.transition};
   z-index: 11;
   filter: none !important;
   pointer-events: auto !important;
   user-select: auto !important;
   width: 100%;
-  height: ${props => (props.$scrollDirection === 'none' ? theme.navHeight : theme.navScrollHeight)};
+  height: ${props => (props.$isHome ? theme.navHeight : theme.navScrollHeight)};
   box-shadow: ${props =>
-    props.$scrollDirection === 'up' ? `0 10px 30px -10px ${colors.shadowbg}` : 'none'};
+    props.$scrollDirection === 'up'
+      ? `0 10px 30px -10px ${colors.shadowNavy}`
+      : 'none'};
   transform: translateY(
-    ${props => (props.$scrollDirection === 'down' ? `-${theme.navScrollHeight}` : '0px')}
+    ${props =>
+      props.$scrollDirection === 'down' ? `-${theme.navScrollHeight}` : '0px'}
   );
   ${media.desktop`padding: 0 40px;`};
   ${media.tablet`padding: 0 25px;`};
@@ -117,7 +121,8 @@ const StyledHamburgerInner = styled.div`
   transition-delay: ${props => (props.$menuOpen ? `0.12s` : `0s`)};
   transform: rotate(${props => (props.$menuOpen ? `225deg` : `0deg`)});
   transition-timing-function: cubic-bezier(
-    ${props => (props.$menuOpen ? `0.215, 0.61, 0.355, 1` : `0.55, 0.055, 0.675, 0.19`)}
+    ${props =>
+      props.$menuOpen ? `0.215, 0.61, 0.355, 1` : `0.55, 0.055, 0.675, 0.19`}
   );
   &:before,
   &:after {
@@ -138,7 +143,8 @@ const StyledHamburgerInner = styled.div`
     width: ${props => (props.$menuOpen ? `100%` : `120%`)};
     top: ${props => (props.$menuOpen ? `0` : `-10px`)};
     opacity: ${props => (props.$menuOpen ? 0 : 1)};
-    transition: ${props => (props.$menuOpen ? theme.hamBeforeActive : theme.hamBefore)};
+    transition: ${props =>
+      props.$menuOpen ? theme.hamBeforeActive : theme.hamBefore};
   }
   &:after {
     width: ${props => (props.$menuOpen ? `100%` : `80%`)};
@@ -175,14 +181,15 @@ const StyledListItem = styled.li`
 `
 
 const Nav = ({ isHome }) => {
-  const [isMounted, setIsMounted] = useState(!isHome)
   const [menuOpen, setMenuOpen] = useState(false)
   const [scrollDirection, setScrollDirection] = useState('none')
   const [lastScrollTop, setLastScrollTop] = useState(0)
+  
+  // Add refs for CSSTransition
+  const logoRef = useRef(null)
+  const hamburgerRef = useRef(null)
 
-  const toggleMenu = () => setMenuOpen(!menuOpen)
-
-  const handleScroll = () => {
+  const handleScroll = useCallback(() => {
     const fromTop = window.scrollY
 
     // Make sure they scroll more than DELTA
@@ -190,78 +197,50 @@ const Nav = ({ isHome }) => {
       return
     }
 
-    if (fromTop < 0) {
-      setScrollDirection('none')
-    } else if (fromTop > lastScrollTop && fromTop > 100) {
-      if (scrollDirection !== 'down') {
-        setScrollDirection('down')
-      }
+    // If they scrolled down and are past the navbar, set state to 'down'
+    // This displays/hides the back to top button
+    if (fromTop > lastScrollTop && fromTop > 100) {
+      setScrollDirection('down')
     } else if (fromTop + window.innerHeight < document.documentElement.scrollHeight) {
-      if (scrollDirection !== 'up') {
-        setScrollDirection('up')
-      }
+      setScrollDirection('up')
     }
 
     setLastScrollTop(fromTop)
-  }
+  }, [lastScrollTop])
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsMounted(true)
-    }, 100)
-
     window.addEventListener('scroll', handleScroll)
 
     return () => {
-      clearTimeout(timeout)
       window.removeEventListener('scroll', handleScroll)
     }
-  }, [])
+  }, [handleScroll])
 
-  const timeout = isHome ? 3000 : 0
-  const fadeClass = isHome ? 'fade' : ''
-  const fadeDownClass = isHome ? 'fadedown' : ''
+  const toggleMenu = () => setMenuOpen(!menuOpen)
 
   return (
-    <StyledContainer $scrollDirection={scrollDirection}>
+    <StyledContainer $scrollDirection={scrollDirection} $isHome={isHome}>
       <StyledNav>
         <TransitionGroup component={null}>
-          {isMounted && (
-            <CSSTransition classNames={fadeClass} timeout={timeout}>
-              <StyledLogo tabIndex="-1">
-                <Link href="/" aria-label="home">
-                  <IconLogo />
-                </Link>
-              </StyledLogo>
-            </CSSTransition>
-          )}
+          <CSSTransition classNames="fade" timeout={3000} nodeRef={logoRef}>
+            <StyledLogo ref={logoRef}>
+              <Link href="/" aria-label="home">
+                <FormattedIcon name="Logo" />
+              </Link>
+            </StyledLogo>
+          </CSSTransition>
         </TransitionGroup>
 
         <TransitionGroup component={null}>
-          {isMounted && (
-            <CSSTransition classNames={fadeClass} timeout={timeout}>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <StyledList>
-                  {navLinks &&
-                    navLinks.map(({ url, name }, i) => (
-                      <StyledListItem
-                        key={i}
-                        style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
-                        <Link href={url}>
-                          <StyledLink>{name}</StyledLink>
-                        </Link>
-                      </StyledListItem>
-                    ))}
-                </StyledList>
-
-                <StyledHamburger onClick={toggleMenu}>
-                  <StyledHamburgerBox>
-                    <StyledHamburgerInner $menuOpen={menuOpen} />
-                  </StyledHamburgerBox>
-                </StyledHamburger>
-              </div>
-            </CSSTransition>
-          )}
+          <CSSTransition classNames="fade" timeout={3000} nodeRef={hamburgerRef}>
+            <div ref={hamburgerRef} style={{ transitionDelay: '100ms' }}>
+              <StyledHamburger onClick={toggleMenu}>
+                <StyledHamburgerBox>
+                  <StyledHamburgerInner $menuOpen={menuOpen} />
+                </StyledHamburgerBox>
+              </StyledHamburger>
+            </div>
+          </CSSTransition>
         </TransitionGroup>
 
         <Menu menuOpen={menuOpen} toggleMenu={toggleMenu} />

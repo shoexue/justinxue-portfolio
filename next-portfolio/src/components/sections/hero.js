@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components'
@@ -57,9 +57,10 @@ const StyledDescription = styled.div`
 
 const Hero = ({ data }) => {
   const [isMounted, setIsMounted] = useState(false)
+  const refs = useRef([])
 
   useEffect(() => {
-    const timeout = setTimeout(() => setIsMounted(true), navDelay)
+    const timeout = setTimeout(() => setIsMounted(true), 1000)
     return () => clearTimeout(timeout)
   }, [])
 
@@ -95,11 +96,16 @@ const Hero = ({ data }) => {
     <StyledContainer>
       <TransitionGroup component={null}>
         {isMounted &&
-          items.map((item, i) => (
-            <CSSTransition key={i} classNames="fadeup" timeout={loaderDelay}>
-              {item}
-            </CSSTransition>
-          ))}
+          items.map((item, i) => {
+            refs.current[i] = refs.current[i] || React.createRef()
+            return (
+              <CSSTransition key={i} classNames="fadeup" timeout={2000} nodeRef={refs.current[i]}>
+                <div style={{ transitionDelay: `${i + 1}00ms` }} ref={refs.current[i]}>
+                  {item}
+                </div>
+              </CSSTransition>
+            )
+          })}
       </TransitionGroup>
     </StyledContainer>
   )

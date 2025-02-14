@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Layout } from '@/components'
 import styled from 'styled-components'
@@ -22,8 +22,8 @@ const StyledMainContainer = styled(Main)`
 
   footer {
     ${mixins.flexBetween};
-    margin-top: 20px;
     width: 100%;
+    margin-top: 20px;
   }
 `
 const StyledGrid = styled.div`
@@ -47,16 +47,10 @@ const StyledPostInner = styled.div`
   border-radius: ${theme.borderRadius};
   transition: ${theme.transition};
   background-color: ${colors.lightGray};
-
-  header,
-  a {
-    width: 100%;
-  }
 `
 const StyledPost = styled.div`
   transition: ${theme.transition};
   cursor: default;
-
   &:hover,
   &:focus {
     outline: 0;
@@ -79,14 +73,36 @@ const StyledPostDescription = styled.div`
   color: ${colors.lightSlate};
 `
 
-async function getPosts() {
-  const res = await fetch('/api/posts')
-  if (!res.ok) throw new Error('Failed to fetch posts')
-  return res.json()
-}
+export default function Blog() {
+  const [posts, setPosts] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-export default async function Blog() {
-  const posts = await getPosts()
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch('/api/posts')
+        if (!res.ok) {
+          throw new Error('Failed to fetch posts')
+        }
+        const data = await res.json()
+        setPosts(data)
+      } catch (err) {
+        setError(err.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPosts()
+  }, [])
+
+  if (loading) {
+    return <div>Loading...</div>
+  }
+  if (error) {
+    return <div>Error: {error}</div>
+  }
 
   return (
     <Layout>
@@ -100,7 +116,7 @@ export default async function Blog() {
 
         <StyledGrid>
           <div className="posts">
-            {posts.map(({ frontmatter, html }, i) => {
+            {posts.map(({ frontmatter }, i) => {
               const { title, description, slug, date } = frontmatter
               return (
                 <StyledPost key={i}>

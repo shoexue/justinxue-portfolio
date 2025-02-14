@@ -1,28 +1,35 @@
 'use client'
 
 import React from 'react'
-import NextImage from 'next/image'
 import PropTypes from 'prop-types'
+import Image from 'next/image'
+import styled from 'styled-components'
 
-const Image = ({ src, alt = '', width = 500, height = 300 }) => {
-  if (!src) return null
+const StyledImage = styled(Image)`
+  width: 100%;
+  max-width: 100%;
+  vertical-align: middle;
+`
+
+const CustomImage = ({ src, alt, ...props }) => {
+  if (!src) {
+    return null
+  }
 
   return (
-    <NextImage
+    <StyledImage
       src={src}
       alt={alt}
-      width={width}
-      height={height}
-      style={{ width: '100%', height: 'auto' }}
+      width={500}
+      height={300}
+      {...props}
     />
   )
 }
 
-Image.propTypes = {
+CustomImage.propTypes = {
   src: PropTypes.string.isRequired,
-  alt: PropTypes.string,
-  width: PropTypes.number,
-  height: PropTypes.number,
+  alt: PropTypes.string.isRequired,
 }
 
-export default Image 
+export default CustomImage 

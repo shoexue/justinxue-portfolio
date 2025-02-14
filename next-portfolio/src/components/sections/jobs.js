@@ -192,12 +192,14 @@ const StyledBlogButton = styled.button`
 
 const Jobs = ({ data }) => {
   const [activeTabId, setActiveTabId] = useState(0)
+  const [isMounted, setIsMounted] = useState(false)
   const [tabFocus, setTabFocus] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [modalContent, setModalContent] = useState({ title: '', content: '' })
   const tabs = useRef([])
   const revealContainer = useRef(null)
   const sr = useScrollReveal()
+  const jobsRef = useRef(null)
   
   // Add refs for CSSTransition
   const nodeRefs = useRef(data ? data.map(() => React.createRef()) : [])
@@ -213,6 +215,10 @@ const Jobs = ({ data }) => {
       })
     }
   }, [sr])
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const focusTab = () => {
     if (tabs.current[tabFocus]) {
@@ -273,17 +279,19 @@ const Jobs = ({ data }) => {
           {data &&
             data.map(({ frontmatter }, i) => {
               const { company } = frontmatter
+              tabs.current[i] = tabs.current[i] || React.createRef()
+
               return (
                 <li key={i}>
                   <StyledTabButton
                     $isActive={activeTabId === i}
                     onClick={() => setActiveTabId(i)}
-                    ref={el => (tabs.current[i] = el)}
+                    ref={tabs.current[i]}
                     id={`tab-${i}`}
                     role="tab"
-                    aria-selected={activeTabId === i ? 'true' : 'false'}
-                    aria-controls={`panel-${i}`}
-                    tabIndex={activeTabId === i ? '0' : '-1'}>
+                    tabIndex={activeTabId === i ? '0' : '-1'}
+                    aria-selected={activeTabId === i}
+                    aria-controls={`panel-${i}`}>
                     <span>{company}</span>
                   </StyledTabButton>
                 </li>

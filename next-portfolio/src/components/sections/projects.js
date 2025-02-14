@@ -131,12 +131,17 @@ const GRID_LIMIT = 6
 
 const Projects = ({ data }) => {
   const [showMore, setShowMore] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
   const revealTitle = useRef(null)
   const revealArchiveLink = useRef(null)
   const revealProjects = useRef([])
   const sr = useScrollReveal()
+  
+  // Add refs for CSSTransition
+  const nodeRefs = useRef(data ? data.map(() => React.createRef()) : [])
 
   useEffect(() => {
+    setIsMounted(true)
     if (sr && revealTitle.current) {
       sr.reveal(revealTitle.current, {
         duration: 500,
@@ -179,22 +184,24 @@ const Projects = ({ data }) => {
       </Heading>
 
       <StyledGrid>
-        <TransitionGroup className="projects">
-          {projectsToShow &&
+        <TransitionGroup component={null}>
+          {isMounted &&
             projectsToShow.map(({ frontmatter, html }, i) => {
               const { github, external, title, tech } = frontmatter
+              revealProjects.current[i] = revealProjects.current[i] || React.createRef()
+
               return (
                 <CSSTransition
                   key={i}
                   classNames="fadeup"
-                  timeout={i >= GRID_LIMIT ? (i - GRID_LIMIT) * 300 : 300}
+                  timeout={300}
+                  nodeRef={revealProjects.current[i]}
                   exit={false}>
                   <StyledProject
                     key={i}
-                    ref={el => (revealProjects.current[i] = el)}
-                    tabIndex="0"
+                    ref={revealProjects.current[i]}
                     style={{
-                      transitionDelay: `${i >= GRID_LIMIT ? (i - GRID_LIMIT) * 100 : 0}ms`,
+                      transitionDelay: `${i >= GRID_LIMIT ? (i - GRID_LIMIT) * 100 : i * 100}ms`,
                     }}>
                     <StyledProjectInner>
                       <header>

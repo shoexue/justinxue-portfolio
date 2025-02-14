@@ -12,17 +12,16 @@ const defaultConfig = {
 }
 
 const useScrollReveal = () => {
-  const [scrollReveal, setScrollReveal] = useState(null)
+  const [sr, setSr] = useState(null)
 
   useEffect(() => {
-    // Only initialize ScrollReveal in the browser
     if (typeof window !== 'undefined') {
-      const sr = ScrollReveal()
-      setScrollReveal(sr)
+      const scrollReveal = ScrollReveal(defaultConfig)
+      setSr(scrollReveal)
     }
   }, [])
 
-  return scrollReveal
+  return sr
 }
 
 export default useScrollReveal 
