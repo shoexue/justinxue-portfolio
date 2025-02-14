@@ -1,0 +1,90 @@
+'use client'
+
+import React, { useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
+import sr from '../../utils/sr'
+import styled from 'styled-components'
+import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
+const { colors, fontSizes, fonts } = theme
+
+const StyledContainer = styled(Section)`
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 100px;
+  a {
+    ${mixins.inlineLink};
+  }
+`
+const StyledHeading = styled.h3`
+  display: block;
+  color: ${colors.green};
+  font-size: ${fontSizes.md};
+  font-family: ${fonts.SFMono};
+  font-weight: normal;
+  margin-bottom: 20px;
+  justify-content: center;
+  ${media.desktop`font-size: ${fontSizes.sm};`};
+  &:before {
+    bottom: 0;
+    font-size: ${fontSizes.sm};
+    ${media.desktop`font-size: ${fontSizes.smish};`};
+  }
+  &:after {
+    display: none;
+  }
+`
+const StyledTitle = styled.h4`
+  margin: 0 0 20px;
+  font-size: 60px;
+  ${media.desktop`font-size: 50px;`};
+  ${media.tablet`font-size: 40px;`};
+`
+const StyledEmailLink = styled.a`
+  ${mixins.bigButton};
+  margin-top: 50px;
+`
+
+const Contact = ({ data }) => {
+  const { frontmatter, html } = data[0]
+  const { title, buttonText, email } = frontmatter
+  const revealContainer = useRef(null)
+
+  useEffect(() => {
+    if (sr) {
+      sr.reveal(revealContainer.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'bottom',
+        viewFactor: 0.25,
+      })
+    }
+  }, [])
+
+  return (
+    <StyledContainer id="contact" ref={revealContainer}>
+      <Heading>
+        <Dot>.</Dot>What's Next?
+      </Heading>
+
+      <StyledTitle>{title}</StyledTitle>
+
+      <div dangerouslySetInnerHTML={{ __html: html }} />
+
+      {email && (
+        <StyledEmailLink
+          href={`mailto:${email}`}
+          target="_blank"
+          rel="nofollow noopener noreferrer">
+          {buttonText}
+        </StyledEmailLink>
+      )}
+    </StyledContainer>
+  )
+}
+
+Contact.propTypes = {
+  data: PropTypes.array.isRequired,
+}
+
+export default Contact 
