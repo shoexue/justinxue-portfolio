@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
-import sr from '../../utils/sr'
+import useScrollReveal from '../../utils/sr'
 import styled from 'styled-components'
 import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
 const { colors, fontSizes, fonts } = theme
@@ -48,9 +48,10 @@ const Contact = ({ data }) => {
   const { frontmatter, html } = data[0]
   const { title, buttonText, email } = frontmatter
   const revealContainer = useRef(null)
+  const sr = useScrollReveal()
 
   useEffect(() => {
-    if (sr) {
+    if (sr && revealContainer.current) {
       sr.reveal(revealContainer.current, {
         duration: 500,
         distance: '20px',
@@ -59,7 +60,7 @@ const Contact = ({ data }) => {
         viewFactor: 0.25,
       })
     }
-  }, [])
+  }, [sr])
 
   return (
     <StyledContainer id="contact" ref={revealContainer}>

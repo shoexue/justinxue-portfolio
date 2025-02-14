@@ -36,8 +36,8 @@ const StyledContainer = styled.div`
   z-index: 10;
   outline: 0;
   transition: ${theme.transition};
-  transform: translateX(${props => (props.menuOpen ? 0 : 100)}vw);
-  visibility: ${props => (props.menuOpen ? 'visible' : 'hidden')};
+  transform: translateX(${props => (props.$menuOpen ? 0 : 100)}vw);
+  visibility: ${props => (props.$menuOpen ? 'visible' : 'hidden')};
   display: none;
   ${media.tablet`display: block;`};
 `
@@ -80,10 +80,12 @@ const NavListItem = styled.li`
   `};
   ${media.tiny`font-size: ${fontSizes.smish};`};
 `
-const NavLink = styled.a`
+const StyledLink = styled.div`
   ${mixins.link};
   padding: 3px 20px 20px;
   width: 100%;
+  display: flex;
+  align-items: center;
 `
 
 const Menu = ({ menuOpen, toggleMenu }) => {
@@ -99,7 +101,7 @@ const Menu = ({ menuOpen, toggleMenu }) => {
 
   return (
     <StyledContainer
-      menuOpen={menuOpen}
+      $menuOpen={menuOpen}
       onClick={handleMenuClick}
       aria-hidden={!menuOpen}
       tabIndex={menuOpen ? 1 : -1}>
@@ -109,11 +111,11 @@ const Menu = ({ menuOpen, toggleMenu }) => {
             {navLinks &&
               navLinks.map(({ url, name }, i) => (
                 <NavListItem key={i}>
-                  <Link href={url} passHref>
-                    <NavLink>
+                  <Link href={url} onClick={toggleMenu}>
+                    <StyledLink>
                       <Dot />
                       {name}
-                    </NavLink>
+                    </StyledLink>
                   </Link>
                 </NavListItem>
               ))}

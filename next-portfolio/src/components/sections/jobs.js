@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
-import sr from '../../utils/sr'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import useScrollReveal from '../../utils/sr'
 import styled from 'styled-components'
 import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
 import { Modal } from '..'
@@ -10,7 +11,7 @@ const { colors, fontSizes, fonts } = theme
 
 const StyledContainer = styled(Section)`
   position: relative;
-  max-width: 800px;
+  max-width: 700px;
 `
 const StyledTabs = styled.div`
   display: flex;
@@ -35,10 +36,13 @@ const StyledTabList = styled.ul`
     margin-bottom: 30px;
     width: calc(100% + 100px);
     margin-left: -50px;
+    padding-left: 50px;
+    padding-bottom: 15px;
   `};
   ${media.phablet`
     width: calc(100% + 50px);
     margin-left: -25px;
+    padding-left: 25px;
   `};
 
   li {
@@ -74,7 +78,7 @@ const StyledTabButton = styled.button`
   white-space: nowrap;
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.smish};
-  color: ${props => (props.isActive ? colors.green : colors.slate)};
+  color: ${props => (props.$isActive ? colors.green : colors.lightSlate)};
   ${media.tablet`padding: 0 15px 2px;`};
   ${media.thone`
     ${mixins.flexCenter};
@@ -89,21 +93,20 @@ const StyledTabButton = styled.button`
     background-color: ${colors.lightGray};
   }
 `
-const StyledHighlight = styled.span`
-  display: block;
-  background: ${colors.green};
-  width: 2px;
-  height: ${theme.tabHeight}px;
-  border-radius: ${theme.borderRadius};
+const StyledHighlight = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 10;
+  width: 2px;
+  height: ${theme.tabHeight}px;
+  border-radius: ${theme.borderRadius};
+  background: ${colors.green};
+  transform: translateY(
+    ${props => (props.$activeTabId > 0 ? props.$activeTabId * theme.tabHeight : 0)}px
+  );
   transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   transition-delay: 0.1s;
-  z-index: 10;
-  transform: translateY(
-    ${props => (props.activeTabId > 0 ? props.activeTabId * theme.tabHeight : 0)}px
-  );
   ${media.thone`
     width: 100%;
     max-width: ${theme.tabWidth}px;
@@ -111,15 +114,10 @@ const StyledHighlight = styled.span`
     top: auto;
     bottom: 0;
     transform: translateX(
-      ${props => (props.activeTabId > 0 ? props.activeTabId * theme.tabWidth : 0)}px
+      ${props => (props.$activeTabId > 0 ? props.$activeTabId * theme.tabWidth : 0)}px
     );
-    margin-left: 50px;
-  `};
-  ${media.phablet`
-    margin-left: 25px;
   `};
 `
-
 const StyledTabContent = styled.div`
   position: relative;
   width: 100%;
@@ -131,14 +129,9 @@ const StyledTabContent = styled.div`
 
   ul {
     ${mixins.fancyList};
-    font-size: ${fontSizes.sm};
   }
   a {
     ${mixins.inlineLink};
-  }
-
-  > div {
-    font-family: ${fonts.SFMono};
   }
 `
 const StyledJobTitle = styled.h4`
@@ -147,18 +140,15 @@ const StyledJobTitle = styled.h4`
   font-weight: 500;
   margin-bottom: 5px;
 `
-const StyledCompany = styled.h6`
+const StyledCompany = styled.span`
   color: ${colors.green};
-  font-size: ${fontSizes.lg};
-  font-weight: 500;
-  margin-bottom: 5px;
 `
 const StyledJobDetails = styled.h5`
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.smish};
   font-weight: normal;
   letter-spacing: 0.05em;
-  color: ${colors.lightestSlate};
+  color: ${colors.lightSlate};
   margin-bottom: 30px;
   svg {
     width: 15px;
@@ -207,9 +197,13 @@ const Jobs = ({ data }) => {
   const [modalContent, setModalContent] = useState({ title: '', content: '' })
   const tabs = useRef([])
   const revealContainer = useRef(null)
+  const sr = useScrollReveal()
+  
+  // Add refs for each job panel
+  const jobPanels = useRef(data.map(() => React.createRef()))
 
   useEffect(() => {
-    if (sr) {
+    if (sr && revealContainer.current) {
       sr.reveal(revealContainer.current, {
         duration: 500,
         distance: '20px',
@@ -218,7 +212,7 @@ const Jobs = ({ data }) => {
         viewFactor: 0.25,
       })
     }
-  }, [])
+  }, [sr])
 
   const focusTab = () => {
     if (tabs.current[tabFocus]) {
@@ -282,56 +276,66 @@ const Jobs = ({ data }) => {
               return (
                 <li key={i}>
                   <StyledTabButton
-                    isActive={activeTabId === i}
+                    $isActive={activeTabId === i}
                     onClick={() => setActiveTabId(i)}
                     ref={el => (tabs.current[i] = el)}
                     id={`tab-${i}`}
                     role="tab"
-                    tabIndex={activeTabId === i ? '0' : '-1'}
-                    aria-selected={activeTabId === i ? true : false}
-                    aria-controls={`panel-${i}`}>
+                    aria-selected={activeTabId === i ? 'true' : 'false'}
+                    aria-controls={`panel-${i}`}
+                    tabIndex={activeTabId === i ? '0' : '-1'}>
                     <span>{company}</span>
                   </StyledTabButton>
                 </li>
               )
             })}
-          <StyledHighlight activeTabId={activeTabId} />
+          <StyledHighlight $activeTabId={activeTabId} />
         </StyledTabList>
 
-        {data &&
-          data.map(({ frontmatter, html }, i) => {
-            const { title, url, company, range, blog } = frontmatter
-            return (
-              <StyledTabContent
-                key={i}
-                isActive={activeTabId === i}
-                id={`panel-${i}`}
-                role="tabpanel"
-                tabIndex={activeTabId === i ? '0' : '-1'}
-                aria-labelledby={`tab-${i}`}
-                aria-hidden={activeTabId !== i}
-                hidden={activeTabId !== i}>
-                <StyledJobTitle>
-                  <span>{title}</span>
-                  <span>&nbsp;@&nbsp;</span>
-                  <span>
-                    <a href={url} target="_blank" rel="noopener noreferrer">
-                      {company}
-                    </a>
-                  </span>
-                </StyledJobTitle>
-                <StyledJobDetails>
-                  <span>{range}</span>
-                </StyledJobDetails>
-                <div dangerouslySetInnerHTML={{ __html: html }} />
-                {blog && (
-                  <StyledBlogButton onClick={() => handleModalOpen(title, blog)}>
-                    Read More
-                  </StyledBlogButton>
-                )}
-              </StyledTabContent>
-            )
-          })}
+        <StyledTabContent>
+          <TransitionGroup component={null}>
+            {data &&
+              data.map(({ frontmatter, html }, i) => {
+                const { title, url, company, range, blog } = frontmatter
+                return (
+                  <CSSTransition
+                    key={i}
+                    in={activeTabId === i}
+                    timeout={250}
+                    classNames="fade"
+                    nodeRef={jobPanels.current[i]}>
+                    <div
+                      ref={jobPanels.current[i]}
+                      id={`panel-${i}`}
+                      role="tabpanel"
+                      tabIndex={activeTabId === i ? '0' : '-1'}
+                      aria-labelledby={`tab-${i}`}
+                      aria-hidden={activeTabId !== i}
+                      hidden={activeTabId !== i}>
+                      <StyledJobTitle>
+                        <span>{title}</span>
+                        <StyledCompany>
+                          <span>&nbsp;@&nbsp;</span>
+                          <a href={url} target="_blank" rel="nofollow noopener noreferrer">
+                            {company}
+                          </a>
+                        </StyledCompany>
+                      </StyledJobTitle>
+                      <StyledJobDetails>
+                        <span>{range}</span>
+                      </StyledJobDetails>
+                      <div dangerouslySetInnerHTML={{ __html: html }} />
+                      {blog && (
+                        <StyledBlogButton onClick={() => handleModalOpen(title, blog)}>
+                          Read More
+                        </StyledBlogButton>
+                      )}
+                    </div>
+                  </CSSTransition>
+                )
+              })}
+          </TransitionGroup>
+        </StyledTabContent>
       </StyledTabs>
 
       <Modal

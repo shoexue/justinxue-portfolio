@@ -145,7 +145,7 @@ const About = ({ data, technologiesData }) => {
           <StyledAvatarLink href="https://github.com/alvina-yang" target="_blank" rel="noopener noreferrer">
             <StyledAvatar>
               <Image
-                src={avatar}
+                src={`/${avatar}`}
                 alt="Avatar"
                 width={300}
                 height={300}

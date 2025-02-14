@@ -4,12 +4,11 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { throttle } from '../utils'
+import styled from 'styled-components'
+import { theme, mixins, media } from '../styles'
 import { Menu } from '.'
 import { IconLogo } from './icons'
-import styled from 'styled-components'
-import { theme, mixins, media, Dot } from '../styles'
-const { colors, fontSizes, fonts, loaderDelay } = theme
+const { colors, fontSizes, fonts } = theme
 
 const navLinks = [
   {
@@ -44,11 +43,11 @@ const StyledContainer = styled.header`
   pointer-events: auto !important;
   user-select: auto !important;
   width: 100%;
-  height: ${props => (props.scrollDirection === 'none' ? theme.navHeight : theme.navScrollHeight)};
+  height: ${props => (props.$scrollDirection === 'none' ? theme.navHeight : theme.navScrollHeight)};
   box-shadow: ${props =>
-    props.scrollDirection === 'up' ? `0 10px 30px -10px ${colors.shadowbg}` : 'none'};
+    props.$scrollDirection === 'up' ? `0 10px 30px -10px ${colors.shadowbg}` : 'none'};
   transform: translateY(
-    ${props => (props.scrollDirection === 'down' ? `-${theme.navScrollHeight}` : '0px')}
+    ${props => (props.$scrollDirection === 'down' ? `-${theme.navScrollHeight}` : '0px')}
   );
   ${media.desktop`padding: 0 40px;`};
   ${media.tablet`padding: 0 25px;`};
@@ -67,8 +66,8 @@ const StyledLogo = styled.div`
   a {
     display: block;
     color: ${colors.green};
-    width: 60px;
-    height: 60px;
+    width: 42px;
+    height: 42px;
     &:hover,
     &:focus {
       svg {
@@ -115,10 +114,10 @@ const StyledHamburgerInner = styled.div`
   right: 0;
   transition-duration: 0.22s;
   transition-property: transform;
-  transition-delay: ${props => (props.menuOpen ? `0.12s` : `0s`)};
-  transform: rotate(${props => (props.menuOpen ? `225deg` : `0deg`)});
+  transition-delay: ${props => (props.$menuOpen ? `0.12s` : `0s`)};
+  transform: rotate(${props => (props.$menuOpen ? `225deg` : `0deg`)});
   transition-timing-function: cubic-bezier(
-    ${props => (props.menuOpen ? `0.215, 0.61, 0.355, 1` : `0.55, 0.055, 0.675, 0.19`)}
+    ${props => (props.$menuOpen ? `0.215, 0.61, 0.355, 1` : `0.55, 0.055, 0.675, 0.19`)}
   );
   &:before,
   &:after {
@@ -136,43 +135,44 @@ const StyledHamburgerInner = styled.div`
     border-radius: 4px;
   }
   &:before {
-    width: ${props => (props.menuOpen ? `100%` : `120%`)};
-    top: ${props => (props.menuOpen ? `0` : `-10px`)};
-    opacity: ${props => (props.menuOpen ? 0 : 1)};
-    transition: ${props => (props.menuOpen ? theme.hamBeforeActive : theme.hamBefore)};
+    width: ${props => (props.$menuOpen ? `100%` : `120%`)};
+    top: ${props => (props.$menuOpen ? `0` : `-10px`)};
+    opacity: ${props => (props.$menuOpen ? 0 : 1)};
+    transition: ${props => (props.$menuOpen ? theme.hamBeforeActive : theme.hamBefore)};
   }
   &:after {
-    width: ${props => (props.menuOpen ? `100%` : `80%`)};
-    bottom: ${props => (props.menuOpen ? `0` : `-10px`)};
-    transform: rotate(${props => (props.menuOpen ? `-90deg` : `0`)});
-    transition: ${props => (props.menuOpen ? theme.hamAfterActive : theme.hamAfter)};
+    width: ${props => (props.$menuOpen ? `100%` : `80%`)};
+    bottom: ${props => (props.$menuOpen ? `0` : `-10px`)};
+    transform: rotate(${props => (props.$menuOpen ? `-90deg` : `0`)});
+    transition: ${props => (props.$menuOpen ? theme.hamAfterActive : theme.hamAfter)};
   }
 `
 const StyledLink = styled.div`
   display: flex;
   align-items: center;
-  ${media.tablet`display: none;`};
+  padding: 12px 10px;
 `
 const StyledList = styled.ol`
   ${mixins.flexBetween};
   padding: 0;
   margin: 0;
   list-style: none;
+
+  ${media.tablet`display: none;`};
 `
 const StyledListItem = styled.li`
   margin: 0 10px;
   position: relative;
   font-size: ${fontSizes.smish};
   counter-increment: item 1;
-`
 
-const StyledListLink = styled.a`
-  padding: 12px 10px;
-  display: flex;
-  align-items: center;
+  &:before {
+    content: '0' counter(item) '.';
+    text-align: right;
+    color: ${colors.green};
+    font-size: ${fontSizes.xs};
+  }
 `
-
-const DELTA = 5
 
 const Nav = ({ isHome }) => {
   const [isMounted, setIsMounted] = useState(!isHome)
@@ -180,40 +180,23 @@ const Nav = ({ isHome }) => {
   const [scrollDirection, setScrollDirection] = useState('none')
   const [lastScrollTop, setLastScrollTop] = useState(0)
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setIsMounted(true)
-    }, 100)
-
-    window.addEventListener('scroll', handleScroll)
-    window.addEventListener('resize', handleResize)
-    window.addEventListener('keydown', handleKeydown)
-
-    return () => {
-      clearTimeout(timeout)
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', handleResize)
-      window.removeEventListener('keydown', handleKeydown)
-    }
-  }, [])
-
   const toggleMenu = () => setMenuOpen(!menuOpen)
 
   const handleScroll = () => {
     const fromTop = window.scrollY
 
     // Make sure they scroll more than DELTA
-    if (!isMounted || Math.abs(lastScrollTop - fromTop) <= DELTA || menuOpen) {
+    if (Math.abs(lastScrollTop - fromTop) <= 5) {
       return
     }
 
-    if (fromTop < DELTA) {
+    if (fromTop < 0) {
       setScrollDirection('none')
-    } else if (fromTop > lastScrollTop && fromTop > navHeight) {
+    } else if (fromTop > lastScrollTop && fromTop > 100) {
       if (scrollDirection !== 'down') {
         setScrollDirection('down')
       }
-    } else if (fromTop + window.innerHeight < document.body.scrollHeight) {
+    } else if (fromTop + window.innerHeight < document.documentElement.scrollHeight) {
       if (scrollDirection !== 'up') {
         setScrollDirection('up')
       }
@@ -222,42 +205,33 @@ const Nav = ({ isHome }) => {
     setLastScrollTop(fromTop)
   }
 
-  const handleResize = () => {
-    if (window.innerWidth > 768 && menuOpen) {
-      toggleMenu()
-    }
-  }
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setIsMounted(true)
+    }, 100)
 
-  const handleKeydown = e => {
-    if (!menuOpen) {
-      return
-    }
+    window.addEventListener('scroll', handleScroll)
 
-    if (e.which === 27 || e.key === 'Escape') {
-      toggleMenu()
+    return () => {
+      clearTimeout(timeout)
+      window.removeEventListener('scroll', handleScroll)
     }
-  }
+  }, [])
 
-  const timeout = isHome ? loaderDelay : 0
+  const timeout = isHome ? 3000 : 0
   const fadeClass = isHome ? 'fade' : ''
   const fadeDownClass = isHome ? 'fadedown' : ''
 
   return (
-    <StyledContainer scrollDirection={scrollDirection}>
+    <StyledContainer $scrollDirection={scrollDirection}>
       <StyledNav>
         <TransitionGroup component={null}>
           {isMounted && (
             <CSSTransition classNames={fadeClass} timeout={timeout}>
               <StyledLogo tabIndex="-1">
-                {isHome ? (
-                  <a href="/" aria-label="home">
-                    <IconLogo />
-                  </a>
-                ) : (
-                  <Link href="/" aria-label="home">
-                    <IconLogo />
-                  </Link>
-                )}
+                <Link href="/" aria-label="home">
+                  <IconLogo />
+                </Link>
               </StyledLogo>
             </CSSTransition>
           )}
@@ -266,40 +240,32 @@ const Nav = ({ isHome }) => {
         <TransitionGroup component={null}>
           {isMounted && (
             <CSSTransition classNames={fadeClass} timeout={timeout}>
-              <StyledHamburger onClick={toggleMenu}>
-                <StyledHamburgerBox>
-                  <StyledHamburgerInner menuOpen={menuOpen} />
-                </StyledHamburgerBox>
-              </StyledHamburger>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <StyledList>
+                  {navLinks &&
+                    navLinks.map(({ url, name }, i) => (
+                      <StyledListItem
+                        key={i}
+                        style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
+                        <Link href={url}>
+                          <StyledLink>{name}</StyledLink>
+                        </Link>
+                      </StyledListItem>
+                    ))}
+                </StyledList>
+
+                <StyledHamburger onClick={toggleMenu}>
+                  <StyledHamburgerBox>
+                    <StyledHamburgerInner $menuOpen={menuOpen} />
+                  </StyledHamburgerBox>
+                </StyledHamburger>
+              </div>
             </CSSTransition>
           )}
         </TransitionGroup>
 
-        <StyledLink>
-          <StyledList>
-            <TransitionGroup component={null}>
-              {isMounted &&
-                navLinks &&
-                navLinks.map(({ url, name }, i) => (
-                  <CSSTransition key={i} classNames={fadeDownClass} timeout={timeout}>
-                    <StyledListItem
-                      key={i}
-                      style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
-                      <Link href={url} passHref>
-                        <StyledListLink>
-                          <Dot />
-                          {name}
-                        </StyledListLink>
-                      </Link>
-                    </StyledListItem>
-                  </CSSTransition>
-                ))}
-            </TransitionGroup>
-          </StyledList>
-        </StyledLink>
+        <Menu menuOpen={menuOpen} toggleMenu={toggleMenu} />
       </StyledNav>
-
-      <Menu menuOpen={menuOpen} toggleMenu={toggleMenu} />
     </StyledContainer>
   )
 }

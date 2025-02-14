@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import Image from 'next/image'
-import sr from '../../utils/sr'
+import useScrollReveal from '../../utils/sr'
 import { FormattedIcon } from '../icons'
 import styled from 'styled-components'
 import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
@@ -208,9 +208,10 @@ const StyledProject = styled.div`
 const Featured = ({ data }) => {
   const revealTitle = useRef(null)
   const revealProjects = useRef([])
+  const sr = useScrollReveal()
 
   useEffect(() => {
-    if (sr) {
+    if (sr && revealTitle.current) {
       sr.reveal(revealTitle.current, {
         duration: 500,
         distance: '20px',
@@ -219,17 +220,19 @@ const Featured = ({ data }) => {
         viewFactor: 0.25,
       })
       revealProjects.current.forEach((ref, i) => {
-        sr.reveal(ref, {
-          duration: 500,
-          distance: '20px',
-          easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
-          origin: 'bottom',
-          viewFactor: 0.25,
-          delay: i * 100,
-        })
+        if (ref) {
+          sr.reveal(ref, {
+            duration: 500,
+            distance: '20px',
+            easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+            origin: 'bottom',
+            viewFactor: 0.25,
+            delay: i * 100,
+          })
+        }
       })
     }
-  }, [])
+  }, [sr])
 
   return (
     <StyledContainer id="projects">
