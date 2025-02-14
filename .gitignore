@@ -11,3 +11,4 @@ package-lock.json
 .vscode/
 node_modules/
 next-portfolio/node_modules/
+next-portfolio/.next/

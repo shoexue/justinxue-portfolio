@@ -198,6 +198,9 @@ const Jobs = ({ data }) => {
   const tabs = useRef([])
   const revealContainer = useRef(null)
   const sr = useScrollReveal()
+  
+  // Add refs for CSSTransition
+  const nodeRefs = useRef(data ? data.map(() => React.createRef()) : [])
 
   useEffect(() => {
     if (sr && revealContainer.current) {
@@ -299,8 +302,11 @@ const Jobs = ({ data }) => {
                     key={i}
                     in={activeTabId === i}
                     timeout={250}
-                    classNames="fade">
+                    classNames="fade"
+                    nodeRef={nodeRefs.current[i]}
+                    unmountOnExit>
                     <div
+                      ref={nodeRefs.current[i]}
                       id={`panel-${i}`}
                       role="tabpanel"
                       tabIndex={activeTabId === i ? '0' : '-1'}
