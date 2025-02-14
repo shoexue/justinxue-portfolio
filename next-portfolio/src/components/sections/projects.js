@@ -135,9 +135,6 @@ const Projects = ({ data }) => {
   const revealArchiveLink = useRef(null)
   const revealProjects = useRef([])
   const sr = useScrollReveal()
-  
-  // Add refs for project transitions
-  const projectRefs = useRef(data.map(() => React.createRef()))
 
   useEffect(() => {
     if (sr && revealTitle.current) {
@@ -191,14 +188,10 @@ const Projects = ({ data }) => {
                   key={i}
                   classNames="fadeup"
                   timeout={i >= GRID_LIMIT ? (i - GRID_LIMIT) * 300 : 300}
-                  exit={false}
-                  nodeRef={projectRefs.current[i]}>
+                  exit={false}>
                   <StyledProject
                     key={i}
-                    ref={el => {
-                      projectRefs.current[i].current = el
-                      revealProjects.current[i] = el
-                    }}
+                    ref={el => (revealProjects.current[i] = el)}
                     tabIndex="0"
                     style={{
                       transitionDelay: `${i >= GRID_LIMIT ? (i - GRID_LIMIT) * 100 : 0}ms`,

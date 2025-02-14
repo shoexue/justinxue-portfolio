@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST="{\"components/fractalTree.js -> p5\":{\"id\":\"components/fractalTree.js -> p5\",\"files\":[\"static/chunks/_app-pages-browser_node_modules_p5_lib_p5_min_js.js\"]}}"

@@ -198,9 +198,6 @@ const Jobs = ({ data }) => {
   const tabs = useRef([])
   const revealContainer = useRef(null)
   const sr = useScrollReveal()
-  
-  // Add refs for each job panel
-  const jobPanels = useRef(data.map(() => React.createRef()))
 
   useEffect(() => {
     if (sr && revealContainer.current) {
@@ -302,10 +299,8 @@ const Jobs = ({ data }) => {
                     key={i}
                     in={activeTabId === i}
                     timeout={250}
-                    classNames="fade"
-                    nodeRef={jobPanels.current[i]}>
+                    classNames="fade">
                     <div
-                      ref={jobPanels.current[i]}
                       id={`panel-${i}`}
                       role="tabpanel"
                       tabIndex={activeTabId === i ? '0' : '-1'}
