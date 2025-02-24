@@ -8,9 +8,58 @@ import html from 'remark-html'
 
 const contentDirectory = path.join(process.cwd(), 'content')
 
+async function getContentDataRecursive(directory) {
+  const results = []
+  const fullPath = path.join(contentDirectory, directory)
+  const items = await fs.readdir(fullPath)
+
+  for (const item of items) {
+    const itemPath = path.join(fullPath, item)
+    const stats = await fs.stat(itemPath)
+
+    if (stats.isDirectory()) {
+      // If it's a directory, recursively get content from it
+      const subDirContent = await getContentDataRecursive(path.join(directory, item))
+      results.push(...subDirContent)
+    } else if (item.endsWith('.md')) {
+      // If it's a markdown file, process it
+      const fileContents = await fs.readFile(itemPath, 'utf8')
+      const { data: frontmatter, content } = matter(fileContents)
+      
+      // Convert markdown to HTML
+      const processedContent = await remark()
+        .use(html)
+        .process(content)
+      const contentHtml = processedContent.toString()
+
+      results.push({
+        frontmatter,
+        html: contentHtml,
+      })
+    }
+  }
+
+  // Sort by date if it's jobs or education
+  if (directory === 'jobs' || directory === 'education') {
+    results.sort((a, b) => {
+      const dateA = new Date(a.frontmatter.date)
+      const dateB = new Date(b.frontmatter.date)
+      return dateB - dateA // Sort in descending order
+    })
+  }
+
+  return results
+}
+
 export async function getContentData(directory) {
   try {
     const fullPath = path.join(contentDirectory, directory)
+
+    // Use recursive function for directories that contain subdirectories with index.md files
+    if (directory === 'technologies' || directory === 'jobs' || directory === 'education') {
+      return await getContentDataRecursive(directory)
+    }
+
     const fileNames = await fs.readdir(fullPath)
     
     const allContentData = await Promise.all(

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
-import sr from '../../utils/sr'
+import useScrollReveal from '../../utils/sr'
 import { FormattedIcon } from '../icons'
 import styled from 'styled-components'
 import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
@@ -123,9 +123,10 @@ const StyledLocationIcon = styled.div`
 const Education = ({ data }) => {
   const revealTitle = useRef(null)
   const revealEducation = useRef([])
+  const sr = useScrollReveal()
 
   useEffect(() => {
-    if (sr) {
+    if (sr && revealTitle.current) {
       sr.reveal(revealTitle.current, {
         duration: 500,
         distance: '20px',
@@ -134,22 +135,24 @@ const Education = ({ data }) => {
         viewFactor: 0.25,
       })
       revealEducation.current.forEach((ref, i) => {
-        sr.reveal(ref, {
-          duration: 500,
-          distance: '20px',
-          easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
-          origin: 'bottom',
-          viewFactor: 0.25,
-          delay: i * 100,
-        })
+        if (ref) {
+          sr.reveal(ref, {
+            duration: 500,
+            distance: '20px',
+            easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+            origin: 'bottom',
+            viewFactor: 0.25,
+            delay: i * 100,
+          })
+        }
       })
     }
-  }, [])
+  }, [sr])
 
   return (
     <StyledContainer id="education">
       <Heading ref={revealTitle}>
-        <Dot>.</Dot>Education
+        <Dot>.</Dot>education ()
       </Heading>
 
       <StyledTimeline>

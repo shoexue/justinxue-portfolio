@@ -198,6 +198,7 @@ const Jobs = ({ data }) => {
   const [modalContent, setModalContent] = useState({ title: '', content: '' })
   const tabs = useRef([])
   const revealContainer = useRef(null)
+  const revealTitle = useRef(null)
   const sr = useScrollReveal()
   const jobsRef = useRef(null)
   
@@ -211,6 +212,15 @@ const Jobs = ({ data }) => {
         distance: '20px',
         easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
         origin: 'bottom',
+        viewFactor: 0.25,
+      })
+    }
+    if (sr && revealTitle.current) {
+      sr.reveal(revealTitle.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'left',
         viewFactor: 0.25,
       })
     }
@@ -271,8 +281,8 @@ const Jobs = ({ data }) => {
 
   return (
     <StyledContainer id="jobs" ref={revealContainer}>
-      <Heading>
-        <Dot>.</Dot>Where I've Worked
+      <Heading ref={revealTitle}>
+        <Dot>.</Dot>experiences ()
       </Heading>
       <StyledTabs>
         <StyledTabList role="tablist" aria-label="Job tabs" onKeyDown={onKeyDown}>

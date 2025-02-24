@@ -75,40 +75,52 @@ const TechnologyContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-top: 20px;
+  gap: 20px;
 `
 
 const TechnologyItem = styled.div`
   flex: 1;
   min-width: 200px;
-  margin-right: 20px;
   margin-bottom: 20px;
 
   h4 {
     color: ${colors.green};
+    font-size: ${fontSizes.lg};
+    font-weight: 500;
+    margin-bottom: 20px;
   }
 
   ul {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 5%;
-    list-style: none;
+    grid-template-columns: repeat(2, minmax(140px, 200px));
+    gap: 0px 10px;
     padding: 0;
-    margin-top: 10px;
+    margin: 20px 0 0 0;
+    overflow: hidden;
+    list-style: none;
   }
 
   div {
     font-family: ${fonts.SFMono};
     font-size: ${fontSizes.smish};
+    color: ${colors.slate};
   }
 
   li {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 20px;
     font-family: ${fonts.SFMono};
     font-size: ${fontSizes.smish};
-    color: ${colors.green};
+    color: ${colors.slate};
+
     &:before {
       content: '▹';
+      position: absolute;
+      left: 0;
       color: ${colors.green};
-      margin-right: 10px;
+      font-size: ${fontSizes.sm};
+      line-height: 12px;
     }
   }
 `
@@ -117,6 +129,7 @@ const About = ({ data, technologiesData }) => {
   const { frontmatter, html } = data[0]
   const { title, avatar } = frontmatter
   const revealContainer = useRef(null)
+  const revealTitle = useRef(null)
   const sr = useScrollReveal()
 
   useEffect(() => {
@@ -129,13 +142,21 @@ const About = ({ data, technologiesData }) => {
         viewFactor: 0.25,
       })
     }
+    if (sr && revealTitle.current) {
+      sr.reveal(revealTitle.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'left',
+        viewFactor: 0.25,
+      })
+    }
   }, [sr])
 
   return (
     <StyledContainer id="about" ref={revealContainer}>
-      <Heading>
-        <Dot>.</Dot>
-        {title}
+      <Heading ref={revealTitle}>
+        <Dot>.</Dot>about ()
       </Heading>
       <StyledFlexContainer>
         <StyledContent>
@@ -156,7 +177,9 @@ const About = ({ data, technologiesData }) => {
           </StyledAvatarLink>
         </StyledPic>
       </StyledFlexContainer>
-      <Heading>Here's my tech stack!</Heading>
+      <Heading>
+        <Dot>.</Dot>here's my tech stack! ()
+      </Heading>
       <TechnologyContainer>
         {technologiesData.map(({ frontmatter, html }, i) => (
           <TechnologyItem key={i}>

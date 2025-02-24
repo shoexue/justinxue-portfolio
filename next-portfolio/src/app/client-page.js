@@ -8,6 +8,7 @@ import Jobs from '../components/sections/jobs'
 import Featured from '../components/sections/featured'
 import Projects from '../components/sections/projects'
 import Contact from '../components/sections/contact'
+import Education from '../components/sections/education'
 
 export default function ClientPage() {
   const [content, setContent] = useState(null)
@@ -45,6 +46,7 @@ export default function ClientPage() {
       <Hero data={content.hero} />
       <About data={content.about} technologiesData={content.technologies} />
       <Jobs data={content.jobs} />
+      <Education data={content.education} />
       <Featured data={content.featured} />
       <Projects data={content.projects} />
       <Contact data={content.contact} />

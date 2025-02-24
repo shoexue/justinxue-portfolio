@@ -48,6 +48,7 @@ const Contact = ({ data }) => {
   const { frontmatter, html } = data[0]
   const { title, buttonText, email } = frontmatter
   const revealContainer = useRef(null)
+  const revealTitle = useRef(null)
   const sr = useScrollReveal()
 
   useEffect(() => {
@@ -60,12 +61,21 @@ const Contact = ({ data }) => {
         viewFactor: 0.25,
       })
     }
+    if (sr && revealTitle.current) {
+      sr.reveal(revealTitle.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'left',
+        viewFactor: 0.25,
+      })
+    }
   }, [sr])
 
   return (
     <StyledContainer id="contact" ref={revealContainer}>
-      <Heading>
-        <Dot>.</Dot>What's Next?
+      <Heading ref={revealTitle}>
+        <Dot>.</Dot>contact ()
       </Heading>
 
       <StyledTitle>{title}</StyledTitle>
