@@ -14,8 +14,12 @@ const StyledContainer = styled(Section)`
   a {
     ${mixins.inlineLink};
   }
+  div {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.md};
+  }
 `
-const StyledHeading = styled.h3`
+const StyledHeading = styled(Heading)`
   display: block;
   color: ${colors.green};
   font-size: ${fontSizes.md};
@@ -42,13 +46,28 @@ const StyledTitle = styled.h4`
 const StyledEmailLink = styled.a`
   ${mixins.bigButton};
   margin-top: 50px;
+  font-size: ${fontSizes.md} !important;
+`
+const StyledResumeLink = styled.a`
+  && {
+    margin-top: 50px;
+    color: ${colors.green};
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
+    transition: color 0.3s ease;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      color: ${colors.green};
+    }
+  }
 `
 
 const Contact = ({ data }) => {
   const { frontmatter, html } = data[0]
-  const { title, buttonText, email } = frontmatter
+  const { title, buttonText } = frontmatter
   const revealContainer = useRef(null)
-  const revealTitle = useRef(null)
   const sr = useScrollReveal()
 
   useEffect(() => {
@@ -61,35 +80,26 @@ const Contact = ({ data }) => {
         viewFactor: 0.25,
       })
     }
-    if (sr && revealTitle.current) {
-      sr.reveal(revealTitle.current, {
-        duration: 500,
-        distance: '20px',
-        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
-        origin: 'left',
-        viewFactor: 0.25,
-      })
-    }
   }, [sr])
 
   return (
     <StyledContainer id="contact" ref={revealContainer}>
-      <Heading ref={revealTitle}>
-        <Dot>.</Dot>contact ()
-      </Heading>
+      <StyledHeading>well, what now?</StyledHeading>
 
-      <StyledTitle>{title}</StyledTitle>
+      <StyledTitle>
+        <Dot>.</Dot>
+        {title}
+      </StyledTitle>
 
       <div dangerouslySetInnerHTML={{ __html: html }} />
 
-      {email && (
-        <StyledEmailLink
-          href={`mailto:${email}`}
-          target="_blank"
-          rel="nofollow noopener noreferrer">
-          {buttonText}
-        </StyledEmailLink>
-      )}
+      <StyledEmailLink href={`mailto:${data[0].frontmatter.email}`} target="_blank" rel="nofollow noopener noreferrer">
+        {buttonText}
+      </StyledEmailLink>
+      <div />
+      {/* <StyledResumeLink href="/resume.pdf" target="_blank" rel="nofollow noopener noreferrer">
+        little souvenir? download my resume
+      </StyledResumeLink> */}
     </StyledContainer>
   )
 }
