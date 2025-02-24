@@ -56,8 +56,19 @@ export async function getContentData(directory) {
     const fullPath = path.join(contentDirectory, directory)
 
     // Use recursive function for directories that contain subdirectories with index.md files
-    if (directory === 'technologies' || directory === 'jobs' || directory === 'education') {
-      return await getContentDataRecursive(directory)
+    if (directory === 'technologies' || directory === 'jobs' || directory === 'education' || directory === 'featured') {
+      const results = await getContentDataRecursive(directory)
+      
+      // Sort featured projects by date in descending order
+      if (directory === 'featured') {
+        return results.sort((a, b) => {
+          const dateA = new Date(a.frontmatter.date)
+          const dateB = new Date(b.frontmatter.date)
+          return dateB - dateA
+        })
+      }
+      
+      return results
     }
 
     const fileNames = await fs.readdir(fullPath)

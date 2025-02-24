@@ -1,9 +1,14 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/autoplay'
 import PropTypes from 'prop-types'
 import Image from 'next/image'
-import useScrollReveal from '../../utils/sr'
 import { FormattedIcon } from '../icons'
 import styled from 'styled-components'
 import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
@@ -13,25 +18,53 @@ const StyledContainer = styled(Section)`
   ${mixins.flexCenter};
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
+  padding: 0 50px;
+  
+  .swiper {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+  }
+
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    color: ${colors.green};
+    width: 40px;
+    height: 40px;
+    &:after {
+      font-size: 24px;
+    }
+  }
+  
+  .swiper-pagination-bullet {
+    background-color: ${colors.green};
+  }
+
+  ${media.tablet`padding: 0 40px;`};
+  ${media.phablet`padding: 0 25px;`};
 `
 const StyledContent = styled.div`
+  padding: 0 20px;
   position: relative;
-  grid-column: 1 / 7;
+  grid-column: 1 / 8;
   grid-row: 1 / -1;
   ${media.thone`
     grid-column: 1 / -1;
     padding: 40px 40px 30px;
     z-index: 5;
+    max-width: 70vw;
   `};
-  ${media.phablet`padding: 30px 25px 20px;`};
-`
-const StyledLabel = styled.h4`
-  font-size: ${fontSizes.smish};
-  font-weight: normal;
-  color: ${colors.green};
-  font-family: ${fonts.SFMono};
-  margin-top: 10px;
-  padding-top: 0;
+  ${media.phablet`
+    padding: 30px 25px 20px;
+    max-width: 70vw;
+  `};
 `
 const StyledProjectName = styled.h5`
   font-size: 28px;
@@ -49,7 +82,7 @@ const StyledDescription = styled.div`
   z-index: 2;
   padding: 25px;
   background-color: ${colors.lightGray};
-  color: ${colors.lightestSlate};
+  color: ${colors.lightSlate};
   font-size: ${fontSizes.lg};
   border-radius: ${theme.borderRadius};
   ${media.thone`
@@ -62,6 +95,9 @@ const StyledDescription = styled.div`
   `};
   p {
     margin: 0;
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
+    max-width: 70vw;
   }
   a {
     ${mixins.inlineLink};
@@ -79,7 +115,7 @@ const StyledTechList = styled.ul`
   li {
     font-family: ${fonts.SFMono};
     font-size: ${fontSizes.smish};
-    color: ${colors.slate};
+    color: ${colors.green};
     margin-right: ${theme.margin};
     margin-bottom: 7px;
     white-space: nowrap;
@@ -87,7 +123,7 @@ const StyledTechList = styled.ul`
       margin-right: 0;
     }
     ${media.thone`
-      color: ${colors.lightestSlate};
+      color: ${colors.green};
       margin-right: 10px;
     `};
   }
@@ -108,17 +144,17 @@ const StyledLinkWrapper = styled.div`
   }
 `
 const StyledFeaturedImg = styled.div`
-  position: relative;
-  z-index: 1;
+  width: 100%;
+  max-width: 100%;
+  vertical-align: middle;
   border-radius: ${theme.borderRadius};
-  transition: ${theme.transition};
-  background-color: ${colors.green};
   position: relative;
   mix-blend-mode: multiply;
   filter: grayscale(100%) contrast(1) brightness(90%);
+  transition: filter 0.3s ease-out;
   ${media.tablet`
     object-fit: cover;
-    width: 100%;
+    width: auto;
     height: 100%;
   `};
 `
@@ -128,9 +164,8 @@ const StyledImgContainer = styled.a`
   grid-row: 1 / -1;
   position: relative;
   z-index: 1;
-  background-color: ${colors.green};
-  border-radius: ${theme.borderRadius};
-  transition: ${theme.transition};
+  border-radius: ${theme.radius + 1}px;
+  transition: background 0.3s, filter 0.3s ease-out;
   ${media.tablet`height: 100%;`};
   ${media.thone`
     grid-column: 1 / -1;
@@ -139,178 +174,144 @@ const StyledImgContainer = styled.a`
   &:hover,
   &:focus {
     background: transparent;
-    &:before,
     ${StyledFeaturedImg} {
-      background: transparent;
       filter: none;
     }
   }
-  &:before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 3;
-    transition: ${theme.transition};
-    background-color: ${colors.bg};
-    mix-blend-mode: screen;
-  }
+`
+const StyledProjectContainer = styled.div`
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(12, 1fr);
+  grid-gap: 10px;
+  display: grid;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 100%;
 `
 const StyledProject = styled.div`
   display: grid;
-  grid-gap: 10px;
-  grid-template-columns: repeat(12, 1fr);
-  align-items: center;
-  margin-bottom: 100px;
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
   ${media.thone`
     margin-bottom: 70px;
+    grid-template-columns: repeat(1, 1fr);
   `};
   &:last-of-type {
     margin-bottom: 0;
-  }
-  &:nth-of-type(odd) {
-    ${StyledContent} {
-      grid-column: 7 / -1;
-      text-align: right;
-      ${media.thone`
-        grid-column: 1 / -1;
-        padding: 40px 40px 30px;
-      `};
-      ${media.phablet`padding: 30px 25px 20px;`};
-    }
-    ${StyledTechList} {
-      justify-content: flex-end;
-      li {
-        margin-left: ${theme.margin};
-        margin-right: 0;
-      }
-    }
-    ${StyledLinkWrapper} {
-      justify-content: flex-end;
-      margin-left: 0;
-      margin-right: -10px;
-    }
-    ${StyledImgContainer} {
-      grid-column: 1 / 8;
-      ${media.tablet`height: 100%;`};
-      ${media.thone`
-        grid-column: 1 / -1;
-        opacity: 0.25;
-      `};
-    }
   }
 `
 
 const Featured = ({ data }) => {
   const revealTitle = useRef(null)
-  const revealProjects = useRef([])
-  const sr = useScrollReveal()
-
-  useEffect(() => {
-    if (sr && revealTitle.current) {
-      sr.reveal(revealTitle.current, {
-        duration: 500,
-        distance: '20px',
-        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
-        origin: 'left',
-        viewFactor: 0.25,
-      })
-      revealProjects.current.forEach((ref, i) => {
-        if (ref) {
-          sr.reveal(ref, {
-            duration: 500,
-            distance: '20px',
-            easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
-            origin: 'bottom',
-            viewFactor: 0.25,
-            delay: i * 100,
-          })
-        }
-      })
-    }
-  }, [sr])
 
   return (
     <StyledContainer id="projects">
       <Heading ref={revealTitle}>
         <Dot>.</Dot>projects ()
       </Heading>
-
-      <div>
-        {data &&
-          data.map(({ frontmatter, html }, i) => {
+      {data && data.length > 0 && (
+        <Swiper
+          modules={[Navigation, Pagination, Autoplay]}
+          centeredSlides={true}
+          slidesPerView={1}
+          autoplay={{
+            delay: 5000,
+            disableOnInteraction: false,
+          }}
+          spaceBetween={50}
+          navigation={true}
+          loop={true}
+          pagination={{
+            clickable: true,
+            dynamicBullets: true,
+          }}
+          style={{ width: '100%', height: '100%' }}
+        >
+          {data.map(({ frontmatter, html }, i) => {
             const { title, cover, tech, github, external } = frontmatter
-
             return (
-              <StyledProject key={i} ref={el => (revealProjects.current[i] = el)}>
-                <StyledContent>
-                  <StyledLabel>Featured Project</StyledLabel>
-                  <StyledProjectName>
-                    {external ? (
-                      <a
-                        href={external}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        aria-label="External Link">
-                        {title}
-                      </a>
-                    ) : (
-                      title
-                    )}
-                  </StyledProjectName>
-                  <StyledDescription dangerouslySetInnerHTML={{ __html: html }} />
-                  {tech && (
-                    <StyledTechList>
-                      {tech.map((tech, i) => (
-                        <li key={i}>{tech}</li>
-                      ))}
-                    </StyledTechList>
-                  )}
-                  <StyledLinkWrapper>
-                    {github && (
-                      <a
-                        href={github}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        aria-label="GitHub Link">
-                        <FormattedIcon name="GitHub" />
-                      </a>
-                    )}
-                    {external && (
-                      <a
-                        href={external}
-                        target="_blank"
-                        rel="nofollow noopener noreferrer"
-                        aria-label="External Link">
-                        <FormattedIcon name="External" />
-                      </a>
-                    )}
-                  </StyledLinkWrapper>
-                </StyledContent>
-
-                <StyledImgContainer
-                  href={external ? external : github ? github : '#'}
-                  target="_blank"
-                  rel="nofollow noopener noreferrer">
-                  <StyledFeaturedImg>
-                    <Image
-                      src={cover}
-                      alt={title}
-                      width={700}
-                      height={438}
-                      quality={95}
-                      priority
-                    />
-                  </StyledFeaturedImg>
-                </StyledImgContainer>
-              </StyledProject>
+              <SwiperSlide key={i}>
+                <StyledProject>
+                  <StyledProjectContainer>
+                    <StyledContent>
+                      <StyledProjectName>
+                        {external ? (
+                          <a
+                            href={external}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                            aria-label="External Link"
+                          >
+                            {title}
+                          </a>
+                        ) : (
+                          title
+                        )}
+                      </StyledProjectName>
+                      <StyledDescription dangerouslySetInnerHTML={{ __html: html }} />
+                      {tech && (
+                        <StyledTechList>
+                          {tech.map((tech, i) => (
+                            <li key={i}>{tech}</li>
+                          ))}
+                        </StyledTechList>
+                      )}
+                      <StyledLinkWrapper>
+                        {github && (
+                          <a
+                            href={github}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                            aria-label="GitHub Link"
+                          >
+                            <FormattedIcon name="GitHub" />
+                          </a>
+                        )}
+                        {external && (
+                          <a
+                            href={external}
+                            target="_blank"
+                            rel="nofollow noopener noreferrer"
+                            aria-label="External Link"
+                          >
+                            <FormattedIcon name="External" />
+                          </a>
+                        )}
+                      </StyledLinkWrapper>
+                    </StyledContent>
+                    <StyledImgContainer
+                      href={external ? external : github ? github : '#'}
+                      target="_blank"
+                      rel="nofollow noopener noreferrer"
+                    >
+                      <StyledFeaturedImg>
+                        <Image
+                          src={`/featured/${cover}`}
+                          alt={title}
+                          width={700}
+                          height={438}
+                          quality={95}
+                          priority
+                          style={{
+                            width: '100%',
+                            height: 'auto',
+                            objectFit: 'cover',
+                            borderRadius: theme.borderRadius,
+                          }}
+                        />
+                      </StyledFeaturedImg>
+                    </StyledImgContainer>
+                  </StyledProjectContainer>
+                </StyledProject>
+              </SwiperSlide>
             )
           })}
-      </div>
+        </Swiper>
+      )}
     </StyledContainer>
   )
 }

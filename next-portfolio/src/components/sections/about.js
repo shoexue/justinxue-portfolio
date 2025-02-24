@@ -178,7 +178,7 @@ const About = ({ data, technologiesData }) => {
         </StyledPic>
       </StyledFlexContainer>
       <Heading>
-        <Dot>.</Dot>here's my tech stack! ()
+        here's my tech stack!
       </Heading>
       <TechnologyContainer>
         {technologiesData.map(({ frontmatter, html }, i) => (

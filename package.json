@@ -73,7 +73,7 @@
     "slider": "^1.0.4",
     "smooth-scroll": "^16.1.0",
     "styled-components": "^6.1.13",
-    "swiper": "6.8.4"
+    "swiper": "^6.8.4"
   },
   "devDependencies": {
     "@upstatement/eslint-config": "0.4.3",
