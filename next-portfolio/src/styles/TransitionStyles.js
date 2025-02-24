@@ -3,6 +3,17 @@
 import { css } from 'styled-components'
 
 const TransitionStyles = css`
+  @keyframes fadeup {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   /* Fade up */
   .fadeup-enter {
     opacity: 0.01;
