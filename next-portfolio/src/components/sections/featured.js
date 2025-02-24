@@ -19,52 +19,49 @@ const StyledContainer = styled(Section)`
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
-  padding: 0 50px;
+  padding: 0;
   
   .swiper {
     width: 100%;
     height: 100%;
-    padding: 20px;
+    padding: 0;
   }
 
   .swiper-slide {
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
   }
 
   .swiper-button-prev,
   .swiper-button-next {
-    color: ${colors.green};
+    color: ${colors.white};
     width: 40px;
     height: 40px;
+    opacity: 0.75;
+    &:hover {
+      opacity: 1;
+    }
     &:after {
-      font-size: 24px;
+      font-size: 20px;
     }
   }
   
   .swiper-pagination-bullet {
     background-color: ${colors.green};
   }
-
-  ${media.tablet`padding: 0 40px;`};
-  ${media.phablet`padding: 0 25px;`};
 `
 const StyledContent = styled.div`
-  padding: 0 20px;
   position: relative;
-  grid-column: 1 / 8;
+  grid-column: 1 / 7;
   grid-row: 1 / -1;
   ${media.thone`
     grid-column: 1 / -1;
     padding: 40px 40px 30px;
     z-index: 5;
-    max-width: 70vw;
   `};
-  ${media.phablet`
-    padding: 30px 25px 20px;
-    max-width: 70vw;
-  `};
+  ${media.phablet`padding: 30px 25px 20px;`};
 `
 const StyledProjectName = styled.h5`
   font-size: 28px;
@@ -147,11 +144,9 @@ const StyledFeaturedImg = styled.div`
   width: 100%;
   max-width: 100%;
   vertical-align: middle;
-  border-radius: ${theme.borderRadius};
   position: relative;
   mix-blend-mode: multiply;
   filter: grayscale(100%) contrast(1) brightness(90%);
-  transition: filter 0.3s ease-out;
   ${media.tablet`
     object-fit: cover;
     width: auto;
@@ -164,8 +159,9 @@ const StyledImgContainer = styled.a`
   grid-row: 1 / -1;
   position: relative;
   z-index: 1;
-  border-radius: ${theme.radius + 1}px;
-  transition: background 0.3s, filter 0.3s ease-out;
+  background-color: ${colors.white};
+  border-radius: ${theme.borderRadius};
+  transition: ${theme.transition};
   ${media.tablet`height: 100%;`};
   ${media.thone`
     grid-column: 1 / -1;
@@ -174,31 +170,49 @@ const StyledImgContainer = styled.a`
   &:hover,
   &:focus {
     background: transparent;
+    &:before,
     ${StyledFeaturedImg} {
+      background: transparent;
       filter: none;
     }
   }
+  &:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    transition: ${theme.transition};
+    background-color: ${colors.navy};
+    mix-blend-mode: screen;
+    border-radius: ${theme.borderRadius};
+  }
 `
 const StyledProjectContainer = styled.div`
-  grid-column: 1 / -1;
+  display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-gap: 10px;
-  display: grid;
-  flex-direction: row;
   align-items: center;
-  justify-content: center;
   margin: 0 auto;
-  max-width: 1200px;
-  width: 100%;
+  padding: 0 50px;
+  max-width: 1600px;
+  ${media.thone`
+    display: block;
+    padding: 0;
+  `};
 `
 const StyledProject = styled.div`
   display: grid;
   width: 100%;
-  max-width: 1000px;
   margin: 0 auto;
+  margin-bottom: 70px;
+  
   ${media.thone`
     margin-bottom: 70px;
-    grid-template-columns: repeat(1, 1fr);
   `};
   &:last-of-type {
     margin-bottom: 0;

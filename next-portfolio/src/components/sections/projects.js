@@ -6,7 +6,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import useScrollReveal from '../../utils/sr'
 import { FormattedIcon } from '../icons'
 import styled from 'styled-components'
-import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
+import { theme, mixins, media, Section, Heading } from '../../styles'
 const { colors, fontSizes, fonts } = theme
 
 const StyledContainer = styled(Section)`
@@ -17,24 +17,26 @@ const StyledContainer = styled(Section)`
 const StyledTitle = styled.h4`
   margin: 0 auto;
   font-size: ${fontSizes.h3};
+  color: ${colors.slate};
   ${media.tablet`font-size: 24px;`};
   a {
     display: block;
   }
 `
-const StyledArchiveLink = styled.a`
-  ${mixins.inlineLink};
-  text-align: center;
+const StyledSubtext = styled.p`
   margin: 0 auto;
-  font-family: ${fonts.SFMono};
   font-size: ${fontSizes.sm};
-  &:after {
-    bottom: 0.1em;
+  margin-top: 5px;
+  font-family: ${fonts.SFMono};
+  color: ${colors.slate};
+  ${media.tablet`font-size: 24px;`};
+  a {
+    display: block;
   }
 `
 const StyledGrid = styled.div`
   margin-top: 50px;
-  width: 100%;
+
   .projects {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -79,7 +81,7 @@ const StyledFolder = styled.div`
 `
 const StyledProjectLinks = styled.div`
   margin-right: -10px;
-  color: ${colors.lightestSlate};
+  color: ${colors.lightSlate};
 `
 const StyledIconLink = styled.a`
   position: relative;
@@ -97,6 +99,8 @@ const StyledProjectName = styled.h5`
 `
 const StyledProjectDescription = styled.div`
   font-size: 17px;
+  font-family: ${fonts.SFMono};
+  font-size: ${fontSizes.sm};
   color: ${colors.lightSlate};
   a {
     ${mixins.inlineLink};
@@ -114,7 +118,7 @@ const StyledTechList = styled.ul`
   li {
     font-family: ${fonts.SFMono};
     font-size: ${fontSizes.xs};
-    color: ${colors.slate};
+    color: ${colors.green};
     line-height: 1.75;
     margin-right: 15px;
     &:last-of-type {
@@ -122,23 +126,13 @@ const StyledTechList = styled.ul`
     }
   }
 `
-const StyledMoreButton = styled.button`
-  ${mixins.bigButton};
-  margin: 100px auto 0;
-`
-
-const GRID_LIMIT = 6
 
 const Projects = ({ data }) => {
-  const [showMore, setShowMore] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
   const revealTitle = useRef(null)
   const revealArchiveLink = useRef(null)
   const revealProjects = useRef([])
   const sr = useScrollReveal()
-  
-  // Add refs for CSSTransition
-  const nodeRefs = useRef(data ? data.map(() => React.createRef()) : [])
 
   useEffect(() => {
     setIsMounted(true)
@@ -150,15 +144,13 @@ const Projects = ({ data }) => {
         origin: 'left',
         viewFactor: 0.25,
       })
-      if (revealArchiveLink.current) {
-        sr.reveal(revealArchiveLink.current, {
-          duration: 500,
-          distance: '20px',
-          easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
-          origin: 'bottom',
-          viewFactor: 0.25,
-        })
-      }
+      sr.reveal(revealArchiveLink.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'bottom',
+        viewFactor: 0.25,
+      })
       revealProjects.current.forEach((ref, i) => {
         if (ref) {
           sr.reveal(ref, {
@@ -174,34 +166,32 @@ const Projects = ({ data }) => {
     }
   }, [sr])
 
-  const firstSix = data.slice(0, GRID_LIMIT)
-  const projectsToShow = showMore ? data : firstSix
+  const projects = data.filter(({ node }) => node)
+  const projectsToShow = projects
+  const archiveText = `// archives`
+  const descriptionText = `// just some more of my projects`
 
   return (
     <StyledContainer id="projects">
-      <Heading ref={revealTitle}>
-        <Dot>.</Dot>Other Noteworthy Projects
-      </Heading>
-
+      <StyledTitle ref={revealTitle}>{archiveText}</StyledTitle>
+      <StyledSubtext ref={revealTitle}>{descriptionText}</StyledSubtext>
       <StyledGrid>
-        <TransitionGroup component={null}>
-          {isMounted &&
+        <TransitionGroup className="projects">
+          {projectsToShow &&
             projectsToShow.map(({ frontmatter, html }, i) => {
               const { github, external, title, tech } = frontmatter
-              revealProjects.current[i] = revealProjects.current[i] || React.createRef()
-
               return (
                 <CSSTransition
                   key={i}
                   classNames="fadeup"
                   timeout={300}
-                  nodeRef={revealProjects.current[i]}
                   exit={false}>
                   <StyledProject
                     key={i}
-                    ref={revealProjects.current[i]}
+                    ref={el => (revealProjects.current[i] = el)}
+                    tabIndex="0"
                     style={{
-                      transitionDelay: `${i >= GRID_LIMIT ? (i - GRID_LIMIT) * 100 : i * 100}ms`,
+                      transitionDelay: `0ms`,
                     }}>
                     <StyledProjectInner>
                       <header>
@@ -249,14 +239,6 @@ const Projects = ({ data }) => {
             })}
         </TransitionGroup>
       </StyledGrid>
-
-      <div className="more-button">
-        {data.length > GRID_LIMIT && (
-          <StyledMoreButton onClick={() => setShowMore(!showMore)}>
-            Show {showMore ? 'Less' : 'More'}
-          </StyledMoreButton>
-        )}
-      </div>
     </StyledContainer>
   )
 }

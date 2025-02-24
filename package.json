@@ -21,19 +21,6 @@
     "deploy": "gatsby build && gh-pages -d public",
     "win": "cross-env NODE_OPTIONS=--openssl-legacy-provider npm run start"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,css,json,md}": [
-      "prettier --write"
-    ],
-    "*.js": [
-      "eslint --fix"
-    ]
-  },
   "dependencies": {
     "@splidejs/react-splide": "^0.7.12",
     "@splidejs/splide-extension-auto-scroll": "^0.5.3",
@@ -86,8 +73,6 @@
     "eslint-plugin-react": "^7.19.0",
     "gatsby-remark-code-titles": "^1.1.0",
     "gh-pages": "^6.1.1",
-    "husky": "^4.2.3",
-    "lint-staged": "^10.1.2",
     "prettier": "^2.0.4"
   }
 }
