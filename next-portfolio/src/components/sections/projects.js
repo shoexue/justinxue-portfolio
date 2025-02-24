@@ -87,9 +87,14 @@ const StyledIconLink = styled.a`
   position: relative;
   top: -10px;
   padding: 10px;
+  color: ${colors.lightSlate};
   svg {
     width: 20px;
     height: 20px;
+  }
+  &:hover,
+  &:focus {
+    color: ${colors.green};
   }
 `
 const StyledProjectName = styled.h5`
@@ -132,10 +137,14 @@ const Projects = ({ data }) => {
   const revealTitle = useRef(null)
   const revealArchiveLink = useRef(null)
   const revealProjects = useRef([])
+  const nodeRefs = useRef([])
   const sr = useScrollReveal()
 
   useEffect(() => {
+    // Initialize nodeRefs for each project
+    nodeRefs.current = data ? data.map(() => React.createRef()) : []
     setIsMounted(true)
+    
     if (sr && revealTitle.current) {
       sr.reveal(revealTitle.current, {
         duration: 500,
@@ -164,10 +173,8 @@ const Projects = ({ data }) => {
         }
       })
     }
-  }, [sr])
+  }, [sr, data])
 
-  const projects = data.filter(({ node }) => node)
-  const projectsToShow = projects
   const archiveText = `// archives`
   const descriptionText = `// just some more of my projects`
 
@@ -177,21 +184,23 @@ const Projects = ({ data }) => {
       <StyledSubtext ref={revealTitle}>{descriptionText}</StyledSubtext>
       <StyledGrid>
         <TransitionGroup className="projects">
-          {projectsToShow &&
-            projectsToShow.map(({ frontmatter, html }, i) => {
+          {isMounted &&
+            data &&
+            data.map(({ frontmatter, html }, i) => {
               const { github, external, title, tech } = frontmatter
               return (
                 <CSSTransition
                   key={i}
                   classNames="fadeup"
                   timeout={300}
+                  nodeRef={nodeRefs.current[i]}
                   exit={false}>
                   <StyledProject
                     key={i}
-                    ref={el => (revealProjects.current[i] = el)}
+                    ref={nodeRefs.current[i]}
                     tabIndex="0"
                     style={{
-                      transitionDelay: `0ms`,
+                      transitionDelay: `${i * 100}ms`,
                     }}>
                     <StyledProjectInner>
                       <header>
