@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import useScrollReveal from '../../utils/sr'
-import { FormattedIcon } from '../icons'
+// import { FormattedIcon } from '../icons'
 import styled from 'styled-components'
 import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
 const { colors, fontSizes, fonts } = theme
@@ -47,8 +47,18 @@ const StyledContent = styled.div`
   margin-bottom: 50px;
   padding: 25px;
   border-radius: ${theme.borderRadius};
-  background-color: ${colors.lightGray};
+  background-color: transparent;
+  border: 3px solid ${colors.lightGray};
+  transition: ${theme.transition};
   ${mixins.boxShadow};
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 
   &:last-child {
     margin-bottom: 0;
@@ -57,7 +67,7 @@ const StyledContent = styled.div`
 
 const StyledDate = styled.div`
   margin-bottom: 10px;
-  color: ${colors.green};
+  color: ${colors.slate};
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.sm};
 `
@@ -65,7 +75,7 @@ const StyledDate = styled.div`
 const StyledSchool = styled.h4`
   margin-bottom: 5px;
   font-size: ${fontSizes.xxl};
-  font-weight: 500;
+  font-weight: 600;
   color: ${colors.lightestSlate};
 `
 
@@ -73,14 +83,34 @@ const StyledDegree = styled.h5`
   margin-bottom: 20px;
   font-size: ${fontSizes.lg};
   font-weight: normal;
-  color: ${colors.slate};
+  color: ${colors.green};
 `
 
 const StyledDescription = styled.div`
   font-size: ${fontSizes.md};
+  font-family: ${fonts.SFMono};
   color: ${colors.lightSlate};
+  
   a {
     ${mixins.inlineLink};
+  }
+
+  ul {
+    ${mixins.fancyList};
+  }
+
+  li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 10px;
+    font-size: ${fontSizes.sm};
+    
+    &:before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: ${colors.green};
+    }
   }
 `
 
@@ -134,15 +164,19 @@ const Education = ({ data }) => {
         origin: 'left',
         viewFactor: 0.25,
       })
+      
       revealEducation.current.forEach((ref, i) => {
         if (ref) {
           sr.reveal(ref, {
-            duration: 500,
-            distance: '20px',
+            duration: 1000,
+            distance: '40px',
             easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
             origin: 'bottom',
-            viewFactor: 0.25,
-            delay: i * 100,
+            viewFactor: 0.2,
+            delay: i * 200,
+            beforeReveal: (el) => {
+              el.classList.add('visible');
+            },
           })
         }
       })
@@ -160,16 +194,22 @@ const Education = ({ data }) => {
           data.map(({ frontmatter, html }, i) => {
             const { title, school, range, location } = frontmatter
             return (
-              <StyledContent key={i} ref={el => (revealEducation.current[i] = el)}>
+              <StyledContent 
+                key={i} 
+                ref={el => (revealEducation.current[i] = el)}
+                style={{ 
+                  transitionDelay: `${i * 100}ms`
+                }}
+              >
                 <StyledDate>{range}</StyledDate>
                 <StyledSchool>{school}</StyledSchool>
                 <StyledDegree>{title}</StyledDegree>
                 <StyledDescription dangerouslySetInnerHTML={{ __html: html }} />
-                {location && (
+                {/* {location && (
                   <StyledLocationIcon>
                     <FormattedIcon name="Location" />
                   </StyledLocationIcon>
-                )}
+                )} */}
               </StyledContent>
             )
           })}

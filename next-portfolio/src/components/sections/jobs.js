@@ -75,7 +75,7 @@ const StyledTabButton = styled.button`
   white-space: nowrap;
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.smish};
-  color: ${props => (props.isActive ? colors.green : colors.slate)};
+  color: ${props => (props.$isActive ? colors.green : colors.slate)};
   ${media.tablet`padding: 0 15px 2px;`};
   ${media.thone`
     ${mixins.flexCenter};
@@ -103,7 +103,7 @@ const StyledHighlight = styled.span`
   transition-delay: 0.1s;
   z-index: 10;
   transform: translateY(
-    ${props => (props.activeTabId > 0 ? props.activeTabId * theme.tabHeight : 0)}px
+    ${props => (props.$activeTabId > 0 ? props.$activeTabId * theme.tabHeight : 0)}px
   );
   ${media.thone`
     width: 100%;
@@ -112,7 +112,7 @@ const StyledHighlight = styled.span`
     top: auto;
     bottom: 0;
     transform: translateX(
-      ${props => (props.activeTabId > 0 ? props.activeTabId * theme.tabWidth : 0)}px
+      ${props => (props.$activeTabId > 0 ? props.$activeTabId * theme.tabWidth : 0)}px
     );
     margin-left: 50px;
   `};
@@ -263,7 +263,7 @@ const Jobs = ({ data }) => {
               return (
                 <li key={i}>
                   <StyledTabButton
-                    isActive={activeTabId === i}
+                    $isActive={activeTabId === i}
                     onClick={() => setActiveTabId(i)}
                     ref={el => (tabs.current[i] = el)}
                     id={`tab-${i}`}
@@ -276,7 +276,7 @@ const Jobs = ({ data }) => {
                 </li>
               )
             })}
-          <StyledHighlight activeTabId={activeTabId} />
+          <StyledHighlight $activeTabId={activeTabId} />
         </StyledTabList>
 
         {data &&

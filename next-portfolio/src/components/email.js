@@ -27,7 +27,7 @@ const StyledEmailLink = styled.a`
   font-size: ${fontSizes.lg};
   letter-spacing: 0.1em;
   font-family: ${fonts.Calibre};
-  font-weight: 500;
+  font-weight: 400;
   writing-mode: vertical-rl;
   margin: 20px auto;
   padding: 10px;

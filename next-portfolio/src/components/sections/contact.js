@@ -14,11 +14,19 @@ const StyledContainer = styled(Section)`
   a {
     ${mixins.inlineLink};
   }
-  div {
+`
+
+const StyledDescription = styled.div`
+  margin-bottom: 50px;
+
+  p {
     font-family: ${fonts.SFMono};
     font-size: ${fontSizes.md};
+    color: ${colors.slate};
+    margin: 0;
   }
 `
+
 const StyledHeading = styled(Heading)`
   display: block;
   color: ${colors.green};
@@ -91,7 +99,7 @@ const Contact = ({ data }) => {
         {title}
       </StyledTitle>
 
-      <div dangerouslySetInnerHTML={{ __html: html }} />
+      <StyledDescription dangerouslySetInnerHTML={{ __html: html }} />
 
       <StyledEmailLink href={`mailto:${data[0].frontmatter.email}`} target="_blank" rel="nofollow noopener noreferrer">
         {buttonText}
