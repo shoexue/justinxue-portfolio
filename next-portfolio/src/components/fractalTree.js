@@ -210,8 +210,8 @@ const FractalTree = () => {
             cnv.parent(sketchRef.current);
 
             p5.frameRate(30);
-            p5.background(0);
-
+            p5.clear();
+            
             // Parse the Pi SVG
             const svgData = `
 <svg xmlns="http://www.w3.org/2000/svg" width="496" height="480">
@@ -384,6 +384,7 @@ const FractalTree = () => {
 
           p5.draw = () => {
             p5.clear();
+            p5.background(16, 16, 16, 102); // This matches rgba(16, 16, 16, 0.4)
 
             // If drawing, disable default scrolling
             if (isDrawingEnabledRef.current) {
@@ -510,9 +511,6 @@ const FractalTree = () => {
       }
     } else {
       setIsDrawingEnabled(true);
-      if (p5InstanceRef.current) {
-        p5InstanceRef.current.background(0);
-      }
     }
   };
 
