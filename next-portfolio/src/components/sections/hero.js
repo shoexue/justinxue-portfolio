@@ -88,7 +88,7 @@ const Hero = ({ data }) => {
     <StyledContainer ref={containerRef}>
       {isMounted && (
         <>
-          <div style={{ marginBottom: '50px' }}>
+          <div>
             {items.map(({ node, delay }, i) => (
               <div key={i} style={{ 
                 transitionDelay: delay,
