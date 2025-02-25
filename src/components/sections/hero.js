@@ -1,7 +1,6 @@
 "use client"
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, FractalTreeContainer } from "@/styles"
 import { FractalTree } from '@/components';
@@ -63,24 +62,20 @@ const Hero = ({ data }) => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const { frontmatter, html } = data[0];
+  const { title, name, subtitle } = data;
 
   const items = [
     {
-      node: <StyledOverline>{frontmatter.title}</StyledOverline>,
+      node: <StyledOverline>{title}</StyledOverline>,
       delay: '100ms'
     },
     {
-      node: <StyledTitle>{frontmatter.name}</StyledTitle>,
+      node: <StyledTitle>{name}</StyledTitle>,
       delay: '200ms'
     },
     {
-      node: <StyledSubtitle>{frontmatter.subtitle}</StyledSubtitle>,
+      node: <StyledSubtitle>{subtitle}</StyledSubtitle>,
       delay: '300ms'
-    },
-    {
-      node: <StyledDescription dangerouslySetInnerHTML={{ __html: html }} />,
-      delay: '400ms'
     }
   ];
 
@@ -119,7 +114,11 @@ const Hero = ({ data }) => {
 };
 
 Hero.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    subtitle: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default Hero;

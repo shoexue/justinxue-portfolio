@@ -24,8 +24,12 @@ const StyledContent = styled.div`
   max-width: 480px;
   ${media.tablet`width: 100%;`};
 
-  p, h1, h2, h3, h4, h5, h6, div {
-    font-family: ${fonts.SFMono};
+  * {
+    font-family: ${fonts.SFMono} !important;
+  }
+
+  p, h1, h2, h3, h4, h5, h6, div, ul, li {
+    font-family: ${fonts.SFMono} !important;
     font-size: ${fontSizes.sm};
     line-height: 1.5;
     margin-bottom: 15px;
@@ -33,8 +37,27 @@ const StyledContent = styled.div`
     font-weight: normal;
   }
 
+  ul {
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 10px;
+
+    &:before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: ${colors.green};
+    }
+  }
+
   strong {
-    font-family: ${fonts.SFMono};
+    font-family: ${fonts.SFMono} !important;
     font-size: ${fontSizes.sm};
     color: ${colors.slate};
     font-weight: normal;
@@ -42,7 +65,7 @@ const StyledContent = styled.div`
 
   a {
     ${mixins.inlineLink};
-    font-family: ${fonts.SFMono};
+    font-family: ${fonts.SFMono} !important;
     font-size: ${fontSizes.sm};
   }
 `
@@ -155,8 +178,7 @@ const TechnologyItem = styled.div`
 `
 
 const About = ({ data, technologiesData }) => {
-  const { frontmatter, html } = data[0]
-  const { title, avatar } = frontmatter
+  const { title, avatar, content } = data
   const revealContainer = useRef(null)
   const revealTitle = useRef(null)
   const sr = useScrollReveal()
@@ -182,20 +204,69 @@ const About = ({ data, technologiesData }) => {
     }
   }, [sr])
 
+  const renderContent = (contentItem) => {
+    switch (contentItem.type) {
+      case 'text':
+        return <p>{contentItem.content}</p>
+      case 'paragraph':
+        return (
+          <p>
+            {contentItem.content.map((item, i) => {
+              if (item.type === 'link') {
+                return (
+                  <a key={i} href={item.url} target="_blank" rel="noopener noreferrer">
+                    {item.content}
+                  </a>
+                )
+              }
+              return item.content
+            })}
+          </p>
+        )
+      case 'list':
+        return (
+          <ul>
+            {contentItem.items.map((item, i) => (
+              <li key={i}>
+                {Array.isArray(item.content) 
+                  ? item.content.map((subItem, j) => {
+                      if (subItem.type === 'link') {
+                        return (
+                          <a key={j} href={subItem.url} target="_blank" rel="noopener noreferrer">
+                            {subItem.content}
+                          </a>
+                        )
+                      }
+                      return subItem.content
+                    })
+                  : item.content}
+              </li>
+            ))}
+          </ul>
+        )
+      default:
+        return null
+    }
+  }
+
   return (
     <StyledContainer id="about" ref={revealContainer}>
       <Heading ref={revealTitle}>
-        <Dot>.</Dot>about ()
+        <Dot>.</Dot>{title}
       </Heading>
       <StyledFlexContainer>
         <StyledContent>
-          <div dangerouslySetInnerHTML={{ __html: html }} />
+          {content.map((item, i) => (
+            <React.Fragment key={i}>
+              {renderContent(item)}
+            </React.Fragment>
+          ))}
         </StyledContent>
         <StyledPic>
           <StyledAvatarLink href="https://github.com/alvina-yang" target="_blank" rel="noopener noreferrer">
             <StyledAvatar>
               <Image
-                src={`/${avatar}`}
+                src={avatar}
                 alt="Avatar"
                 width={300}
                 height={300}
@@ -210,13 +281,13 @@ const About = ({ data, technologiesData }) => {
         here's my tech stack!
       </Heading>
       <TechnologyContainer>
-        {technologiesData.map(({ frontmatter, html }, i) => (
+        {technologiesData.map((tech, i) => (
           <TechnologyItem key={i}>
-            <h4>{frontmatter.title}</h4>
-            <div dangerouslySetInnerHTML={{ __html: html }} />
+            <h4>{tech.title}</h4>
+            <div>{tech.content}</div>
             <ul>
-              {frontmatter.technologies.map((tech, index) => (
-                <li key={index}>{tech}</li>
+              {tech.technologies.map((item, index) => (
+                <li key={index}>{item}</li>
               ))}
             </ul>
           </TechnologyItem>
@@ -227,8 +298,18 @@ const About = ({ data, technologiesData }) => {
 }
 
 About.propTypes = {
-  data: PropTypes.array.isRequired,
-  technologiesData: PropTypes.array.isRequired,
+  data: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    avatar: PropTypes.string.isRequired,
+    content: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
+  technologiesData: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      content: PropTypes.string.isRequired,
+      technologies: PropTypes.arrayOf(PropTypes.string).isRequired,
+    })
+  ).isRequired,
 }
 
 export default About 

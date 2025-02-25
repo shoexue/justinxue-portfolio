@@ -73,8 +73,7 @@ const StyledResumeLink = styled.a`
 `
 
 const Contact = ({ data }) => {
-  const { frontmatter, html } = data[0]
-  const { title, buttonText } = frontmatter
+  const { title, buttonText, content } = data
   const revealContainer = useRef(null)
   const sr = useScrollReveal()
 
@@ -99,9 +98,11 @@ const Contact = ({ data }) => {
         {title}
       </StyledTitle>
 
-      <StyledDescription dangerouslySetInnerHTML={{ __html: html }} />
+      <StyledDescription>
+        <p>{content}</p>
+      </StyledDescription>
 
-      <StyledEmailLink href={`mailto:${data[0].frontmatter.email}`} target="_blank" rel="nofollow noopener noreferrer">
+      <StyledEmailLink href="mailto:alvina.yang@mail.utoronto.ca" target="_blank" rel="nofollow noopener noreferrer">
         {buttonText}
       </StyledEmailLink>
       <div />
@@ -113,7 +114,11 @@ const Contact = ({ data }) => {
 }
 
 Contact.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    buttonText: PropTypes.string.isRequired,
+    content: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default Contact 

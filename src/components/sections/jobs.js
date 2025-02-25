@@ -130,16 +130,44 @@ const StyledTabContent = styled.div`
   ${media.thone`padding-left: 0;`};
   display: ${props => (props.$isActive ? 'block' : 'none')};
 
+  * {
+    font-family: ${fonts.SFMono} !important;
+  }
+
   ul {
     ${mixins.fancyList};
     font-size: ${fontSizes.smish};
-  }
-  a {
-    ${mixins.inlineLink};
+    margin-left: 0;
+    padding-left: 0;
+    list-style: none;
   }
 
-  > div {
-    font-family: ${fonts.SFMono};
+  li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 10px;
+    font-family: ${fonts.SFMono} !important;
+    font-size: ${fontSizes.sm};
+    color: ${colors.slate};
+
+    &:before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: ${colors.green};
+    }
+  }
+
+  a {
+    ${mixins.inlineLink};
+    font-family: ${fonts.SFMono} !important;
+    font-size: ${fontSizes.sm};
+  }
+
+  div {
+    font-family: ${fonts.SFMono} !important;
+    font-size: ${fontSizes.sm};
+    color: ${colors.slate};
   }
 `
 const StyledJobTitle = styled.h4`
@@ -235,7 +263,6 @@ const Jobs = ({ data }) => {
     }
   }
 
-  // Only re-run the effect if tabFocus changes
   useEffect(() => focusTab(), [tabFocus])
 
   const onKeyPressed = e => {
@@ -251,63 +278,106 @@ const Jobs = ({ data }) => {
     }
   }
 
+  const renderContent = (content) => {
+    if (typeof content === 'string') {
+      return <div>{content}</div>
+    }
+
+    if (content.type === 'text') {
+      return (
+        <div>
+          {content.content}
+          {content.link && (
+            <a href={content.link.url} target="_blank" rel="noopener noreferrer">
+              {content.link.text}
+            </a>
+          )}
+          {content.afterLink}
+        </div>
+      )
+    }
+
+    return null
+  }
+
   return (
     <StyledContainer id="jobs" ref={revealContainer}>
       <Heading>
-        <Dot>.</Dot>experiences ()
+        <Dot>.</Dot>experience ()
       </Heading>
+
       <StyledTabs>
         <StyledTabList role="tablist" aria-label="Job tabs" onKeyDown={e => onKeyPressed(e)}>
-          {data &&
-            data.map(({ frontmatter }, i) => {
-              const { company } = frontmatter
-              return (
-                <li key={i}>
-                  <StyledTabButton
-                    $isActive={activeTabId === i}
-                    onClick={() => setActiveTabId(i)}
-                    ref={el => (tabs.current[i] = el)}
-                    id={`tab-${i}`}
-                    role="tab"
-                    aria-selected={activeTabId === i ? true : false}
-                    aria-controls={`panel-${i}`}
-                    tabIndex={activeTabId === i ? '0' : '-1'}>
-                    <span>{company}</span>
-                  </StyledTabButton>
-                </li>
-              )
-            })}
+          {data.map(({ company }, i) => (
+            <li key={i}>
+              <StyledTabButton
+                $isActive={activeTabId === i}
+                onClick={() => setActiveTabId(i)}
+                ref={el => (tabs.current[i] = el)}
+                id={`tab-${i}`}
+                role="tab"
+                aria-selected={activeTabId === i ? 'true' : 'false'}
+                aria-controls={`panel-${i}`}
+                tabIndex={activeTabId === i ? '0' : '-1'}>
+                <span>{company}</span>
+              </StyledTabButton>
+            </li>
+          ))}
           <StyledHighlight $activeTabId={activeTabId} />
         </StyledTabList>
 
-        {data &&
-          data.map(({ frontmatter, html }, i) => {
-            const { title, company, range } = frontmatter
-            return (
-              <StyledTabContent
-                key={i}
-                $isActive={activeTabId === i}
-                id={`panel-${i}`}
-                role="tabpanel"
-                aria-labelledby={`tab-${i}`}
-                tabIndex={activeTabId === i ? '0' : '-1'}
-                hidden={activeTabId !== i}>
-                <StyledJobTitle>{title}</StyledJobTitle>
-                <StyledCompany>{company}</StyledCompany>
-                <StyledJobDetails>
-                  <span>{range}</span>
-                </StyledJobDetails>
-                <div dangerouslySetInnerHTML={{ __html: html }} />
-              </StyledTabContent>
-            )
-          })}
+        <div>
+          {data.map(({ title, company, range, location, content }, i) => (
+            <StyledTabContent
+              key={i}
+              $isActive={activeTabId === i}
+              id={`panel-${i}`}
+              role="tabpanel"
+              aria-labelledby={`tab-${i}`}
+              tabIndex={activeTabId === i ? '0' : '-1'}>
+              <StyledJobTitle>{title}</StyledJobTitle>
+              <StyledCompany>{company}</StyledCompany>
+              <StyledJobDetails>
+                <span>{range}</span>
+                <span>&nbsp;@&nbsp;</span>
+                <span>{location}</span>
+              </StyledJobDetails>
+              <ul>
+                {content.map((item, j) => (
+                  <li key={j}>{renderContent(item)}</li>
+                ))}
+              </ul>
+            </StyledTabContent>
+          ))}
+        </div>
       </StyledTabs>
     </StyledContainer>
   )
 }
 
 Jobs.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      company: PropTypes.string.isRequired,
+      location: PropTypes.string.isRequired,
+      range: PropTypes.string.isRequired,
+      content: PropTypes.arrayOf(
+        PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.shape({
+            type: PropTypes.string.isRequired,
+            content: PropTypes.string.isRequired,
+            link: PropTypes.shape({
+              text: PropTypes.string.isRequired,
+              url: PropTypes.string.isRequired,
+            }),
+            afterLink: PropTypes.string,
+          }),
+        ])
+      ).isRequired,
+    })
+  ).isRequired,
 }
 
 export default Jobs 

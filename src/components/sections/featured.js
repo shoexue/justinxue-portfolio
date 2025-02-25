@@ -222,6 +222,38 @@ const StyledProject = styled.div`
 const Featured = ({ data }) => {
   const revealTitle = useRef(null)
 
+  const renderContent = (content) => {
+    if (typeof content === 'string') {
+      return <p>{content}</p>
+    }
+
+    if (content.type === 'text') {
+      return (
+        <p>
+          {content.content}
+          {content.link && (
+            <a href={content.link.url} target="_blank" rel="noopener noreferrer">
+              {content.link.text}
+            </a>
+          )}
+          {content.afterLink}
+        </p>
+      )
+    }
+
+    if (content.type === 'link') {
+      return (
+        <p>
+          <a href={content.url} target="_blank" rel="noopener noreferrer">
+            {content.text}
+          </a>
+        </p>
+      )
+    }
+
+    return null
+  }
+
   return (
     <StyledContainer id="projects">
       <Heading ref={revealTitle}>
@@ -245,85 +277,67 @@ const Featured = ({ data }) => {
           }}
           style={{ width: '100%', height: '100%' }}
         >
-          {data.map(({ frontmatter, html }, i) => {
-            const { title, cover, tech, github, external } = frontmatter
-            return (
-              <SwiperSlide key={i}>
-                <StyledProject>
-                  <StyledProjectContainer>
-                    <StyledContent>
-                      <StyledProjectName>
-                        {external ? (
-                          <a
-                            href={external}
-                            target="_blank"
-                            rel="nofollow noopener noreferrer"
-                            aria-label="External Link"
-                          >
-                            {title}
-                          </a>
-                        ) : (
-                          title
-                        )}
-                      </StyledProjectName>
-                      <StyledDescription dangerouslySetInnerHTML={{ __html: html }} />
-                      {tech && (
-                        <StyledTechList>
-                          {tech.map((tech, i) => (
-                            <li key={i}>{tech}</li>
-                          ))}
-                        </StyledTechList>
+          {data.map(({ title, cover, tech, github, content }, i) => (
+            <SwiperSlide key={i}>
+              <StyledProject>
+                <StyledProjectContainer>
+                  <StyledContent>
+                    <StyledProjectName>
+                      {title}
+                    </StyledProjectName>
+                    <StyledDescription>
+                      {Array.isArray(content) ? (
+                        content.map((item, j) => (
+                          <React.Fragment key={j}>
+                            {renderContent(item)}
+                          </React.Fragment>
+                        ))
+                      ) : (
+                        renderContent(content)
                       )}
-                      <StyledLinkWrapper>
-                        {github && (
-                          <a
-                            href={github}
-                            target="_blank"
-                            rel="nofollow noopener noreferrer"
-                            aria-label="GitHub Link"
-                          >
-                            <FormattedIcon name="GitHub" />
-                          </a>
-                        )}
-                        {external && (
-                          <a
-                            href={external}
-                            target="_blank"
-                            rel="nofollow noopener noreferrer"
-                            aria-label="External Link"
-                          >
-                            <FormattedIcon name="External" />
-                          </a>
-                        )}
-                      </StyledLinkWrapper>
-                    </StyledContent>
-                    <StyledImgContainer
-                      href={external ? external : github ? github : '#'}
-                      target="_blank"
-                      rel="nofollow noopener noreferrer"
-                    >
-                      <StyledFeaturedImg>
-                        <Image
-                          src={`/featured/${cover}`}
-                          alt={title}
-                          width={700}
-                          height={438}
-                          quality={95}
-                          priority
-                          style={{
-                            width: '100%',
-                            height: 'auto',
-                            objectFit: 'cover',
-                            borderRadius: theme.borderRadius,
-                          }}
-                        />
-                      </StyledFeaturedImg>
-                    </StyledImgContainer>
-                  </StyledProjectContainer>
-                </StyledProject>
-              </SwiperSlide>
-            )
-          })}
+                    </StyledDescription>
+                    <StyledTechList>
+                      {tech.map((tech, j) => (
+                        <li key={j}>{tech}</li>
+                      ))}
+                    </StyledTechList>
+                    <StyledLinkWrapper>
+                      {github && (
+                        <a
+                          href={github}
+                          target="_blank"
+                          rel="nofollow noopener noreferrer"
+                          aria-label="GitHub Link">
+                          <FormattedIcon name="GitHub" />
+                        </a>
+                      )}
+                    </StyledLinkWrapper>
+                  </StyledContent>
+
+                  <StyledImgContainer
+                    href={github || '#'}
+                    target="_blank"
+                    rel="nofollow noopener noreferrer">
+                    <StyledFeaturedImg>
+                      <Image
+                        src={cover}
+                        alt={title}
+                        width={700}
+                        height={438}
+                        quality={95}
+                        style={{
+                          width: '100%',
+                          height: 'auto',
+                          objectFit: 'cover',
+                          objectPosition: 'center',
+                        }}
+                      />
+                    </StyledFeaturedImg>
+                  </StyledImgContainer>
+                </StyledProjectContainer>
+              </StyledProject>
+            </SwiperSlide>
+          ))}
         </Swiper>
       )}
     </StyledContainer>
@@ -331,7 +345,31 @@ const Featured = ({ data }) => {
 }
 
 Featured.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      cover: PropTypes.string.isRequired,
+      github: PropTypes.string,
+      tech: PropTypes.arrayOf(PropTypes.string).isRequired,
+      content: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(
+          PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.shape({
+              type: PropTypes.string.isRequired,
+              content: PropTypes.string,
+              link: PropTypes.shape({
+                text: PropTypes.string.isRequired,
+                url: PropTypes.string.isRequired,
+              }),
+              afterLink: PropTypes.string,
+            }),
+          ])
+        ),
+      ]).isRequired,
+    })
+  ).isRequired,
 }
 
 export default Featured 

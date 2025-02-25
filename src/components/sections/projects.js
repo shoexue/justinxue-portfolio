@@ -187,6 +187,28 @@ const Projects = ({ data }) => {
     }
   }, [sr, data])
 
+  const renderContent = (content) => {
+    if (typeof content === 'string') {
+      return <div>{content}</div>
+    }
+
+    if (content.type === 'text') {
+      return (
+        <div>
+          {content.content}
+          {content.link && (
+            <a href={content.link.url} target="_blank" rel="noopener noreferrer">
+              {content.link.text}
+            </a>
+          )}
+          {content.afterLink}
+        </div>
+      )
+    }
+
+    return null
+  }
+
   const archiveText = `// archives`
   const descriptionText = `// just some more of my projects`
 
@@ -198,66 +220,65 @@ const Projects = ({ data }) => {
         <TransitionGroup className="projects">
           {isMounted &&
             data &&
-            data.map(({ frontmatter, html }, i) => {
-              const { github, external, title, tech } = frontmatter
-              return (
-                <CSSTransition
+            data.map(({ title, github, external, tech, content }, i) => (
+              <CSSTransition
+                key={i}
+                classNames="fadeup"
+                timeout={300}
+                nodeRef={nodeRefs.current[i]}
+                exit={false}>
+                <StyledProject
                   key={i}
-                  classNames="fadeup"
-                  timeout={300}
-                  nodeRef={nodeRefs.current[i]}
-                  exit={false}>
-                  <StyledProject
-                    key={i}
-                    ref={nodeRefs.current[i]}
-                    tabIndex="0"
-                    style={{
-                      transitionDelay: `${i * 100}ms`,
-                    }}>
-                    <StyledProjectInner>
-                      <header>
-                        <StyledProjectHeader>
-                          <StyledFolder>
-                            <FormattedIcon name="Folder" />
-                          </StyledFolder>
-                          <StyledProjectLinks>
-                            {github && (
-                              <StyledIconLink
-                                href={github}
-                                target="_blank"
-                                rel="nofollow noopener noreferrer"
-                                aria-label="GitHub Link">
-                                <FormattedIcon name="GitHub" />
-                              </StyledIconLink>
-                            )}
-                            {external && (
-                              <StyledIconLink
-                                href={external}
-                                target="_blank"
-                                rel="nofollow noopener noreferrer"
-                                aria-label="External Link">
-                                <FormattedIcon name="External" />
-                              </StyledIconLink>
-                            )}
-                          </StyledProjectLinks>
-                        </StyledProjectHeader>
-                        <StyledProjectName>{title}</StyledProjectName>
-                        <StyledProjectDescription dangerouslySetInnerHTML={{ __html: html }} />
-                      </header>
-                      <footer>
-                        {tech && (
-                          <StyledTechList>
-                            {tech.map((tech, i) => (
-                              <li key={i}>{tech}</li>
-                            ))}
-                          </StyledTechList>
-                        )}
-                      </footer>
-                    </StyledProjectInner>
-                  </StyledProject>
-                </CSSTransition>
-              )
-            })}
+                  ref={nodeRefs.current[i]}
+                  tabIndex="0"
+                  style={{
+                    transitionDelay: `${i * 100}ms`,
+                  }}>
+                  <StyledProjectInner>
+                    <header>
+                      <StyledProjectHeader>
+                        <StyledFolder>
+                          <FormattedIcon name="Folder" />
+                        </StyledFolder>
+                        <StyledProjectLinks>
+                          {github && (
+                            <StyledIconLink
+                              href={github}
+                              target="_blank"
+                              rel="nofollow noopener noreferrer"
+                              aria-label="GitHub Link">
+                              <FormattedIcon name="GitHub" />
+                            </StyledIconLink>
+                          )}
+                          {external && (
+                            <StyledIconLink
+                              href={external}
+                              target="_blank"
+                              rel="nofollow noopener noreferrer"
+                              aria-label="External Link">
+                              <FormattedIcon name="External" />
+                            </StyledIconLink>
+                          )}
+                        </StyledProjectLinks>
+                      </StyledProjectHeader>
+                      <StyledProjectName>{title}</StyledProjectName>
+                      <StyledProjectDescription>
+                        {renderContent(content)}
+                      </StyledProjectDescription>
+                    </header>
+                    <footer>
+                      {tech && (
+                        <StyledTechList>
+                          {tech.map((tech, i) => (
+                            <li key={i}>{tech}</li>
+                          ))}
+                        </StyledTechList>
+                      )}
+                    </footer>
+                  </StyledProjectInner>
+                </StyledProject>
+              </CSSTransition>
+            ))}
         </TransitionGroup>
       </StyledGrid>
     </StyledContainer>
@@ -265,7 +286,26 @@ const Projects = ({ data }) => {
 }
 
 Projects.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      github: PropTypes.string,
+      external: PropTypes.string,
+      tech: PropTypes.arrayOf(PropTypes.string).isRequired,
+      content: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.shape({
+          type: PropTypes.string.isRequired,
+          content: PropTypes.string.isRequired,
+          link: PropTypes.shape({
+            text: PropTypes.string.isRequired,
+            url: PropTypes.string.isRequired,
+          }),
+          afterLink: PropTypes.string,
+        }),
+      ]).isRequired,
+    })
+  ).isRequired,
 }
 
 export default Projects 

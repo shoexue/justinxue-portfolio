@@ -190,36 +190,46 @@ const Education = ({ data }) => {
       </Heading>
 
       <StyledTimeline>
-        {data &&
-          data.map(({ frontmatter, html }, i) => {
-            const { title, school, range, location } = frontmatter
-            return (
-              <StyledContent 
-                key={i} 
-                ref={el => (revealEducation.current[i] = el)}
-                style={{ 
-                  transitionDelay: `${i * 100}ms`
-                }}
-              >
-                <StyledDate>{range}</StyledDate>
-                <StyledSchool>{school}</StyledSchool>
-                <StyledDegree>{title}</StyledDegree>
-                <StyledDescription dangerouslySetInnerHTML={{ __html: html }} />
-                {/* {location && (
-                  <StyledLocationIcon>
-                    <FormattedIcon name="Location" />
-                  </StyledLocationIcon>
-                )} */}
-              </StyledContent>
-            )
-          })}
+        {data.map(({ title, school, range, location, content }, i) => (
+          <StyledContent 
+            key={i} 
+            ref={el => (revealEducation.current[i] = el)}
+            style={{ 
+              transitionDelay: `${i * 100}ms`
+            }}
+          >
+            <StyledDate>{range}</StyledDate>
+            <StyledSchool>{school}</StyledSchool>
+            <StyledDegree>{title}</StyledDegree>
+            <StyledDescription>
+              <ul>
+                {content.map((item, j) => (
+                  <li key={j}>{item}</li>
+                ))}
+              </ul>
+            </StyledDescription>
+            {/* {location && (
+              <StyledLocationIcon>
+                <FormattedIcon name="Location" />
+              </StyledLocationIcon>
+            )} */}
+          </StyledContent>
+        ))}
       </StyledTimeline>
     </StyledContainer>
   )
 }
 
 Education.propTypes = {
-  data: PropTypes.array.isRequired,
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      school: PropTypes.string.isRequired,
+      location: PropTypes.string.isRequired,
+      range: PropTypes.string.isRequired,
+      content: PropTypes.arrayOf(PropTypes.string).isRequired,
+    })
+  ).isRequired,
 }
 
 export default Education 
