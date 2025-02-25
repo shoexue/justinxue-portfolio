@@ -1,9 +1,11 @@
-import { hex2rgba } from '@utils';
+'use client'
 
-const ACCENT = '#8FFF5A';
-const DARK_BG = '#101010';
-const BG = '#161616';
-const TRANSLUCENT_BG = '#1f1f1f';
+import { hex2rgba } from '../utils'
+
+const ACCENT = '#8FFF5A'
+const DARK_BG = '#101010'
+const BG = '#161616'
+const TRANSLUCENT_BG = '#1f1f1f'
 
 const theme = {
   colors: {
@@ -60,6 +62,6 @@ const theme = {
 
   navDelay: 1000,
   loaderDelay: 2000,
-};
+}
 
-export default theme;
+export default theme 

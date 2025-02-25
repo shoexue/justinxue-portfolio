@@ -1,11 +1,14 @@
-import { createGlobalStyle } from 'styled-components';
-import theme from './theme';
-import media from './media';
-import mixins from './mixins';
-import FontFaces from './fonts';
-import TransitionStyles from './TransitionStyles';
-import PrismStyles from './PrismStyles';
-const { colors, fontSizes, fonts } = theme;
+'use client'
+
+import { createGlobalStyle } from 'styled-components'
+import theme from './theme'
+import media from './media'
+import mixins from './mixins'
+import FontFaces from './fonts'
+import TransitionStyles from './TransitionStyles'
+import PrismStyles from './PrismStyles'
+
+const { colors, fontSizes, fonts } = theme
 
 const GlobalStyle = createGlobalStyle`
   ${FontFaces};
@@ -70,6 +73,7 @@ const GlobalStyle = createGlobalStyle`
     font-weight: 600;
     color: ${colors.lightestSlate};
     margin: 0 0 10px 0;
+    line-height: 1.1;
   }
 
   h1 {
@@ -90,6 +94,26 @@ const GlobalStyle = createGlobalStyle`
       ${media.desktop`font-size: 50px;`};
       ${media.tablet`font-size: 40px;`};
     }
+  }
+
+  h2 {
+    font-size: ${fontSizes.xxl};
+  }
+
+  h3 {
+    font-size: ${fontSizes.xl};
+  }
+
+  h4 {
+    font-size: ${fontSizes.lg};
+  }
+
+  h5 {
+    font-size: ${fontSizes.md};
+  }
+
+  h6 {
+    font-size: ${fontSizes.sm};
   }
 
   img {
@@ -155,6 +179,9 @@ const GlobalStyle = createGlobalStyle`
 
   p {
     margin: 0 0 15px 0;
+    line-height: 1.3;
+    font-family: ${fonts.Calibre};
+    font-size: ${fontSizes.lg};
 
     & > a {
       ${mixins.inlineLink};
@@ -274,6 +301,6 @@ const GlobalStyle = createGlobalStyle`
   ${TransitionStyles};
 
   ${PrismStyles};
-`;
+`
 
-export default GlobalStyle;
+export default GlobalStyle 

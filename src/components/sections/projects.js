@@ -1,18 +1,19 @@
-import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import sr from '@utils/sr';
-import { srConfig } from '@config';
-import { FormattedIcon } from '@components/icons';
-import styled from 'styled-components';
-import { theme, mixins, media, Section } from '@styles';
-const { colors, fontSizes, fonts } = theme;
+'use client'
+
+import React, { useState, useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import useScrollReveal from '../../utils/sr'
+import { FormattedIcon } from '../icons'
+import styled from 'styled-components'
+import { theme, mixins, media, Section, Heading } from '../../styles'
+const { colors, fontSizes, fonts } = theme
 
 const StyledContainer = styled(Section)`
   ${mixins.flexCenter};
   flex-direction: column;
   align-items: flex-start;
-`;
+`
 const StyledTitle = styled.h4`
   margin: 0 auto;
   font-size: ${fontSizes.h3};
@@ -21,7 +22,7 @@ const StyledTitle = styled.h4`
   a {
     display: block;
   }
-`;
+`
 const StyledSubtext = styled.p`
   margin: 0 auto;
   font-size: ${fontSizes.sm};
@@ -32,7 +33,7 @@ const StyledSubtext = styled.p`
   a {
     display: block;
   }
-`;
+`
 const StyledGrid = styled.div`
   margin-top: 50px;
 
@@ -43,7 +44,7 @@ const StyledGrid = styled.div`
     position: relative;
     ${media.desktop`grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));`};
   }
-`;
+`
 const StyledProjectInner = styled.div`
   ${mixins.boxShadow};
   ${mixins.flexBetween};
@@ -55,7 +56,7 @@ const StyledProjectInner = styled.div`
   border-radius: ${theme.borderRadius};
   transition: ${theme.transition};
   background-color: ${colors.lightGray};
-`;
+`
 const StyledProject = styled.div`
   transition: ${theme.transition};
   cursor: default;
@@ -66,45 +67,62 @@ const StyledProject = styled.div`
       transform: translateY(-5px);
     }
   }
-`;
+`
 const StyledProjectHeader = styled.div`
   ${mixins.flexBetween};
   margin-bottom: 30px;
-`;
+`
 const StyledFolder = styled.div`
   color: ${colors.green};
   svg {
     width: 40px;
     height: 40px;
   }
-`;
+`
 const StyledProjectLinks = styled.div`
   margin-right: -10px;
   color: ${colors.lightSlate};
-`;
+`
 const StyledIconLink = styled.a`
   position: relative;
   top: -10px;
   padding: 10px;
+  color: ${colors.lightSlate};
   svg {
     width: 20px;
     height: 20px;
   }
-`;
+  &:hover,
+  &:focus {
+    color: ${colors.green};
+  }
+`
 const StyledProjectName = styled.h5`
   margin: 0 0 10px;
   font-size: ${fontSizes.xxl};
   color: ${colors.lightestSlate};
-`;
+`
 const StyledProjectDescription = styled.div`
-  font-size: 17px;
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.sm};
   color: ${colors.lightSlate};
+  line-height: 1.5;
+
+  * {
+    font-family: ${fonts.SFMono} !important;
+  }
+
+  p {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
+    margin-bottom: 15px;
+  }
+
   a {
     ${mixins.inlineLink};
+    font-family: ${fonts.SFMono};
   }
-`;
+`
 const StyledTechList = styled.ul`
   display: flex;
   align-items: flex-end;
@@ -124,44 +142,78 @@ const StyledTechList = styled.ul`
       margin-right: 0;
     }
   }
-`;
+`
 
 const Projects = ({ data }) => {
-  const revealTitle = useRef(null);
-  const revealArchiveLink = useRef(null);
-  const revealProjects = useRef([]);
+  const [isMounted, setIsMounted] = useState(false)
+  const revealTitle = useRef(null)
+  const revealArchiveLink = useRef(null)
+  const revealProjects = useRef([])
+  const nodeRefs = useRef([])
+  const sr = useScrollReveal()
 
   useEffect(() => {
-    sr.reveal(revealTitle.current, srConfig());
-    sr.reveal(revealArchiveLink.current, srConfig());
-    revealProjects.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
-  }, []);
+    // Initialize nodeRefs for each project
+    nodeRefs.current = data ? data.map(() => React.createRef()) : []
+    setIsMounted(true)
+    
+    if (sr && revealTitle.current) {
+      sr.reveal(revealTitle.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'left',
+        viewFactor: 0.25,
+      })
+      sr.reveal(revealArchiveLink.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'bottom',
+        viewFactor: 0.25,
+      })
+      revealProjects.current.forEach((ref, i) => {
+        if (ref) {
+          sr.reveal(ref, {
+            duration: 500,
+            distance: '20px',
+            easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+            origin: 'bottom',
+            viewFactor: 0.25,
+            delay: i * 100,
+          })
+        }
+      })
+    }
+  }, [sr, data])
 
-  const projects = data.filter(({ node }) => node);
-  const projectsToShow = projects;
-  const archiveText = `// archives`;
-  const descriptionText = `// just some more of my projects`;
+  const archiveText = `// archives`
+  const descriptionText = `// just some more of my projects`
 
   return (
-    <StyledContainer>
+    <StyledContainer id="projects">
       <StyledTitle ref={revealTitle}>{archiveText}</StyledTitle>
       <StyledSubtext ref={revealTitle}>{descriptionText}</StyledSubtext>
       <StyledGrid>
         <TransitionGroup className="projects">
-          {projectsToShow &&
-            projectsToShow.map(({ node }, i) => {
-              const { frontmatter, html } = node;
-              const { github, external, title, tech } = frontmatter;
+          {isMounted &&
+            data &&
+            data.map(({ frontmatter, html }, i) => {
+              const { github, external, title, tech } = frontmatter
               return (
-                <CSSTransition key={i} classNames="fadeup" timeout={300} exit={false}>
+                <CSSTransition
+                  key={i}
+                  classNames="fadeup"
+                  timeout={300}
+                  nodeRef={nodeRefs.current[i]}
+                  exit={false}>
                   <StyledProject
                     key={i}
-                    ref={el => (revealProjects.current[i] = el)}
+                    ref={nodeRefs.current[i]}
                     tabIndex="0"
                     style={{
-                      transitionDelay: `0ms`,
-                    }}
-                  >
+                      transitionDelay: `${i * 100}ms`,
+                    }}>
                     <StyledProjectInner>
                       <header>
                         <StyledProjectHeader>
@@ -174,8 +226,7 @@ const Projects = ({ data }) => {
                                 href={github}
                                 target="_blank"
                                 rel="nofollow noopener noreferrer"
-                                aria-label="GitHub Link"
-                              >
+                                aria-label="GitHub Link">
                                 <FormattedIcon name="GitHub" />
                               </StyledIconLink>
                             )}
@@ -184,8 +235,7 @@ const Projects = ({ data }) => {
                                 href={external}
                                 target="_blank"
                                 rel="nofollow noopener noreferrer"
-                                aria-label="External Link"
-                              >
+                                aria-label="External Link">
                                 <FormattedIcon name="External" />
                               </StyledIconLink>
                             )}
@@ -206,16 +256,16 @@ const Projects = ({ data }) => {
                     </StyledProjectInner>
                   </StyledProject>
                 </CSSTransition>
-              );
+              )
             })}
         </TransitionGroup>
       </StyledGrid>
     </StyledContainer>
-  );
-};
+  )
+}
 
 Projects.propTypes = {
   data: PropTypes.array.isRequired,
-};
+}
 
-export default Projects;
+export default Projects 

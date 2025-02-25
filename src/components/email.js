@@ -1,10 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { email } from '@config';
-import { Side } from '@components';
-import styled from 'styled-components';
-import { theme } from '@styles';
-const { colors, fontSizes, fonts } = theme;
+'use client'
+
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Side } from '.'
+import styled from 'styled-components'
+import { theme } from '../styles'
+const { colors, fontSizes, fonts } = theme
+
+const email = 'alvina.yang@mail.utoronto.ca'
 
 const StyledLinkWrapper = styled.div`
   display: flex;
@@ -19,12 +22,12 @@ const StyledLinkWrapper = styled.div`
     margin: 0 auto;
     background-color: ${colors.lightSlate};
   }
-`;
+`
 const StyledEmailLink = styled.a`
   font-size: ${fontSizes.lg};
   letter-spacing: 0.1em;
   font-family: ${fonts.Calibre};
-  font-weight: 500;
+  font-weight: 400;
   writing-mode: vertical-rl;
   margin: 20px auto;
   padding: 10px;
@@ -33,7 +36,7 @@ const StyledEmailLink = styled.a`
   &:focus {
     transform: translateY(-3px);
   }
-`;
+`
 
 const Email = ({ isHome }) => (
   <Side isHome={isHome} orientation="right">
@@ -41,9 +44,10 @@ const Email = ({ isHome }) => (
       <StyledEmailLink href={`mailto:${email}`}>{email}</StyledEmailLink>
     </StyledLinkWrapper>
   </Side>
-);
+)
+
 Email.propTypes = {
   isHome: PropTypes.bool,
-};
+}
 
-export default Email;
+export default Email 

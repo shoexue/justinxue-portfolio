@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+"use client"
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
-import { theme, mixins, media, Section, FractalTreeContainer } from '@styles';
-import { FractalTree } from '@components';
+import { theme, mixins, media, Section, FractalTreeContainer } from "@/styles"
+import { FractalTree } from '@/components';
 const { colors, fontSizes, fonts, navDelay, loaderDelay } = theme;
 
 const StyledContainer = styled(Section)`
@@ -55,50 +56,64 @@ const StyledDescription = styled.div`
 
 const Hero = ({ data }) => {
   const [isMounted, setIsMounted] = useState(false);
+  const containerRef = useRef(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => setIsMounted(true), navDelay);
     return () => clearTimeout(timeout);
   }, []);
 
-  const { frontmatter, html } = data[0].node;
+  const { frontmatter, html } = data[0];
 
-  const one = () => (
-    <StyledOverline style={{ transitionDelay: '100ms' }}>{frontmatter.title}</StyledOverline>
-  );
-  const two = () => (
-    <StyledTitle style={{ transitionDelay: '200ms' }}>{frontmatter.name}</StyledTitle>
-  );
-  const three = () => (
-    <StyledSubtitle style={{ transitionDelay: '300ms' }}>{frontmatter.subtitle}</StyledSubtitle>
-  );
-  const four = () => (
-    <div>
-      <StyledDescription
-        style={{ transitionDelay: '400ms' }}
-        dangerouslySetInnerHTML={{ __html: html }}
-      />
-    </div>
-  );
-
-  const five = () => (
-    <FractalTreeContainer style={{ transitionDelay: '500ms' }}>
-      <FractalTree />
-    </FractalTreeContainer>
-  );
-
-  const items = [one, two, three, four, five];
+  const items = [
+    {
+      node: <StyledOverline>{frontmatter.title}</StyledOverline>,
+      delay: '100ms'
+    },
+    {
+      node: <StyledTitle>{frontmatter.name}</StyledTitle>,
+      delay: '200ms'
+    },
+    {
+      node: <StyledSubtitle>{frontmatter.subtitle}</StyledSubtitle>,
+      delay: '300ms'
+    },
+    {
+      node: <StyledDescription dangerouslySetInnerHTML={{ __html: html }} />,
+      delay: '400ms'
+    }
+  ];
 
   return (
-    <StyledContainer>
-      <TransitionGroup component={null}>
-        {isMounted &&
-          items.map((item, i) => (
-            <CSSTransition key={i} classNames="fadeup" timeout={loaderDelay}>
-              {item}
-            </CSSTransition>
-          ))}
-      </TransitionGroup>
+    <StyledContainer ref={containerRef}>
+      {isMounted && (
+        <>
+          <div>
+            {items.map(({ node, delay }, i) => (
+              <div key={i} style={{ 
+                transitionDelay: delay,
+                opacity: 0,
+                transform: 'translateY(20px)',
+                animation: 'fadeup 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) forwards',
+                animationDelay: delay
+              }}>
+                {node}
+              </div>
+            ))}
+          </div>
+          <div style={{ 
+            transitionDelay: '500ms',
+            opacity: 0,
+            animation: 'fadeup 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) forwards',
+            animationDelay: '500ms',
+            width: '100%'
+          }}>
+            <FractalTreeContainer>
+              <FractalTree />
+            </FractalTreeContainer>
+          </div>
+        </>
+      )}
     </StyledContainer>
   );
 };

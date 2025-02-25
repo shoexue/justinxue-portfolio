@@ -1,7 +1,7 @@
-import styled from 'styled-components';
-import theme from './theme';
-import media from './media';
-const { colors, fontSizes } = theme;
+import styled from 'styled-components'
+import theme from './theme'
+import media from './media'
+const { colors, fontSizes, fonts } = theme
 
 const Heading = styled.h3`
   position: relative;
@@ -12,10 +12,6 @@ const Heading = styled.h3`
   white-space: nowrap;
   font-size: ${fontSizes.h3};
   ${media.tablet`font-size: 24px;`};
-
-  &:hover {
-    color: ${colors.green}; // Change text color to green on hover
-  }
 
   &:after {
     content: '';
@@ -30,6 +26,6 @@ const Heading = styled.h3`
     ${media.tablet`width: 100%;`};
     ${media.thone`margin-left: 10px;`};
   }
-`;
+`
 
-export default Heading;
+export default Heading 

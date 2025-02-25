@@ -1,47 +1,46 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+'use client'
+
+import React from 'react'
+import PropTypes from 'prop-types'
 import {
   IconExternal,
   IconFolder,
   IconFork,
   IconGitHub,
   IconLinkedin,
-  IconLoader,
   IconLocation,
   IconLogo,
   IconStar,
   IconZap,
-} from '@components/icons';
+} from '.'
 
 const FormattedIcon = ({ name }) => {
   switch (name) {
     case 'External':
-      return <IconExternal />;
+      return <IconExternal />
     case 'Folder':
-      return <IconFolder />;
+      return <IconFolder />
     case 'Fork':
-      return <IconFork />;
+      return <IconFork />
     case 'GitHub':
-      return <IconGitHub />;
+      return <IconGitHub />
     case 'Linkedin':
-      return <IconLinkedin />;
-    case 'Loader':
-      return <IconLoader />;
+      return <IconLinkedin />
     case 'Location':
-      return <IconLocation />;
+      return <IconLocation />
     case 'Logo':
-      return <IconLogo />;
+      return <IconLogo />
     case 'Star':
-      return <IconStar />;
+      return <IconStar />
     case 'Zap':
-      return <IconZap />;
+      return <IconZap />
     default:
-      return <IconExternal />;
+      return <IconExternal />
   }
-};
+}
 
 FormattedIcon.propTypes = {
   name: PropTypes.string.isRequired,
-};
+}
 
-export default FormattedIcon;
+export default FormattedIcon 

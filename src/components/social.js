@@ -1,11 +1,23 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { socialMedia } from '@config';
-import { Side } from '@components';
-import { FormattedIcon } from '@components/icons';
-import styled from 'styled-components';
-import { theme } from '@styles';
-const { colors } = theme;
+'use client'
+
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Side } from '.'
+import { FormattedIcon } from './icons'
+import styled from 'styled-components'
+import { theme } from '../styles'
+const { colors } = theme
+
+const socialMedia = [
+  {
+    name: 'GitHub',
+    url: 'https://github.com/alvina-yang',
+  },
+  {
+    name: 'Linkedin',
+    url: 'https://www.linkedin.com/in/alvina-yang',
+  },
+]
 
 const StyledList = styled.ul`
   display: flex;
@@ -27,7 +39,7 @@ const StyledList = styled.ul`
   li:last-of-type {
     margin-bottom: 20px;
   }
-`;
+`
 const StyledLink = styled.a`
   padding: 10px;
   &:hover,
@@ -38,7 +50,7 @@ const StyledLink = styled.a`
     width: 25px;
     height: 25px;
   }
-`;
+`
 
 const Social = ({ isHome }) => (
   <Side isHome={isHome} orientation="left">
@@ -57,10 +69,10 @@ const Social = ({ isHome }) => (
         ))}
     </StyledList>
   </Side>
-);
+)
 
 Social.propTypes = {
   isHome: PropTypes.bool,
-};
+}
 
-export default Social;
+export default Social 

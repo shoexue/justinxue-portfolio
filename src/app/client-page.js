@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Layout from '../components/layout'
+import { Loader } from '../components'
 import Hero from '../components/sections/hero'
 import About from '../components/sections/about'
 import Jobs from '../components/sections/jobs'
@@ -34,7 +35,7 @@ export default function ClientPage() {
   }, [])
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <Loader finishLoading={() => setIsLoading(false)} />
   }
 
   if (!content) {

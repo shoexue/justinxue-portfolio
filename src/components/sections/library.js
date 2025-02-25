@@ -1,273 +1,209 @@
-import React, { useEffect, useRef, useState } from 'react';
-import PropTypes from 'prop-types';
-import styled, { keyframes } from 'styled-components';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import sr from '@utils/sr';
-import { srConfig } from '@config';
-import { Heading, Section, Dot, media, theme } from '@styles';
-const { colors, fontSizes, fonts } = theme;
-import { Splide, SplideSlide } from '@splidejs/react-splide';
-import { AutoScroll } from '@splidejs/splide-extension-auto-scroll';
-import '@splidejs/splide/dist/css/splide.min.css';
+'use client'
 
-const initAnimation = keyframes`
-  0% {
-    transform: rotateY(-8deg);
-  }
-  100% {
-    transform: rotateY(-30deg);
-  }
-`;
+import React, { useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
+import Image from 'next/image'
+import { Splide, SplideSlide } from '@splidejs/react-splide'
+import { AutoScroll } from '@splidejs/splide-extension-auto-scroll'
+import sr from '../../utils/sr'
+import styled from 'styled-components'
+import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
+const { colors, fontSizes, fonts } = theme
 
-/* Styled Components */
-const StyledLibraryContainer = styled(Section)`
-  position: relative;
-  padding: 4rem 2rem;
-  background: transparent;
-  text-align: center;
-`;
+const StyledContainer = styled(Section)`
+  ${mixins.flexCenter};
+  flex-direction: column;
+  align-items: flex-start;
+`
 
-const StyledSubtext = styled.p`
-  margin: 0 auto;
-  font-size: ${fontSizes.sm};
-  margin-top: 5px;
-  margin-bottom: 1rem;
-  text-align: left;
+const StyledContent = styled.div`
+  width: 100%;
+  margin-top: 20px;
+`
+
+const StyledLabel = styled.h4`
+  font-size: ${fontSizes.smish};
+  font-weight: normal;
+  color: ${colors.green};
   font-family: ${fonts.SFMono};
-  color: ${colors.slate};
-  ${media.tablet`font-size: 24px;`};
-`;
+  margin-top: 10px;
+  padding-top: 0;
+`
 
-const StyledHeading = styled(Heading)`
-  margin-bottom: 1rem;
-`;
+const StyledBookGrid = styled.div`
+  position: relative;
+  margin-top: 50px;
+  width: 100%;
 
-const StyledSplide = styled(Splide)`
-  .splide__track {
-    overflow: hidden;
+  .splide {
+    padding: 1rem;
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
   }
 
-  .splide__list {
-    display: flex;
-    align-items: center;
-    height: 370px;
+  .splide__track {
+    overflow: visible;
   }
 
   .splide__slide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-`;
+    opacity: 0.5;
+    transform: scale(0.9);
+    transition: ${theme.transition};
 
-const BookContainer = styled.div`
-  display: flex;
-  height: 400px;
-  align-items: center;
-  justify-content: center;
-  perspective: 600px;
-`;
-
-const Book = styled.div`
-  width: 200px;
-  height: 300px;
-  position: relative;
-  transform-style: preserve-3d;
-  transform: ${props => (props.active ? 'rotateY(-8deg)' : 'rotateY(-30deg)')};
-  transition: transform 1s ease;
-  animation: 1s ease 0s 1 ${initAnimation};
-
-  @media (hover: hover) and (pointer: fine) {
-    &:hover {
-      transform: rotateY(-8deg);
+    &.is-active {
+      opacity: 1;
+      transform: scale(1);
     }
   }
-`;
+`
 
-const FrontCoverImage = styled.img`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 200px;
-  height: 300px;
-  transform: translateZ(15px);
-  border-radius: 0 2px 2px 0;
-  box-shadow: 5px 3px 20px rgba(102, 102, 102, 0.5);
-  object-fit: fill;
-  display: block;
-`;
+const StyledBook = styled.div`
+  ${mixins.boxShadow};
+  position: relative;
+  width: 100%;
+  background-color: ${colors.lightGray};
+  padding: 2rem;
+  border-radius: ${theme.borderRadius};
+  transition: ${theme.transition};
 
-const BookPages = styled(Book)`
-  &::before {
-    position: absolute;
-    content: '';
-    background-color: blue;
-    left: 0;
-    top: 1px;
-    width: 28px;
-    height: 298px;
-    transform: translateX(184px) rotateY(90deg);
-    background: linear-gradient(
-      90deg,
-      #fff 0%,
-      #f9f9f9 5%,
-      #fff 10%,
-      #f9f9f9 15%,
-      #fff 20%,
-      #f9f9f9 25%,
-      #fff 30%,
-      #f9f9f9 35%,
-      #fff 40%,
-      #f9f9f9 45%,
-      #fff 50%,
-      #f9f9f9 55%,
-      #fff 60%,
-      #f9f9f9 65%,
-      #fff 70%,
-      #f9f9f9 75%,
-      #fff 80%,
-      #f9f9f9 85%,
-      #fff 90%,
-      #f9f9f9 95%,
-      #fff 100%
-    );
+  &:hover {
+    transform: translateY(-5px);
   }
+`
 
-  &::after {
+const StyledImageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  padding-bottom: 150%; // 2:3 aspect ratio for book covers
+  border-radius: ${theme.borderRadius};
+  overflow: hidden;
+  background-color: ${colors.lightGray};
+
+  img {
     position: absolute;
     top: 0;
     left: 0;
-    content: '';
-    width: 200px;
-    height: 300px;
-    transform: translateZ(-15px);
-    background-color: #01060f;
-    border-radius: 0 2px 2px 0;
-    box-shadow: -4px 0 20px rgba(102, 102, 102, 0.9);
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
-`;
+`
 
-/* Library Component */
+const StyledBookInfo = styled.div`
+  margin-top: 20px;
+  text-align: center;
+`
+
+const StyledBookTitle = styled.h5`
+  color: ${colors.lightestSlate};
+  font-size: ${fontSizes.lg};
+  font-weight: 600;
+  margin: 0 0 5px;
+`
+
+const StyledBookAuthor = styled.p`
+  color: ${colors.slate};
+  font-family: ${fonts.SFMono};
+  font-size: ${fontSizes.smish};
+  margin: 0;
+`
+
 const Library = ({ title, images }) => {
-  const revealHeading = useRef(null);
-  const revealSubtext = useRef(null);
-  const revealCarousel = useRef(null);
-  const splideRef = useRef(null);
-
-  const [activeBooks, setActiveBooks] = useState({});
-  const [isMobile, setIsMobile] = useState(false);
+  const revealTitle = useRef(null)
+  const revealBooks = useRef(null)
 
   useEffect(() => {
-    sr.reveal(revealHeading.current, srConfig());
-    sr.reveal(revealSubtext.current, srConfig());
-    sr.reveal(revealCarousel.current, srConfig());
-
-    // Detect if the device is mobile based on window width
-    const handleResize = () => {
-      if (typeof window !== 'undefined') {
-        setIsMobile(window.innerWidth <= 768);
-      }
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const handleBookClick = index => {
-    if (isMobile) {
-      setActiveBooks(prev => {
-        const isActive = prev[index];
-        const updatedActiveBooks = { ...prev, [index]: !isActive };
-        const anyActive = Object.values(updatedActiveBooks).some(val => val);
-        if (anyActive) {
-          splideRef.current?.splide?.Components?.AutoScroll?.pause();
-        } else {
-          splideRef.current?.splide?.Components?.AutoScroll?.play();
-        }
-        return updatedActiveBooks;
-      });
+    if (sr) {
+      sr.reveal(revealTitle.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'left',
+        viewFactor: 0.25,
+      })
+      sr.reveal(revealBooks.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'bottom',
+        viewFactor: 0.25,
+      })
     }
-  };
-
-  const duplicatedImages = [...images, ...images];
-
-  const splideOptions = {
-    type: 'loop',
-    autoScroll: {
-      pauseOnHover: true,
-      pauseOnFocus: false,
-      rewind: true,
-      speed: 1,
-    },
-    arrows: false,
-    pagination: false,
-    fixedWidth: '200px',
-    gap: '3rem',
-  };
-
-  const descriptionText = '// my impeccable taste in books, obviously.';
+  }, [])
 
   return (
-    <StyledLibraryContainer id="library">
-      <TransitionGroup component={null}>
-        <CSSTransition classNames="fadeup" timeout={300}>
-          <StyledHeading ref={revealHeading}>
-            <Dot>.</Dot>
-            {title}
-          </StyledHeading>
-        </CSSTransition>
-        <CSSTransition classNames="fadeup" timeout={300}>
-          <StyledSubtext ref={revealSubtext}>{descriptionText}</StyledSubtext>
-        </CSSTransition>
-      </TransitionGroup>
+    <StyledContainer id="library">
+      <Heading ref={revealTitle}>
+        <Dot>.</Dot>Library
+      </Heading>
 
-      <div className="carousel-container" ref={revealCarousel}>
-        <StyledSplide ref={splideRef} options={splideOptions} extensions={{ AutoScroll }}>
-          {duplicatedImages.map(({ node }, index) => {
-            const imageSrc = node.childImageSharp?.fluid?.src || node.publicURL;
+      <StyledContent>
+        <StyledLabel>{title}</StyledLabel>
 
-            return (
-              <SplideSlide key={index}>
-                <BookContainer>
-                  <BookPages
-                    onClick={() => handleBookClick(index)}
-                    active={activeBooks[index]}
-                    tabIndex="0"
-                    role="button"
-                    aria-pressed={activeBooks[index]}
-                    onKeyPress={e => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        handleBookClick(index);
-                      }
-                    }}
-                  >
-                    <FrontCoverImage src={imageSrc} alt={`Book Cover ${index + 1}`} />
-                  </BookPages>
-                </BookContainer>
-              </SplideSlide>
-            );
-          })}
-        </StyledSplide>
-      </div>
-    </StyledLibraryContainer>
-  );
-};
+        <StyledBookGrid ref={revealBooks}>
+          <Splide
+            options={{
+              type: 'loop',
+              perPage: 4,
+              focus: 'center',
+              autoScroll: {
+                speed: 1,
+                pauseOnHover: true,
+              },
+              gap: '2rem',
+              arrows: false,
+              pagination: false,
+              drag: true,
+              breakpoints: {
+                1200: {
+                  perPage: 3,
+                },
+                768: {
+                  perPage: 2,
+                },
+                480: {
+                  perPage: 1,
+                },
+              },
+            }}
+            extensions={{ AutoScroll }}>
+            {images &&
+              images.map(({ frontmatter }, i) => {
+                const { cover, title, author } = frontmatter
+                return (
+                  <SplideSlide key={i}>
+                    <StyledBook>
+                      <StyledImageContainer>
+                        <Image
+                          src={cover}
+                          alt={title}
+                          width={300}
+                          height={450}
+                          quality={95}
+                          priority
+                        />
+                      </StyledImageContainer>
+                      <StyledBookInfo>
+                        <StyledBookTitle>{title}</StyledBookTitle>
+                        <StyledBookAuthor>{author}</StyledBookAuthor>
+                      </StyledBookInfo>
+                    </StyledBook>
+                  </SplideSlide>
+                )
+              })}
+          </Splide>
+        </StyledBookGrid>
+      </StyledContent>
+    </StyledContainer>
+  )
+}
 
 Library.propTypes = {
   title: PropTypes.string.isRequired,
-  images: PropTypes.arrayOf(
-    PropTypes.shape({
-      node: PropTypes.shape({
-        childImageSharp: PropTypes.shape({
-          fluid: PropTypes.shape({
-            src: PropTypes.string,
-          }),
-        }),
-        publicURL: PropTypes.string,
-      }).isRequired,
-    }),
-  ).isRequired,
-};
+  images: PropTypes.array.isRequired,
+}
 
-export default Library;
+export default Library 

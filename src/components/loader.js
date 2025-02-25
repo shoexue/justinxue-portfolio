@@ -1,8 +1,10 @@
-import React, { useEffect } from 'react';
-import PropTypes from 'prop-types';
-import styled, { keyframes } from 'styled-components';
-import { theme, media } from '@styles';
-const { colors } = theme;
+'use client'
+
+import React, { useEffect } from 'react'
+import PropTypes from 'prop-types'
+import styled, { keyframes } from 'styled-components'
+import { theme, media } from '../styles'
+const { colors } = theme
 
 const rotateY = keyframes`
   0%, 50%, 100% {
@@ -14,7 +16,7 @@ const rotateY = keyframes`
   75% {
     transform: translateY(2vw);
   }
-`;
+`
 
 const rotateX = keyframes`
   0%, 50%, 100% {
@@ -26,7 +28,7 @@ const rotateX = keyframes`
   75% {
     transform: translateY(-2vw);
   }
-`;
+`
 const rotateYSmall = keyframes`
   0%, 50%, 100% {
     transform: translateX(0);
@@ -37,7 +39,7 @@ const rotateYSmall = keyframes`
   75% {
     transform: translateY(4vw);
   }
-`;
+`
 
 const rotateXSmall = keyframes`
   0%, 50%, 100% {
@@ -49,7 +51,7 @@ const rotateXSmall = keyframes`
   75% {
     transform: translateY(-4vw);
   }
-`;
+`
 
 const StyledLoaderContainer = styled.div`
   position: fixed;
@@ -61,7 +63,7 @@ const StyledLoaderContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
+`
 
 const StyledLoader = styled.div`
   position: relative;
@@ -71,7 +73,7 @@ const StyledLoader = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
+`
 
 const StyledDot = styled.span`
   position: absolute;
@@ -95,15 +97,15 @@ const StyledDot = styled.span`
       animation: ${rotateXSmall} 0.7s infinite linear;
     }
   `};
-`;
+`
 
 const Loader = ({ finishLoading }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
-      finishLoading();
-    }, 1000); // Set this to the desired loader display duration
-    return () => clearTimeout(timeout);
-  }, [finishLoading]);
+      finishLoading()
+    }, 1000) // Set this to the desired loader display duration
+    return () => clearTimeout(timeout)
+  }, [finishLoading])
 
   return (
     <StyledLoaderContainer className="loader-div">
@@ -112,11 +114,11 @@ const Loader = ({ finishLoading }) => {
         <StyledDot />
       </StyledLoader>
     </StyledLoaderContainer>
-  );
-};
+  )
+}
 
 Loader.propTypes = {
   finishLoading: PropTypes.func.isRequired,
-};
+}
 
-export default Loader;
+export default Loader 

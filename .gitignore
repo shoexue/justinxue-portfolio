@@ -12,3 +12,5 @@ package-lock.json
 node_modules/
 next-portfolio/node_modules/
 next-portfolio/.next/
+
+.next/

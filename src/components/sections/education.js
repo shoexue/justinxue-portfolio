@@ -1,262 +1,225 @@
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import sr from '@utils/sr';
-import { srConfig } from '@config';
-import styled from 'styled-components';
-import { theme, mixins, media, Section, Heading, Dot } from '@styles';
-const { colors, fontSizes, fonts } = theme;
+'use client'
+
+import React, { useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
+import useScrollReveal from '../../utils/sr'
+// import { FormattedIcon } from '../icons'
+import styled from 'styled-components'
+import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
+const { colors, fontSizes, fonts } = theme
 
 const StyledContainer = styled(Section)`
   position: relative;
   max-width: 800px;
-`;
-const StyledTabs = styled.div`
-  display: flex;
-  align-items: flex-start;
-  position: relative;
-  ${media.thone`
-    display: block;
-  `};
-`;
-const StyledTabList = styled.ul`
-  display: block;
-  position: relative;
-  width: max-content;
-  z-index: 3;
-  padding: 0;
-  margin: 0;
-  list-style: none;
+`
 
-  ${media.thone`
-    display: flex;
-    overflow-x: scroll;
-    margin-bottom: 30px;
-    width: calc(100% + 100px);
-    margin-left: -50px;
-  `};
-  ${media.phablet`
-    width: calc(100% + 50px);
-    margin-left: -25px;
-  `};
-
-  li {
-    &:first-of-type {
-      ${media.thone`
-        margin-left: 50px;
-      `};
-      ${media.phablet`
-        margin-left: 25px;
-      `};
-    }
-    &:last-of-type {
-      ${media.thone`
-        padding-right: 50px;
-      `};
-      ${media.phablet`
-        padding-right: 25px;
-      `};
-    }
-  }
-`;
-const StyledTabButton = styled.button`
-  ${mixins.link};
-  display: flex;
-  align-items: center;
-  width: 100%;
-  background-color: transparent;
-  height: ${theme.tabHeight}px;
-  padding: 0 20px 2px;
-  transition: ${theme.transition};
-  border-left: 2px solid ${colors.lightestGray};
-  text-align: left;
-  white-space: nowrap;
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.smish};
-  color: ${props => (props.isActive ? colors.green : colors.slate)};
-  ${media.tablet`padding: 0 15px 2px;`};
-  ${media.thone`
-    ${mixins.flexCenter};
-    padding: 0 15px;
-    text-align: center;
-    border-left: 0;
-    border-bottom: 2px solid ${colors.lightestGray};
-    min-width: 120px;
-  `};
-  &:hover,
-  &:focus {
-    background-color: ${colors.lightGray};
-  }
-`;
-const StyledHighlight = styled.span`
-  display: block;
-  background: ${colors.green};
-  width: 2px;
-  height: ${theme.tabHeight}px;
-  border-radius: ${theme.borderRadius};
-  position: absolute;
-  top: 0;
-  left: 0;
-  transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-  transition-delay: 0.1s;
-  z-index: 10;
-  transform: translateY(
-    ${props => (props.activeTabId > 0 ? props.activeTabId * theme.tabHeight : 0)}px
-  );
-  ${media.thone`
-    width: 100%;
-    max-width: ${theme.tabWidth}px;
-    height: 2px;
-    top: auto;
-    bottom: 0;
-    transform: translateX(
-      ${props => (props.activeTabId > 0 ? props.activeTabId * theme.tabWidth : 0)}px
-    );
-    margin-left: 50px;
-  `};
-  ${media.phablet`
-    margin-left: 25px;
-  `};
-`;
-const StyledTabContent = styled.div`
+const StyledTimeline = styled.div`
   position: relative;
-  width: 100%;
-  height: auto;
-  padding-top: 12px;
   padding-left: 30px;
-  ${media.tablet`padding-left: 20px;`};
-  ${media.thone`padding-left: 0;`};
+  margin-left: 10px;
+  border-left: 2px solid ${colors.green};
 
-  ul {
-    ${mixins.fancyList};
-    font-size: ${fontSizes.sm};
+  &:before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 0;
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background-color: ${colors.green};
   }
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: -7px;
+    bottom: 0;
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background-color: ${colors.green};
+  }
+`
+
+const StyledContent = styled.div`
+  position: relative;
+  margin-bottom: 50px;
+  padding: 25px;
+  border-radius: ${theme.borderRadius};
+  background-color: transparent;
+  border: 3px solid ${colors.lightGray};
+  transition: ${theme.transition};
+  ${mixins.boxShadow};
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+`
+
+const StyledDate = styled.div`
+  margin-bottom: 10px;
+  color: ${colors.slate};
+  font-family: ${fonts.SFMono};
+  font-size: ${fontSizes.sm};
+`
+
+const StyledSchool = styled.h4`
+  margin-bottom: 5px;
+  font-size: ${fontSizes.xxl};
+  font-weight: 600;
+  color: ${colors.lightestSlate};
+`
+
+const StyledDegree = styled.h5`
+  margin-bottom: 20px;
+  font-size: ${fontSizes.lg};
+  font-weight: normal;
+  color: ${colors.green};
+`
+
+const StyledDescription = styled.div`
+  font-size: ${fontSizes.sm};
+  font-family: ${fonts.SFMono};
+  color: ${colors.lightSlate};
+  
   a {
     ${mixins.inlineLink};
   }
-> div {
-    font-family: ${fonts.SFMono};
-`;
-const StyledSchoolTitle = styled.h4`
-  color: ${colors.lightestSlate};
-  font-size: ${fontSizes.xxl};
-  font-weight: 500;
-  margin-bottom: 5px;
-`;
-const StyledProgram = styled.h6`
-  color: ${colors.green};
-  font-size: ${fontSizes.lg};
-  font-weight: 400;
-  margin-bottom: 5px;
-`;
-const StyledJobDetails = styled.h5`
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.smish};
-  font-weight: normal;
-  letter-spacing: 0.05em;
-  color: ${colors.lightestSlate};
-  margin-bottom: 30px;
-  svg {
-    width: 15px;
+
+  ul {
+    ${mixins.fancyList};
   }
-`;
+
+  li {
+    position: relative;
+    padding-left: 30px;
+    margin-bottom: 10px;
+    font-size: ${fontSizes.sm};
+    
+    &:before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: ${colors.green};
+    }
+  }
+`
+
+const StyledTechList = styled.ul`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 20px 0 0 0;
+  list-style: none;
+
+  li {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.smish};
+    color: ${colors.slate};
+    margin-right: 20px;
+    margin-bottom: 7px;
+    white-space: nowrap;
+    &:last-of-type {
+      margin-right: 0;
+    }
+    &:before {
+      content: '▹';
+      color: ${colors.green};
+      margin-right: 8px;
+    }
+  }
+`
+
+const StyledLocationIcon = styled.div`
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  color: ${colors.green};
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+`
 
 const Education = ({ data }) => {
-  const [activeTabId, setActiveTabId] = useState(0);
-  const [tabFocus, setTabFocus] = useState(null);
-  const tabs = useRef([]);
+  const revealTitle = useRef(null)
+  const revealEducation = useRef([])
+  const sr = useScrollReveal()
 
-  const revealContainer = useRef(null);
-  useEffect(() => sr.reveal(revealContainer.current, srConfig()), []);
-
-  const focusTab = () => {
-    if (tabs.current[tabFocus]) {
-      tabs.current[tabFocus].focus();
-    } else {
-      // If we're at the end, go to the start
-      if (tabFocus >= tabs.current.length) {
-        setTabFocus(0);
-      }
-      // If we're at the start, move to the end
-      if (tabFocus < 0) {
-        setTabFocus(tabs.current.length - 1);
-      }
+  useEffect(() => {
+    if (sr && revealTitle.current) {
+      sr.reveal(revealTitle.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'left',
+        viewFactor: 0.25,
+      })
+      
+      revealEducation.current.forEach((ref, i) => {
+        if (ref) {
+          sr.reveal(ref, {
+            duration: 1000,
+            distance: '40px',
+            easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+            origin: 'bottom',
+            viewFactor: 0.2,
+            delay: i * 200,
+            beforeReveal: (el) => {
+              el.classList.add('visible');
+            },
+          })
+        }
+      })
     }
-  };
-
-  // Only re-run the effect if tabFocus changes
-  useEffect(() => focusTab(), [tabFocus]);
-
-  const onKeyPressed = e => {
-    if (e.keyCode === 38 || e.keyCode === 40) {
-      e.preventDefault();
-      if (e.keyCode === 40) {
-        // Move down
-        setTabFocus(tabFocus + 1);
-      } else if (e.keyCode === 38) {
-        // Move up
-        setTabFocus(tabFocus - 1);
-      }
-    }
-  };
+  }, [sr])
 
   return (
-    <StyledContainer id="education" ref={revealContainer}>
-      <Heading>
-        <Dot>.</Dot>
-        education ()
+    <StyledContainer id="education">
+      <Heading ref={revealTitle}>
+        <Dot>.</Dot>education ()
       </Heading>
-      <StyledTabs>
+
+      <StyledTimeline>
         {data &&
-          data.map(({ node }, i) => {
-            const { frontmatter, html } = node;
-            const { title, school, range } = frontmatter;
+          data.map(({ frontmatter, html }, i) => {
+            const { title, school, range, location } = frontmatter
             return (
-              <StyledTabContent
-                key={i}
-                isActive={activeTabId === i}
-                id={`panel-${i}`}
-                role="tabpanel"
-                aria-labelledby={`tab-${i}`}
-                tabIndex={activeTabId === i ? '0' : '-1'}
-                hidden={activeTabId !== i}>
-                <StyledSchoolTitle>{school}</StyledSchoolTitle>
-                <StyledProgram>{title}</StyledProgram>
-                <StyledJobDetails>
-                  <span>{range}</span>
-                </StyledJobDetails>
-                <div dangerouslySetInnerHTML={{ __html: html }} />
-              </StyledTabContent>
-            );
+              <StyledContent 
+                key={i} 
+                ref={el => (revealEducation.current[i] = el)}
+                style={{ 
+                  transitionDelay: `${i * 100}ms`
+                }}
+              >
+                <StyledDate>{range}</StyledDate>
+                <StyledSchool>{school}</StyledSchool>
+                <StyledDegree>{title}</StyledDegree>
+                <StyledDescription dangerouslySetInnerHTML={{ __html: html }} />
+                {/* {location && (
+                  <StyledLocationIcon>
+                    <FormattedIcon name="Location" />
+                  </StyledLocationIcon>
+                )} */}
+              </StyledContent>
+            )
           })}
-        <StyledTabList role="tablist" aria-label="Education tabs" onKeyDown={e => onKeyPressed(e)}>
-          {data &&
-            data.map(({ node }, i) => {
-              const { school } = node.frontmatter;
-              return (
-                <li key={i}>
-                  <StyledTabButton
-                    isActive={activeTabId === i}
-                    onClick={() => setActiveTabId(i)}
-                    ref={el => (tabs.current[i] = el)}
-                    id={`tab-${i}`}
-                    role="tab"
-                    aria-selected={activeTabId === i ? true : false}
-                    aria-controls={`panel-${i}`}
-                    tabIndex={activeTabId === i ? '0' : '-1'}>
-                    <span>{school}</span>
-                  </StyledTabButton>
-                </li>
-              );
-            })}
-          <StyledHighlight activeTabId={activeTabId} />
-        </StyledTabList>
-      </StyledTabs>
+      </StyledTimeline>
     </StyledContainer>
-  );
-};
+  )
+}
 
 Education.propTypes = {
   data: PropTypes.array.isRequired,
-};
+}
 
-export default Education;
+export default Education 

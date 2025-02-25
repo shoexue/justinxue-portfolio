@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import media from './media';
+import styled from 'styled-components'
+import media from './media'
 
 const Section = styled.section`
   margin: 0 auto;
@@ -7,6 +7,6 @@ const Section = styled.section`
   max-width: 1000px;
 
   ${media.tablet`padding: 100px 0;`};
-`;
+`
 
-export default Section;
+export default Section 

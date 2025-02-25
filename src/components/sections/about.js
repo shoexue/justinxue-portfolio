@@ -1,34 +1,51 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
-import Img from 'gatsby-image';
-import sr from '@utils/sr';
-import { srConfig, github } from '@config';
-import styled from 'styled-components';
-import { theme, mixins, media, Section, Heading, Dot } from '@styles';
-const { colors, fontSizes, fonts } = theme;
+'use client'
+
+import React, { useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
+import Image from 'next/image'
+import useScrollReveal from '../../utils/sr'
+import styled from 'styled-components'
+import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
+const { colors, fontSizes, fonts } = theme
 
 const StyledContainer = styled(Section)`
   position: relative;
-`;
+`
 const StyledFlexContainer = styled.div`
   ${mixins.flexBetween};
   align-items: flex-start;
   margin-bottom: 15%;
   ${media.tablet`display: block;`};
-`;
+`
 const StyledContent = styled.div`
   width: 60%;
-  height: 100%
-  align-items: flex
+  height: 100%;
+  align-items: flex;
   max-width: 480px;
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.md};
   ${media.tablet`width: 100%;`};
+
+  p, h1, h2, h3, h4, h5, h6, div {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
+    line-height: 1.5;
+    margin-bottom: 15px;
+    color: ${colors.slate};
+    font-weight: normal;
+  }
+
+  strong {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
+    color: ${colors.slate};
+    font-weight: normal;
+  }
+
   a {
     ${mixins.inlineLink};
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
   }
-`;
+`
 const StyledPic = styled.div`
   position: relative;
   width: 40%;
@@ -42,14 +59,22 @@ const StyledPic = styled.div`
       outline: 0;
     }
   }
-`;
-const StyledAvatar = styled(Img)`
+`
+const StyledAvatar = styled.div`
   position: relative;
   mix-blend-mode: multiply;
-  filter: grayscale(100%) contrast(1); // Start in grayscale
+  filter: grayscale(100%) contrast(1);
   border-radius: ${theme.borderRadius};
-  transition: ${theme.transition}; // Ensure transitions are set to animate changes
-`;
+  transition: ${theme.transition};
+  width: 100%;
+  height: 100%;
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: ${theme.borderRadius};
+  }
+`
 
 const StyledAvatarLink = styled.a`
   ${mixins.boxShadow};
@@ -59,83 +84,138 @@ const StyledAvatarLink = styled.a`
   background-color: ${colors.lightestSlate};
   margin-left: -20px;
   &:hover ${StyledAvatar}, &:focus ${StyledAvatar} {
-    filter: none; // Remove filter on hover/focus, showing the image in full color
+    filter: none;
   }
-`;
+`
 
 const TechnologyContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-top: 20px;
-`;
+  gap: 20px;
+`
 
 const TechnologyItem = styled.div`
   flex: 1;
   min-width: 200px;
-  margin-right: 20px;
   margin-bottom: 20px;
 
   h4 {
     color: ${colors.green};
-  }
-
-  ul {
-    display: grid; // Using grid layout
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); // Create columns that fit content
-    gap: 5%; // Space between items
-    list-style: none;
-    padding: 0;
-    margin-top: 10px;
+    font-size: ${fontSizes.lg};
+    font-weight: 600;
+    margin-bottom: 20px;
   }
 
   div {
     font-family: ${fonts.SFMono};
-    font-size: ${fontSizes.smish};
+    font-size: ${fontSizes.sm};
+    color: ${colors.slate};
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
+    color: ${colors.slate};
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }
+
+  ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(140px, 200px));
+    gap: 0px 10px;
+    padding: 0;
+    margin: 20px 0 0 0;
+    overflow: hidden;
+    list-style: none;
   }
 
   li {
+    position: relative;
+    margin-bottom: 10px;
+    padding-left: 20px;
     font-family: ${fonts.SFMono};
-    font-size: ${fontSizes.smish};
+    font-weight: 400;
+    font-size: ${fontSizes.xs};
     color: ${colors.green};
+    line-height: 1.5;
+
     &:before {
       content: '▹';
+      position: absolute;
+      left: 0;
       color: ${colors.green};
-      margin-right: 10px;
+      font-size: ${fontSizes.sm};
+      line-height: 12px;
     }
   }
-`;
+`
 
 const About = ({ data, technologiesData }) => {
-  const { frontmatter, html } = data[0].node;
-  const { title, avatar } = frontmatter;
-  const revealContainer = useRef(null);
+  const { frontmatter, html } = data[0]
+  const { title, avatar } = frontmatter
+  const revealContainer = useRef(null)
+  const revealTitle = useRef(null)
+  const sr = useScrollReveal()
 
-  useEffect(() => sr.reveal(revealContainer.current, srConfig()), []);
+  useEffect(() => {
+    if (sr && revealContainer.current) {
+      sr.reveal(revealContainer.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'bottom',
+        viewFactor: 0.25,
+      })
+    }
+    if (sr && revealTitle.current) {
+      sr.reveal(revealTitle.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'left',
+        viewFactor: 0.25,
+      })
+    }
+  }, [sr])
 
   return (
     <StyledContainer id="about" ref={revealContainer}>
-      <Heading>
-        <Dot>.</Dot>
-        {title}
+      <Heading ref={revealTitle}>
+        <Dot>.</Dot>about ()
       </Heading>
       <StyledFlexContainer>
         <StyledContent>
           <div dangerouslySetInnerHTML={{ __html: html }} />
         </StyledContent>
         <StyledPic>
-          <StyledAvatarLink href={github}>
-            <StyledAvatar fluid={frontmatter.avatar.childImageSharp.fluid} alt="Avatar" />
+          <StyledAvatarLink href="https://github.com/alvina-yang" target="_blank" rel="noopener noreferrer">
+            <StyledAvatar>
+              <Image
+                src={`/${avatar}`}
+                alt="Avatar"
+                width={300}
+                height={300}
+                quality={95}
+                priority
+              />
+            </StyledAvatar>
           </StyledAvatarLink>
         </StyledPic>
       </StyledFlexContainer>
-      <Heading>Here's my tech stack!</Heading>
+      <Heading>
+        here's my tech stack!
+      </Heading>
       <TechnologyContainer>
-        {technologiesData.map(({ node }, i) => (
+        {technologiesData.map(({ frontmatter, html }, i) => (
           <TechnologyItem key={i}>
-            <h4>{node.frontmatter.title}</h4>
-            <div dangerouslySetInnerHTML={{ __html: node.html }} />
+            <h4>{frontmatter.title}</h4>
+            <div dangerouslySetInnerHTML={{ __html: html }} />
             <ul>
-              {node.frontmatter.technologies.map((tech, index) => (
+              {frontmatter.technologies.map((tech, index) => (
                 <li key={index}>{tech}</li>
               ))}
             </ul>
@@ -143,12 +223,12 @@ const About = ({ data, technologiesData }) => {
         ))}
       </TechnologyContainer>
     </StyledContainer>
-  );
-};
+  )
+}
 
 About.propTypes = {
   data: PropTypes.array.isRequired,
   technologiesData: PropTypes.array.isRequired,
-};
+}
 
-export default About;
+export default About 
