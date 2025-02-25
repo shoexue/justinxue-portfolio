@@ -74,7 +74,7 @@ const StyledTabButton = styled.button`
   text-align: left;
   white-space: nowrap;
   font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.smish};
+  font-size: ${fontSizes.xs};
   color: ${props => (props.$isActive ? colors.green : colors.slate)};
   ${media.tablet`padding: 0 15px 2px;`};
   ${media.thone`
@@ -128,10 +128,11 @@ const StyledTabContent = styled.div`
   padding-left: 30px;
   ${media.tablet`padding-left: 20px;`};
   ${media.thone`padding-left: 0;`};
+  display: ${props => (props.$isActive ? 'block' : 'none')};
 
   ul {
     ${mixins.fancyList};
-    font-size: ${fontSizes.sm};
+    font-size: ${fontSizes.smish};
   }
   a {
     ${mixins.inlineLink};
@@ -285,7 +286,7 @@ const Jobs = ({ data }) => {
             return (
               <StyledTabContent
                 key={i}
-                isActive={activeTabId === i}
+                $isActive={activeTabId === i}
                 id={`panel-${i}`}
                 role="tabpanel"
                 aria-labelledby={`tab-${i}`}

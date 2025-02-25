@@ -87,7 +87,7 @@ const StyledDegree = styled.h5`
 `
 
 const StyledDescription = styled.div`
-  font-size: ${fontSizes.md};
+  font-size: ${fontSizes.sm};
   font-family: ${fonts.SFMono};
   color: ${colors.lightSlate};
   

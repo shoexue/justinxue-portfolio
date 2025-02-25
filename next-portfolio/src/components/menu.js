@@ -4,7 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { theme, mixins, media, Dot } from '../styles'
+import { theme, mixins, media } from '../styles'
 const { colors, fontSizes, fonts } = theme
 
 const navLinks = [
@@ -41,6 +41,7 @@ const StyledContainer = styled.div`
   display: none;
   ${media.tablet`display: block;`};
 `
+
 const Sidebar = styled.aside`
   ${mixins.flexCenter};
   flex-direction: column;
@@ -57,6 +58,7 @@ const Sidebar = styled.aside`
   ${media.phablet`width: 75vw;`};
   ${media.tiny`padding: 10px;`};
 `
+
 const NavLinks = styled.nav`
   ${mixins.flexBetween};
   width: 100%;
@@ -64,28 +66,47 @@ const NavLinks = styled.nav`
   text-align: center;
   color: ${colors.lightestSlate};
 `
+
 const NavList = styled.ol`
   padding: 0;
   margin: 0;
   list-style: none;
   width: 100%;
 `
+
 const NavListItem = styled.li`
   margin: 0 auto 20px;
   position: relative;
   font-size: ${fontSizes.lg};
+  counter-increment: item 1;
+
+  &:before {
+    content: '0' counter(item) '.';
+    text-align: right;
+    color: ${colors.green};
+    font-size: ${fontSizes.sm};
+    margin-bottom: 5px;
+  }
+
   ${media.thone`
     margin: 0 auto 10px;
     font-size: ${fontSizes.md};
   `};
   ${media.tiny`font-size: ${fontSizes.smish};`};
 `
-const StyledLink = styled.div`
+
+const NavLink = styled(Link)`
   ${mixins.link};
   padding: 3px 20px 20px;
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
+  color: ${colors.lightestSlate};
+  &:hover,
+  &:focus {
+    color: ${colors.green};
+  }
 `
 
 const Menu = ({ menuOpen, toggleMenu }) => {
@@ -108,17 +129,13 @@ const Menu = ({ menuOpen, toggleMenu }) => {
       <Sidebar>
         <NavLinks>
           <NavList>
-            {navLinks &&
-              navLinks.map(({ url, name }, i) => (
-                <NavListItem key={i}>
-                  <Link href={url} onClick={toggleMenu}>
-                    <StyledLink>
-                      <Dot />
-                      {name}
-                    </StyledLink>
-                  </Link>
-                </NavListItem>
-              ))}
+            {navLinks.map(({ url, name }, i) => (
+              <NavListItem key={i}>
+                <NavLink href={url} onClick={toggleMenu}>
+                  {name}
+                </NavLink>
+              </NavListItem>
+            ))}
           </NavList>
         </NavLinks>
       </Sidebar>

@@ -103,12 +103,24 @@ const StyledProjectName = styled.h5`
   color: ${colors.lightestSlate};
 `
 const StyledProjectDescription = styled.div`
-  font-size: 17px;
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.sm};
   color: ${colors.lightSlate};
+  line-height: 1.5;
+
+  * {
+    font-family: ${fonts.SFMono} !important;
+  }
+
+  p {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
+    margin-bottom: 15px;
+  }
+
   a {
     ${mixins.inlineLink};
+    font-family: ${fonts.SFMono};
   }
 `
 const StyledTechList = styled.ul`

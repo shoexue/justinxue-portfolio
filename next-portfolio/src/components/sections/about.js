@@ -22,11 +22,28 @@ const StyledContent = styled.div`
   height: 100%;
   align-items: flex;
   max-width: 480px;
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.md};
   ${media.tablet`width: 100%;`};
+
+  p, h1, h2, h3, h4, h5, h6, div {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
+    line-height: 1.5;
+    margin-bottom: 15px;
+    color: ${colors.slate};
+    font-weight: normal;
+  }
+
+  strong {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
+    color: ${colors.slate};
+    font-weight: normal;
+  }
+
   a {
     ${mixins.inlineLink};
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
   }
 `
 const StyledPic = styled.div`
@@ -86,8 +103,24 @@ const TechnologyItem = styled.div`
   h4 {
     color: ${colors.green};
     font-size: ${fontSizes.lg};
-    font-weight: 500;
+    font-weight: 600;
     margin-bottom: 20px;
+  }
+
+  div {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
+    color: ${colors.slate};
+    line-height: 1.5;
+    margin-bottom: 15px;
+  }
+
+  p {
+    font-family: ${fonts.SFMono};
+    font-size: ${fontSizes.sm};
+    color: ${colors.slate};
+    line-height: 1.5;
+    margin-bottom: 15px;
   }
 
   ul {
@@ -100,19 +133,15 @@ const TechnologyItem = styled.div`
     list-style: none;
   }
 
-  div {
-    font-family: ${fonts.SFMono};
-    font-size: ${fontSizes.smish};
-    color: ${colors.slate};
-  }
-
   li {
     position: relative;
     margin-bottom: 10px;
     padding-left: 20px;
     font-family: ${fonts.SFMono};
-    font-size: ${fontSizes.smish};
-    color: ${colors.slate};
+    font-weight: 400;
+    font-size: ${fontSizes.xs};
+    color: ${colors.green};
+    line-height: 1.5;
 
     &:before {
       content: '▹';
