@@ -32,6 +32,27 @@ export default function ClientPage() {
     }
 
     fetchContent()
+
+    // Add smooth scrolling behavior
+    const handleClick = (e) => {
+      const href = e.target.closest('a')?.getAttribute('href')
+      if (href?.startsWith('/#')) {
+        e.preventDefault()
+        const targetId = href.replace('/#', '')
+        const elem = document.getElementById(targetId)
+        if (elem) {
+          elem.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          })
+          // Update URL without page reload
+          window.history.pushState({}, '', href)
+        }
+      }
+    }
+
+    document.addEventListener('click', handleClick)
+    return () => document.removeEventListener('click', handleClick)
   }, [])
 
   if (isLoading) {
