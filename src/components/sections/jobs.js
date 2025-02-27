@@ -172,14 +172,16 @@ const StyledTabContent = styled.div`
 `
 const StyledJobTitle = styled.h4`
   color: ${colors.lightestSlate};
+  font-family: ${fonts.Calibre} !important;
   font-size: ${fontSizes.xxl};
   font-weight: 600;
   margin-bottom: 5px;
 `
 const StyledCompany = styled.h6`
   color: ${colors.green};
+  font-family: ${fonts.Calibre} !important;
   font-size: ${fontSizes.lg};
-  font-weight: 500;
+  font-weight: 600;
   margin-bottom: 5px;
 `
 const StyledJobDetails = styled.h5`
