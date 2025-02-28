@@ -5,11 +5,9 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
-  distDir: 'out',
-  // For production builds
+  // Remove distDir as Vercel handles this
   ...(process.env.NODE_ENV === 'production' ? {
-    assetPrefix: 'https://alvinayang.com',
-    basePath: ''
+    assetPrefix: 'https://alvinayang.com'
   } : {})
 }
 
