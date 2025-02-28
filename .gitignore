@@ -36,9 +36,6 @@ next-env.d.ts
 .cache
 package-lock.json
 
-# Build directory
-/public
-
 .vscode/
 node_modules/
 next-portfolio/node_modules/
