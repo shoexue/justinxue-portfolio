@@ -1,7 +1,7 @@
 {
-  "version": 2,
   "buildCommand": "next build",
-  "outputDirectory": "out",
-  "framework": "nextjs",
-  "cleanUrls": true
+  "devCommand": "next dev",
+  "installCommand": "npm install",
+  "framework": null,
+  "outputDirectory": "out"
 } 

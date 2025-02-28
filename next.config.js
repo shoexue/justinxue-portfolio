@@ -5,10 +5,6 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
-  // Remove distDir as Vercel handles this
-  ...(process.env.NODE_ENV === 'production' ? {
-    assetPrefix: 'https://alvinayang.com'
-  } : {})
 }
 
 module.exports = nextConfig 
