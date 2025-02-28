@@ -19,31 +19,20 @@ export default function ClientPage() {
     setIsMounted(true)
   }, [])
 
-  if (!isMounted) {
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        backgroundColor: '#0a192f',
-        color: '#64ffda'
-      }}>
-        Loading...
-      </div>
-    )
-  }
-
   return (
     <ClientWrapper>
       <Layout>
-        <Hero data={content.hero} />
-        <About data={content.about} technologiesData={content.technologies} />
-        <Jobs data={content.jobs} />
-        <Education data={content.education} />
-        <Featured data={content.featured} />
-        <Projects data={content.projects} />
-        <Contact data={content.contact} />
+        {isMounted && (
+          <>
+            <Hero data={content.hero} />
+            <About data={content.about} technologiesData={content.technologies} />
+            <Jobs data={content.jobs} />
+            <Education data={content.education} />
+            <Featured data={content.featured} />
+            <Projects data={content.projects} />
+            <Contact data={content.contact} />
+          </>
+        )}
       </Layout>
     </ClientWrapper>
   )

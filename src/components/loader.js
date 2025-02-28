@@ -3,8 +3,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import styled, { keyframes } from 'styled-components'
-import { theme, media } from '../styles'
-const { colors } = theme
 
 const rotateY = keyframes`
   0%, 50%, 100% {
@@ -29,6 +27,7 @@ const rotateX = keyframes`
     transform: translateY(-2vw);
   }
 `
+
 const rotateYSmall = keyframes`
   0%, 50%, 100% {
     transform: translateX(0);
@@ -57,12 +56,13 @@ const StyledLoaderContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  background-color: ${colors.bg};
+  background-color: var(--navy);
   height: 100vh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 99;
 `
 
 const StyledLoader = styled.div`
@@ -80,30 +80,24 @@ const StyledDot = styled.span`
   height: 10px;
   width: 10px;
   border-radius: 50%;
-  background-color: ${colors.green};
+  background-color: var(--green);
   &:nth-child(1) {
     animation: ${rotateY} 0.7s infinite linear;
   }
   &:nth-child(2) {
     animation: ${rotateX} 0.7s infinite linear;
   }
-  ${media.phablet`
+  @media (max-width: 768px) {
     height: 7px;
     width: 7px;
-    &:nth-child(1) {
-    animation: ${rotateYSmall} 0.7s infinite linear;
-    }
-    &:nth-child(2) {
-      animation: ${rotateXSmall} 0.7s infinite linear;
-    }
-  `};
+  }
 `
 
 const Loader = ({ finishLoading }) => {
   useEffect(() => {
     const timeout = setTimeout(() => {
       finishLoading()
-    }, 1000) // Set this to the desired loader display duration
+    }, 2000) // Increased to 2 seconds to ensure content is ready
     return () => clearTimeout(timeout)
   }, [finishLoading])
 
