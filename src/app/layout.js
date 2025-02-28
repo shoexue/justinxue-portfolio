@@ -3,10 +3,19 @@ import StyledComponentsRegistry from '../lib/registry'
 export const metadata = {
   title: 'Alvina Yang',
   description: 'Personal Portfolio',
+  metadataBase: new URL('https://alvinayang.com'),
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
     apple: '/favicon.ico',
+  },
+  openGraph: {
+    title: 'Alvina Yang',
+    description: 'Personal Portfolio',
+    url: 'https://alvinayang.com',
+    siteName: 'Alvina Yang',
+    locale: 'en_US',
+    type: 'website',
   },
 }
 
@@ -14,6 +23,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href="https://alvinayang.com" />
         <style>{`
           :root {
             --navy: #0a192f;

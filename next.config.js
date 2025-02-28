@@ -4,9 +4,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  compiler: {
-    styledComponents: true,
-  },
+  assetPrefix: process.env.NODE_ENV === 'production' ? 'https://alvinayang.com' : '',
+  basePath: '',
   trailingSlash: true,
   distDir: 'out',
   ...(process.env.NODE_ENV === 'production' ? {
