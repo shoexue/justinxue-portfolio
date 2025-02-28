@@ -3,6 +3,8 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import styled, { keyframes } from 'styled-components'
+import { theme, media } from '../styles'
+const { colors } = theme
 
 const rotateY = keyframes`
   0%, 50%, 100% {
@@ -56,7 +58,7 @@ const StyledLoaderContainer = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  background-color: var(--navy);
+  background-color: ${colors.darkBg};
   height: 100vh;
   width: 100%;
   display: flex;
@@ -80,17 +82,17 @@ const StyledDot = styled.span`
   height: 10px;
   width: 10px;
   border-radius: 50%;
-  background-color: var(--green);
+  background-color: ${colors.green};
   &:nth-child(1) {
     animation: ${rotateY} 0.7s infinite linear;
   }
   &:nth-child(2) {
     animation: ${rotateX} 0.7s infinite linear;
   }
-  @media (max-width: 768px) {
+  ${media.phablet`
     height: 7px;
     width: 7px;
-  }
+  `};
 `
 
 const Loader = ({ finishLoading }) => {
