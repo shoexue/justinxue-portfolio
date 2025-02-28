@@ -56,21 +56,6 @@ const StyledEmailLink = styled.a`
   margin-top: 50px;
   font-size: ${fontSizes.md} !important;
 `
-const StyledResumeLink = styled.a`
-  && {
-    margin-top: 50px;
-    color: ${colors.green};
-    font-family: ${fonts.SFMono};
-    font-size: ${fontSizes.sm};
-    transition: color 0.3s ease;
-    text-decoration: none;
-
-    &:hover,
-    &:focus {
-      color: ${colors.green};
-    }
-  }
-`
 
 const Contact = ({ data }) => {
   const { title, buttonText, content } = data

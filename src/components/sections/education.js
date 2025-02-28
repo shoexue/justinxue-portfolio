@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import useScrollReveal from '../../utils/sr'
 // import { FormattedIcon } from '../icons'
 import styled from 'styled-components'
-import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
+import { theme, mixins, Section, Heading, Dot } from '../../styles'
 const { colors, fontSizes, fonts } = theme
 
 const StyledContainer = styled(Section)`
@@ -114,42 +114,6 @@ const StyledDescription = styled.div`
   }
 `
 
-const StyledTechList = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0;
-  margin: 20px 0 0 0;
-  list-style: none;
-
-  li {
-    font-family: ${fonts.SFMono};
-    font-size: ${fontSizes.smish};
-    color: ${colors.slate};
-    margin-right: 20px;
-    margin-bottom: 7px;
-    white-space: nowrap;
-    &:last-of-type {
-      margin-right: 0;
-    }
-    &:before {
-      content: '▹';
-      color: ${colors.green};
-      margin-right: 8px;
-    }
-  }
-`
-
-const StyledLocationIcon = styled.div`
-  position: absolute;
-  top: 25px;
-  right: 25px;
-  color: ${colors.green};
-  svg {
-    width: 20px;
-    height: 20px;
-  }
-`
-
 const Education = ({ data }) => {
   const revealTitle = useRef(null)
   const revealEducation = useRef([])
@@ -190,7 +154,7 @@ const Education = ({ data }) => {
       </Heading>
 
       <StyledTimeline>
-        {data.map(({ title, school, range, location, content }, i) => (
+        {data.map(({ title, school, range, content }, i) => (
           <StyledContent 
             key={i} 
             ref={el => (revealEducation.current[i] = el)}

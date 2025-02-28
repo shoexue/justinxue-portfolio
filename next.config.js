@@ -1,12 +1,18 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
   compiler: {
     styledComponents: true,
   },
-  images: {
-    domains: ['raw.githubusercontent.com'],
-  }
+  trailingSlash: true,
+  distDir: 'out',
+  ...(process.env.NODE_ENV === 'production' ? {
+    basePath: '/alvina-yang.github.io',
+    assetPrefix: '/alvina-yang.github.io/'
+  } : {})
 }
 
 module.exports = nextConfig 

@@ -12,7 +12,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next build",
+    "clean": "rm -rf .next out",
+    "deploy": "npm run clean && next build && touch out/.nojekyll && gh-pages -d out"
   },
   "keywords": [],
   "dependencies": {
@@ -48,6 +51,7 @@
     "eslint-config-prettier": "^6.10.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
+    "gh-pages": "^6.3.0",
     "prettier": "^2.0.4"
   }
 }

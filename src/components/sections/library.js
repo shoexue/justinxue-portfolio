@@ -7,7 +7,7 @@ import { Splide, SplideSlide } from '@splidejs/react-splide'
 import { AutoScroll } from '@splidejs/splide-extension-auto-scroll'
 import sr from '../../utils/sr'
 import styled from 'styled-components'
-import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
+import { theme, mixins, Section, Heading, Dot } from '../../styles'
 const { colors, fontSizes, fonts } = theme
 
 const StyledContainer = styled(Section)`

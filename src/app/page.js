@@ -1,7 +1,5 @@
-import { getAllContent } from '../lib/data'
-import ClientPage from './client-page'
+import ClientRoot from './client-root'
 
-export default async function Page() {
-  const data = await getAllContent()
-  return <ClientPage data={data} />
+export default function Page() {
+  return <ClientRoot />
 } 

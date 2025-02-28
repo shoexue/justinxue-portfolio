@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import styled from 'styled-components'
-import { theme, mixins, media } from '@/styles'
+import { theme, media } from '@/styles'
 const { colors } = theme
 
 const StyledSideElement = styled.div`

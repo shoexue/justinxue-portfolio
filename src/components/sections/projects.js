@@ -6,7 +6,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import useScrollReveal from '../../utils/sr'
 import { FormattedIcon } from '../icons'
 import styled from 'styled-components'
-import { theme, mixins, media, Section, Heading } from '../../styles'
+import { theme, mixins, media, Section } from '../../styles'
 const { colors, fontSizes, fonts } = theme
 
 const StyledContainer = styled(Section)`

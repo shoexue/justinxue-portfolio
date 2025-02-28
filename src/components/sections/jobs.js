@@ -2,11 +2,9 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import useScrollReveal from '../../utils/sr'
 import styled from 'styled-components'
 import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
-import { Modal } from '..'
 const { colors, fontSizes, fonts } = theme
 
 const StyledContainer = styled(Section)`
@@ -193,41 +191,6 @@ const StyledJobDetails = styled.h5`
   margin-bottom: 30px;
   svg {
     width: 15px;
-  }
-`
-
-const StyledBlogButton = styled.button`
-  color: ${colors.green};
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  font-family: ${fonts.SFMono};
-  font-size: ${fontSizes.sm};
-  line-height: 1;
-  text-decoration: none;
-  cursor: pointer;
-  transition: ${theme.transition};
-  display: flex;
-  align-items: center;
-  margin-top: 20px;
-  margin-left: auto;
-
-  &:after {
-    content: '→';
-    display: inline-block;
-    margin-left: 8px;
-    transition: transform 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
-  }
-
-  &:hover,
-  &:focus,
-  &:active {
-    color: ${colors.green};
-    outline: none;
-    
-    &:after {
-      transform: translateX(6px);
-    }
   }
 `
 

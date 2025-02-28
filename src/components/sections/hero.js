@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, FractalTreeContainer } from "@/styles"
 import { FractalTree } from '@/components';
-const { colors, fontSizes, fonts, navDelay, loaderDelay } = theme;
+const { colors, fontSizes, fonts, navDelay } = theme;
 
 const StyledContainer = styled(Section)`
   ${mixins.flexCenter};
@@ -42,15 +42,6 @@ const StyledSubtitle = styled.h3`
   ${media.tablet`font-size: 60px;`};
   ${media.phablet`font-size: 50px;`};
   ${media.phone`font-size: 40px;`};
-`;
-const StyledDescription = styled.div`
-  margin-top: 25px;
-  margin-bottom: 5px;
-  width: 50%;
-  max-width: 500px;
-  a {
-    ${mixins.inlineLink};
-  }
 `;
 
 const Hero = ({ data }) => {

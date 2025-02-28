@@ -4,15 +4,69 @@ export const metadata = {
   title: 'Alvina Yang',
   description: 'Personal Portfolio',
   icons: {
-    icon: '/icon.png',
-    shortcut: '/icon.png',
-    apple: '/icon.png',
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
 }
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <style>{`
+          :root {
+            --navy: #0a192f;
+            --light-navy: #112240;
+            --lightest-navy: #233554;
+            --slate: #8892b0;
+            --light-slate: #a8b2d1;
+            --lightest-slate: #ccd6f6;
+            --white: #e6f1ff;
+            --green: #64ffda;
+          }
+          
+          * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+          }
+
+          html {
+            scroll-behavior: smooth;
+          }
+          
+          body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--navy);
+            color: var(--slate);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            min-height: 100vh;
+            line-height: 1.5;
+            overflow-x: hidden;
+          }
+
+          #__next {
+            min-height: 100vh;
+          }
+
+          h1, h2, h3, h4, h5, h6 {
+            color: var(--lightest-slate);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+          }
+
+          a {
+            text-decoration: none;
+            color: var(--green);
+            transition: all 0.25s ease;
+          }
+
+          a:hover {
+            color: var(--green);
+          }
+        `}</style>
+      </head>
       <body>
         <StyledComponentsRegistry>
           {children}
