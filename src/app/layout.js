@@ -2,21 +2,53 @@ import StyledComponentsRegistry from '../lib/registry'
 
 export const metadata = {
   title: 'Alvina Yang',
-  description: 'Personal Portfolio',
+  description: 'Welcome to my personal website!',
   metadataBase: new URL('https://alvinayang.com'),
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
+    icon: '/logo.png',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
+  keywords: ['Alvina Yang', 'Software Engineer', 'Web Developer', 'Portfolio', 'Full Stack Developer', 'Software Development', 'Alvina Yang Portfolio', 'Alvina Yang Website', 'Alvina Yang Personal Website', 'University of Toronto'],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   openGraph: {
     title: 'Alvina Yang',
-    description: 'Personal Portfolio',
+    description: 'Welcome to my personal website!',
     url: 'https://alvinayang.com',
-    siteName: 'Alvina Yang',
+    siteName: 'Alvina Yang\'s Portfolio',
     locale: 'en_US',
     type: 'website',
+    images: [
+      {
+        url: '/logo.png',
+        width: 800,
+        height: 600,
+        alt: 'Alvina Yang Portfolio'
+      }
+    ],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Alvina Yang',
+    description: 'Welcome to my personal website!',
+    images: ['/logo.png'],
+  },
+  alternates: {
+    canonical: 'https://alvinayang.com'
+  },
+  verification: {
+    google: 'add-your-google-site-verification-here', 
+  }
 }
 
 export default function RootLayout({ children }) {
