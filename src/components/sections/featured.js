@@ -20,6 +20,7 @@ const StyledContainer = styled(Section)`
   align-items: flex-start;
   width: 100%;
   padding: 0;
+  max-width: 1200px;
   
   .swiper {
     width: 100%;
@@ -51,6 +52,14 @@ const StyledContainer = styled(Section)`
   .swiper-pagination-bullet {
     background-color: ${colors.green};
   }
+
+  ${media.thone`
+    .swiper-pagination {
+      position: relative;
+      bottom: 0;
+      background: transparent;
+    }
+  `}
 `
 const StyledContent = styled.div`
   position: relative;
@@ -74,7 +83,6 @@ const StyledProjectName = styled.h5`
   }
 `
 const StyledDescription = styled.div`
-  ${mixins.boxShadow};
   position: relative;
   z-index: 2;
   padding: 25px;
@@ -82,6 +90,7 @@ const StyledDescription = styled.div`
   color: ${colors.lightSlate};
   font-size: ${fontSizes.lg};
   border-radius: ${theme.borderRadius};
+  max-width: 800px;
   ${media.thone`
     background-color: transparent;
     padding: 20px 0;
@@ -94,7 +103,6 @@ const StyledDescription = styled.div`
     margin: 0;
     font-family: ${fonts.SFMono};
     font-size: ${fontSizes.sm};
-    max-width: 70vw;
   }
   a {
     ${mixins.inlineLink};
@@ -199,7 +207,7 @@ const StyledProjectContainer = styled.div`
   align-items: center;
   margin: 0 auto;
   padding: 0 50px;
-  max-width: 1600px;
+  max-width: 1200px;
   ${media.thone`
     display: block;
     padding: 0;

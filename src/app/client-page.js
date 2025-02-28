@@ -9,7 +9,7 @@ import Featured from '../components/sections/featured'
 import Projects from '../components/sections/projects'
 import Contact from '../components/sections/contact'
 import Education from '../components/sections/education'
-import { content } from '../lib/content'
+import { content } from '../content'
 import ClientWrapper from '../components/ClientWrapper'
 
 export default function ClientPage() {
