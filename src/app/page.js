@@ -1,5 +1,10 @@
-import ClientRoot from './client-root'
+import ClientPage from './client-page'
+import { getAllContent } from '../utils/markdown'
 
 export default function Page() {
-  return <ClientRoot />
+  // Get content on the server side
+  const content = getAllContent()
+  
+  // Pass content as props to the client component
+  return <ClientPage initialContent={content} />
 } 

@@ -1,9 +1,7 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import PropTypes from 'prop-types'
-import Image from 'next/image'
-import useScrollReveal from '../../utils/sr'
 import styled from 'styled-components'
 import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
 const { colors, fontSizes, fonts } = theme
@@ -11,161 +9,60 @@ const { colors, fontSizes, fonts } = theme
 const StyledContainer = styled(Section)`
   position: relative;
 `
+
 const StyledFlexContainer = styled.div`
   ${mixins.flexBetween};
   align-items: flex-start;
-  margin-bottom: 15%;
   ${media.tablet`display: block;`};
 `
+
 const StyledContent = styled.div`
   width: 60%;
-  height: 100%;
-  align-items: flex;
   max-width: 480px;
   ${media.tablet`width: 100%;`};
-
-  * {
-    font-family: ${fonts.SFMono} !important;
-  }
-
-  p, h1, h2, h3, h4, h5, h6, div, ul, li {
-    font-family: ${fonts.SFMono} !important;
-    font-size: ${fontSizes.sm};
-    line-height: 1.5;
-    margin-bottom: 15px;
-    color: ${colors.slate};
-    font-weight: normal;
-  }
-
-  ul {
-    margin-left: 0;
-    padding-left: 0;
-    list-style: none;
-  }
-
-  li {
-    position: relative;
-    padding-left: 30px;
-    margin-bottom: 10px;
-
-    &:before {
-      content: '▹';
-      position: absolute;
-      left: 0;
-      color: ${colors.green};
-    }
-  }
-
-  strong {
-    font-family: ${fonts.SFMono} !important;
-    font-size: ${fontSizes.sm};
-    color: ${colors.slate};
-    font-weight: normal;
-  }
-
   a {
     ${mixins.inlineLink};
-    font-family: ${fonts.SFMono} !important;
-    font-size: ${fontSizes.sm};
   }
 `
+
 const StyledPic = styled.div`
   position: relative;
   width: 40%;
   max-width: 300px;
   margin-left: 60px;
-  margin-bottom: 10px;
   ${media.tablet`margin: 60px auto 0;`};
   ${media.phablet`width: 70%;`};
-  a {
-    &:focus {
-      outline: 0;
-    }
-  }
 `
-const StyledAvatar = styled.div`
-  position: relative;
-  mix-blend-mode: multiply;
-  filter: grayscale(100%) contrast(1);
-  border-radius: ${theme.borderRadius};
-  transition: ${theme.transition};
-  width: 100%;
-  height: 100%;
 
-  img {
-    width: 100%;
-    height: auto;
-    border-radius: ${theme.borderRadius};
+const StyledTechContainer = styled.div`
+  margin-top: 2rem;
+`
+
+const StyledTechSection = styled.div`
+  margin-bottom: 2rem;
+  
+  h3 {
+    font-size: ${fontSizes.h3};
+    margin-bottom: 1rem;
   }
 `
 
-const StyledAvatarLink = styled.a`
-  ${mixins.boxShadow};
-  width: 100%;
-  position: relative;
-  border-radius: ${theme.borderRadius};
-  background-color: ${colors.lightestSlate};
-  margin-left: -20px;
-  &:hover ${StyledAvatar}, &:focus ${StyledAvatar} {
-    filter: none;
-  }
-`
-
-const TechnologyContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 20px;
-  gap: 20px;
-`
-
-const TechnologyItem = styled.div`
-  flex: 1;
-  min-width: 200px;
-  margin-bottom: 20px;
-
-  h4 {
-    color: ${colors.green};
-    font-size: ${fontSizes.lg};
-    font-weight: 600;
-    margin-bottom: 20px;
-  }
-
-  div {
-    font-family: ${fonts.SFMono};
-    font-size: ${fontSizes.sm};
-    color: ${colors.slate};
-    line-height: 1.5;
-    margin-bottom: 15px;
-  }
-
-  p {
-    font-family: ${fonts.SFMono};
-    font-size: ${fontSizes.sm};
-    color: ${colors.slate};
-    line-height: 1.5;
-    margin-bottom: 15px;
-  }
-
-  ul {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(140px, 200px));
-    gap: 0px 10px;
-    padding: 0;
-    margin: 20px 0 0 0;
-    overflow: hidden;
-    list-style: none;
-  }
+const StyledTechList = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(2, minmax(140px, 200px));
+  grid-gap: 0 10px;
+  padding: 0;
+  margin: 20px 0 0 0;
+  overflow: hidden;
+  list-style: none;
 
   li {
     position: relative;
     margin-bottom: 10px;
     padding-left: 20px;
     font-family: ${fonts.SFMono};
-    font-weight: 400;
-    font-size: ${fontSizes.xs};
-    color: ${colors.green};
-    line-height: 1.5;
-
+    font-size: ${fontSizes.smish};
+    color: ${colors.slate};
     &:before {
       content: '▹';
       position: absolute;
@@ -178,121 +75,91 @@ const TechnologyItem = styled.div`
 `
 
 const About = ({ data, technologiesData }) => {
-  const { title, avatar, content } = data
-  const revealContainer = useRef(null)
   const revealTitle = useRef(null)
-  const sr = useScrollReveal()
+  const revealContent = useRef(null)
+  const revealPic = useRef(null)
 
-  useEffect(() => {
-    if (sr && revealContainer.current) {
-      sr.reveal(revealContainer.current, {
-        duration: 500,
-        distance: '20px',
-        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
-        origin: 'bottom',
-        viewFactor: 0.25,
-      })
+  const renderContent = (item) => {
+    if (typeof item === 'string') {
+      return <p>{item}</p>
     }
-    if (sr && revealTitle.current) {
-      sr.reveal(revealTitle.current, {
-        duration: 500,
-        distance: '20px',
-        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
-        origin: 'left',
-        viewFactor: 0.25,
-      })
-    }
-  }, [sr])
 
-  const renderContent = (contentItem) => {
-    switch (contentItem.type) {
-      case 'text':
-        return <p>{contentItem.content}</p>
-      case 'paragraph':
-        return (
-          <p>
-            {contentItem.content.map((item, i) => {
-              if (item.type === 'link') {
-                return (
-                  <a key={i} href={item.url} target="_blank" rel="noopener noreferrer">
-                    {item.content}
-                  </a>
-                )
-              }
-              return item.content
-            })}
-          </p>
-        )
-      case 'list':
-        return (
-          <ul>
-            {contentItem.items.map((item, i) => (
-              <li key={i}>
-                {Array.isArray(item.content) 
-                  ? item.content.map((subItem, j) => {
-                      if (subItem.type === 'link') {
-                        return (
-                          <a key={j} href={subItem.url} target="_blank" rel="noopener noreferrer">
-                            {subItem.content}
-                          </a>
-                        )
-                      }
-                      return subItem.content
-                    })
-                  : item.content}
-              </li>
-            ))}
-          </ul>
-        )
-      default:
-        return null
+    if (item.type === 'text') {
+      return <p>{item.content}</p>
     }
+
+    if (item.type === 'paragraph') {
+      return (
+        <p>
+          {item.content.map((part, i) => {
+            if (part.type === 'text') {
+              return <span key={i}>{part.content}</span>
+            }
+            if (part.type === 'link') {
+              return (
+                <a key={i} href={part.url} target="_blank" rel="noopener noreferrer">
+                  {part.content}
+                </a>
+              )
+            }
+            return null
+          })}
+        </p>
+      )
+    }
+
+    if (item.type === 'list') {
+      return (
+        <ul>
+          {item.items.map((listItem, i) => (
+            <li key={i}>
+              {typeof listItem === 'string' 
+                ? listItem 
+                : renderContent(listItem)}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    return null
   }
 
   return (
-    <StyledContainer id="about" ref={revealContainer}>
+    <StyledContainer id="about">
       <Heading ref={revealTitle}>
-        <Dot>.</Dot>{title}
+        <Dot>.</Dot>{data.title}
       </Heading>
+
       <StyledFlexContainer>
-        <StyledContent>
-          {content.map((item, i) => (
+        <StyledContent ref={revealContent}>
+          {data.content && data.content.map((item, i) => (
             <React.Fragment key={i}>
               {renderContent(item)}
             </React.Fragment>
           ))}
+
+          <StyledTechContainer>
+            {technologiesData.map((section, i) => (
+              <StyledTechSection key={i}>
+                <h3>{section.title}</h3>
+                <p>{section.content}</p>
+                <StyledTechList>
+                  {section.technologies.map((tech, j) => (
+                    <li key={j}>{tech}</li>
+                  ))}
+                </StyledTechList>
+              </StyledTechSection>
+            ))}
+          </StyledTechContainer>
         </StyledContent>
-        <StyledPic>
-          <StyledAvatarLink href="https://github.com/alvina-yang" target="_blank" rel="noopener noreferrer">
-            <StyledAvatar>
-              <Image
-                src={avatar}
-                alt="Avatar"
-                width={300}
-                height={300}
-                quality={95}
-                priority
-              />
-            </StyledAvatar>
-          </StyledAvatarLink>
-        </StyledPic>
+
+        {data.avatar && (
+          <StyledPic ref={revealPic}>
+            <img src={data.avatar} alt="Avatar" />
+          </StyledPic>
+        )}
       </StyledFlexContainer>
-      <Heading>
-        here's my tech stack!
-      </Heading>
-      <TechnologyContainer>
-        {technologiesData.map((tech, i) => (
-          <TechnologyItem key={i}>
-            <h4>{tech.title}</h4>
-            <div>{tech.content}</div>
-            <ul>
-              {tech.technologies.map((item, index) => (
-                <li key={index}>{item}</li>
-              ))}
-            </ul>
-          </TechnologyItem>
-        ))}
-      </TechnologyContainer>
     </StyledContainer>
   )
 }
@@ -300,8 +167,32 @@ const About = ({ data, technologiesData }) => {
 About.propTypes = {
   data: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    avatar: PropTypes.string.isRequired,
-    content: PropTypes.arrayOf(PropTypes.object).isRequired,
+    avatar: PropTypes.string,
+    content: PropTypes.arrayOf(
+      PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.shape({
+          type: PropTypes.string.isRequired,
+          content: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.arrayOf(PropTypes.shape({
+              type: PropTypes.string.isRequired,
+              content: PropTypes.string,
+              url: PropTypes.string,
+            })),
+          ]),
+          items: PropTypes.arrayOf(
+            PropTypes.oneOfType([
+              PropTypes.string,
+              PropTypes.shape({
+                type: PropTypes.string.isRequired,
+                content: PropTypes.string.isRequired,
+              }),
+            ])
+          ),
+        }),
+      ])
+    ).isRequired,
   }).isRequired,
   technologiesData: PropTypes.arrayOf(
     PropTypes.shape({

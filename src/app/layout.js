@@ -59,14 +59,15 @@ export default function RootLayout({ children }) {
         <link rel="canonical" href="https://alvinayang.com" />
         <style>{`
           :root {
-            --navy: #0a192f;
-            --light-navy: #112240;
-            --lightest-navy: #233554;
-            --slate: #8892b0;
-            --light-slate: #a8b2d1;
-            --lightest-slate: #ccd6f6;
-            --white: #e6f1ff;
-            --green: #64ffda;
+            --darkBg: #101010;
+            --bg: #161616;
+            --lightGray: #1f1f1f;
+            --lightestGray: #343434;
+            --slate: #B2BBD3;
+            --lightSlate: #D0D5E1;
+            --lightestSlate: #E7F0F7;
+            --white: #EDFAFF;
+            --green: #8FFF5A;
           }
           
           * {
@@ -82,9 +83,9 @@ export default function RootLayout({ children }) {
           body {
             margin: 0;
             padding: 0;
-            background-color: var(--navy);
+            background-color: var(--darkBg);
             color: var(--slate);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: Poppins, sans-serif;
             min-height: 100vh;
             line-height: 1.5;
             overflow-x: hidden;
@@ -95,14 +96,14 @@ export default function RootLayout({ children }) {
           }
 
           h1, h2, h3, h4, h5, h6 {
-            color: var(--lightest-slate);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            color: var(--white);
+            font-family: Poppins, sans-serif;
           }
 
           a {
             text-decoration: none;
             color: var(--green);
-            transition: all 0.25s ease;
+            transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
           }
 
           a:hover {
