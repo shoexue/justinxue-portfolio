@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { theme, mixins, media, Section, FractalTreeContainer } from "@/styles"
 import { FractalTree } from '@/components';
+import useScrollReveal from '../../utils/sr';
 const { colors, fontSizes, fonts, navDelay } = theme;
 
 const StyledContainer = styled(Section)`
@@ -47,11 +48,24 @@ const StyledSubtitle = styled.h3`
 const Hero = ({ data }) => {
   const [isMounted, setIsMounted] = useState(false);
   const containerRef = useRef(null);
+  const sr = useScrollReveal();
 
   useEffect(() => {
     const timeout = setTimeout(() => setIsMounted(true), navDelay);
     return () => clearTimeout(timeout);
   }, []);
+
+  useEffect(() => {
+    if (sr && containerRef.current) {
+      sr.reveal(containerRef.current.children, {
+        duration: 1000,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'bottom',
+        interval: 100
+      });
+    }
+  }, [sr, isMounted]);
 
   const { title, name, subtitle } = data;
 
@@ -75,25 +89,13 @@ const Hero = ({ data }) => {
       {isMounted && (
         <>
           <div>
-            {items.map(({ node, delay }, i) => (
-              <div key={i} style={{ 
-                transitionDelay: delay,
-                opacity: 0,
-                transform: 'translateY(20px)',
-                animation: 'fadeup 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) forwards',
-                animationDelay: delay
-              }}>
+            {items.map(({ node }, i) => (
+              <div key={i}>
                 {node}
               </div>
             ))}
           </div>
-          <div style={{ 
-            transitionDelay: '500ms',
-            opacity: 0,
-            animation: 'fadeup 0.3s cubic-bezier(0.645, 0.045, 0.355, 1) forwards',
-            animationDelay: '500ms',
-            width: '100%'
-          }}>
+          <div>
             <FractalTreeContainer>
               <FractalTree />
             </FractalTreeContainer>

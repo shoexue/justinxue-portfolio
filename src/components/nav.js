@@ -49,7 +49,7 @@ const StyledNav = styled.nav`
   position: relative;
   width: 100% !important;
   max-width: 1200px !important;
-  padding: 0 !important;
+  padding: 0 25px !important;
   color: ${colors.lightestSlate};
   font-weight: 200;
   font-family: ${fonts.SFMono};
@@ -58,24 +58,16 @@ const StyledNav = styled.nav`
   display: flex !important;
   justify-content: space-between !important;
   align-items: center !important;
-  
-  ${media.desktop`padding: 0 !important;`};
-  ${media.tablet`padding: 0 !important;`};
 `
 
 const StyledLogo = styled.div`
   ${mixins.flexCenter};
-  padding: 0 !important;
-  margin: 0 !important;
-  position: absolute !important;
-  left: 25px !important;
+  position: relative !important;
   a {
     display: block;
     color: ${colors.green};
     width: 60px;
     height: 60px;
-    padding: 0 !important;
-    margin: 0 !important;
     &:hover,
     &:focus {
       svg {
@@ -93,10 +85,6 @@ const StyledLogo = styled.div`
 const StyledLink = styled.div`
   display: flex !important;
   align-items: center !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  position: absolute !important;
-  right: 25px !important;
   ${media.tablet`display: none !important;`};
 `
 

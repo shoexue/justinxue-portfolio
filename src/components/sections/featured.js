@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import 'swiper/css'
@@ -10,6 +10,7 @@ import 'swiper/css/autoplay'
 import PropTypes from 'prop-types'
 import Image from 'next/image'
 import { FormattedIcon } from '../icons'
+import useScrollReveal from '../../utils/sr'
 import styled from 'styled-components'
 import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
 const { colors, fontSizes, fonts } = theme
@@ -224,6 +225,27 @@ const StyledProject = styled.div`
 
 const Featured = ({ data }) => {
   const revealTitle = useRef(null)
+  const revealContainer = useRef(null)
+  const sr = useScrollReveal()
+
+  useEffect(() => {
+    if (sr) {
+      sr.reveal(revealTitle.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'left',
+        viewFactor: 0.25,
+      })
+      sr.reveal(revealContainer.current, {
+        duration: 500,
+        distance: '20px',
+        easing: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+        origin: 'bottom',
+        viewFactor: 0.25,
+      })
+    }
+  }, [sr])
 
   const renderContent = (content) => {
     if (typeof content === 'string') {
@@ -248,7 +270,7 @@ const Featured = ({ data }) => {
   }
 
   return (
-    <StyledContainer id="projects">
+    <StyledContainer id="projects" ref={revealContainer}>
       <Heading ref={revealTitle}>
         <Dot>.</Dot>{data?.title || 'projects ()'}
       </Heading>
