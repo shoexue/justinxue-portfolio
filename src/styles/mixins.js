@@ -141,11 +141,23 @@ const mixins = {
       position: relative;
       padding-left: 30px;
       margin-bottom: 10px;
+      transition: transform 0.2s ease-in-out;
+
       &:before {
         content: '▹';
         position: absolute;
         left: 0;
         color: ${colors.green};
+        opacity: 0.8;
+        transition: all 0.2s ease-in-out;
+      }
+
+      &:hover {
+        transform: translateX(5px);
+        &:before {
+          opacity: 1;
+          transform: scale(1.2);
+        }
       }
     }
   `,

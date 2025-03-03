@@ -67,6 +67,7 @@ const StyledContent = styled.div`
     margin-left: 0;
     padding-left: 0;
     list-style: none;
+    ${mixins.fancyList};
   }
 
   li {
@@ -180,6 +181,7 @@ const TechnologyItem = styled.div`
     margin: 20px 0 0 0;
     overflow: hidden;
     list-style: none;
+    ${mixins.fancyList};
   }
 
   li {
@@ -191,15 +193,6 @@ const TechnologyItem = styled.div`
     font-size: ${fontSizes.xs};
     color: ${colors.green};
     line-height: 1.5;
-
-    &:before {
-      content: '▹';
-      position: absolute;
-      left: 0;
-      color: ${colors.green};
-      font-size: ${fontSizes.sm};
-      line-height: 12px;
-    }
   }
 `
 

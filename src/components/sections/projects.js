@@ -13,6 +13,8 @@ const StyledContainer = styled(Section)`
   ${mixins.flexCenter};
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
 `
 const StyledTitle = styled.h4`
   margin: 0 auto;
@@ -36,13 +38,15 @@ const StyledSubtext = styled.p`
 `
 const StyledGrid = styled.div`
   margin-top: 50px;
+  width: 100%;
 
   .projects {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    grid-gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-gap: 20px;
     position: relative;
-    ${media.desktop`grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));`};
+    ${media.desktop`grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));`};
+    ${media.tablet`grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));`};
   }
 `
 const StyledProjectInner = styled.div`
@@ -106,6 +110,7 @@ const StyledProjectDescription = styled.div`
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.sm};
   color: ${colors.lightSlate};
+  padding-bottom: 20px;
   line-height: 1.5;
 
   * {
@@ -128,9 +133,9 @@ const StyledTechList = styled.ul`
   align-items: flex-end;
   flex-grow: 1;
   flex-wrap: wrap;
-  padding: 0;
-  margin: 20px 0 0 0;
+  margin: 35px 0 0 0;
   list-style: none;
+  ${mixins.fancyList};
 
   li {
     font-family: ${fonts.SFMono};
@@ -138,6 +143,7 @@ const StyledTechList = styled.ul`
     color: ${colors.green};
     line-height: 1.75;
     margin-right: 15px;
+    padding-left: 20px;
     &:last-of-type {
       margin-right: 0;
     }

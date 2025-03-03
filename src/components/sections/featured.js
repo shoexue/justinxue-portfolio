@@ -117,6 +117,7 @@ const StyledTechList = styled.ul`
   padding: 0;
   margin: 25px 0 10px;
   list-style: none;
+  ${mixins.fancyList};
 
   li {
     font-family: ${fonts.SFMono};
@@ -125,6 +126,7 @@ const StyledTechList = styled.ul`
     margin-right: ${theme.margin};
     margin-bottom: 7px;
     white-space: nowrap;
+    padding-left: 20px;
     &:last-of-type {
       margin-right: 0;
     }
