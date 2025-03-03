@@ -47,6 +47,46 @@ export const getContentData = (section) => {
       featured: featured.sort((a, b) => new Date(b.date) - new Date(a.date))
     }
   }
+
+  // Special handling for projects section
+  if (section === 'projects') {
+    const projects = data.projects.map(projectId => {
+      const projectPath = path.join(contentDirectory, `${projectId}.md`)
+      const projectContent = fs.readFileSync(projectPath, 'utf8')
+      const { data: projectData, content } = matter(projectContent)
+      
+      // Process markdown content
+      const contentParts = content.trim().split('\n\n').filter(Boolean)
+      const processedContent = contentParts.map(part => {
+        // Check if the part contains a markdown link
+        const linkMatch = part.match(/\[(.*?)\]\((.*?)\)/)
+        if (linkMatch) {
+          const beforeLink = part.substring(0, part.indexOf('['))
+          const afterLink = part.substring(part.indexOf(')') + 1)
+          return {
+            type: 'text',
+            content: beforeLink,
+            link: {
+              text: linkMatch[1],
+              url: linkMatch[2]
+            },
+            afterLink: afterLink
+          }
+        }
+        return part
+      })
+
+      return {
+        title: projectData.title,
+        github: projectData.github,
+        external: projectData.external,
+        tech: projectData.tech,
+        content: processedContent[0] || ''
+      }
+    })
+
+    return projects.sort((a, b) => new Date(b.date) - new Date(a.date))
+  }
   
   // Special handling for about section to include markdown content
   if (section === 'about') {

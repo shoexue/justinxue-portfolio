@@ -27,8 +27,8 @@ export default function ClientPage({ initialContent }) {
   // Transform education data to match component expectations
   const educationData = initialContent.education?.education || []
 
-  // Transform projects data to match component expectations
-  const projectsData = initialContent.projects?.projects || []
+  // Get projects data directly from initialContent
+  const projectsData = initialContent.projects || []
 
   return (
     <ClientWrapper>
