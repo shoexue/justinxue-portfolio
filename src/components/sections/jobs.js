@@ -375,7 +375,7 @@ const Jobs = ({ data }) => {
   return (
     <StyledContainer id="jobs" ref={revealContainer}>
       <Heading>
-        <Dot>.</Dot>experience ()
+        <Dot>.</Dot>experiences ()
       </Heading>
 
       <StyledTabs>

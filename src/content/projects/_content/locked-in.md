@@ -1,5 +1,5 @@
 ---
-title: Locked In
+title: locked in
 date: 2024
 external: https://github.com/alvina-yang/LeetcodeLock
 tech:

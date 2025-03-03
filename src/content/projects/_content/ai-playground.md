@@ -1,5 +1,5 @@
 ---
-title: AI Playground
+title: ai playground
 date: 2023
 external: https://github.com/CSC207-2023Y-UofT/ai-playground
 tech:

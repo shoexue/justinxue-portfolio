@@ -1,5 +1,5 @@
 ---
-title: Hate Speech Detection Algorithm
+title: hate speech detection algorithm
 date: 2022
 github: https://github.com/alvina-yang/hateSpeechDetection/
 tech:
