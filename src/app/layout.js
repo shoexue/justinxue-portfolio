@@ -74,6 +74,7 @@ export default function RootLayout({ children }) {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            max-width: 100%;
           }
 
           html {
@@ -82,17 +83,26 @@ export default function RootLayout({ children }) {
           
           body {
             margin: 0;
-            padding: 0;
+            padding: 0 1rem;
             background-color: var(--darkBg);
             color: var(--slate);
             font-family: Poppins, sans-serif;
             min-height: 100vh;
             line-height: 1.5;
             overflow-x: hidden;
+            max-width: 100%;
+            width: 100%;
           }
 
           #__next {
             min-height: 100vh;
+            max-width: 100%;
+          }
+
+          main {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
           }
 
           h1, h2, h3, h4, h5, h6 {

@@ -153,8 +153,15 @@ const StyledFeaturedImg = styled.div`
   max-width: 100%;
   vertical-align: middle;
   position: relative;
-  mix-blend-mode: multiply;
-  filter: grayscale(100%) contrast(1) brightness(90%);
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: ${theme.borderRadius};
+  }
+
   ${media.tablet`
     object-fit: cover;
     width: auto;
@@ -167,9 +174,9 @@ const StyledImgContainer = styled.a`
   grid-row: 1 / -1;
   position: relative;
   z-index: 1;
-  background-color: ${colors.white};
   border-radius: ${theme.borderRadius};
   transition: ${theme.transition};
+  background-color: transparent;
   ${media.tablet`height: 100%;`};
   ${media.thone`
     grid-column: 1 / -1;
@@ -185,19 +192,7 @@ const StyledImgContainer = styled.a`
     }
   }
   &:before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 3;
-    transition: ${theme.transition};
-    background-color: ${colors.navy};
-    mix-blend-mode: screen;
-    border-radius: ${theme.borderRadius};
+    display: none;
   }
 `
 const StyledProjectContainer = styled.div`
