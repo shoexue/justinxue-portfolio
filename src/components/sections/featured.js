@@ -244,25 +244,15 @@ const Featured = ({ data }) => {
       )
     }
 
-    if (content.type === 'link') {
-      return (
-        <p>
-          <a href={content.url} target="_blank" rel="noopener noreferrer">
-            {content.text}
-          </a>
-        </p>
-      )
-    }
-
     return null
   }
 
   return (
     <StyledContainer id="projects">
       <Heading ref={revealTitle}>
-        <Dot>.</Dot>projects ()
+        <Dot>.</Dot>{data?.title || 'projects ()'}
       </Heading>
-      {data && data.length > 0 && (
+      {data?.featured && data.featured.length > 0 && (
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           centeredSlides={true}
@@ -280,7 +270,7 @@ const Featured = ({ data }) => {
           }}
           style={{ width: '100%', height: '100%' }}
         >
-          {data.map(({ title, cover, tech, github, content }, i) => (
+          {data.featured.map(({ title, cover, tech, github, content }, i) => (
             <SwiperSlide key={i}>
               <StyledProject>
                 <StyledProjectContainer>
@@ -348,31 +338,34 @@ const Featured = ({ data }) => {
 }
 
 Featured.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string.isRequired,
-      cover: PropTypes.string.isRequired,
-      github: PropTypes.string,
-      tech: PropTypes.arrayOf(PropTypes.string).isRequired,
-      content: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.arrayOf(
-          PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.shape({
-              type: PropTypes.string.isRequired,
-              content: PropTypes.string,
-              link: PropTypes.shape({
-                text: PropTypes.string.isRequired,
-                url: PropTypes.string.isRequired,
+  data: PropTypes.shape({
+    title: PropTypes.string,
+    featured: PropTypes.arrayOf(
+      PropTypes.shape({
+        title: PropTypes.string.isRequired,
+        cover: PropTypes.string.isRequired,
+        github: PropTypes.string,
+        tech: PropTypes.arrayOf(PropTypes.string).isRequired,
+        content: PropTypes.oneOfType([
+          PropTypes.string,
+          PropTypes.arrayOf(
+            PropTypes.oneOfType([
+              PropTypes.string,
+              PropTypes.shape({
+                type: PropTypes.string.isRequired,
+                content: PropTypes.string,
+                link: PropTypes.shape({
+                  text: PropTypes.string.isRequired,
+                  url: PropTypes.string.isRequired,
+                }),
+                afterLink: PropTypes.string,
               }),
-              afterLink: PropTypes.string,
-            }),
-          ])
-        ),
-      ]).isRequired,
-    })
-  ).isRequired,
+            ])
+          ),
+        ]).isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
 }
 
 export default Featured 

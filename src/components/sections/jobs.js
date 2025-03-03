@@ -127,6 +127,9 @@ const StyledTabContent = styled.div`
   ${media.tablet`padding-left: 20px;`};
   ${media.thone`padding-left: 0;`};
   display: ${props => (props.$isActive ? 'block' : 'none')};
+  opacity: ${props => (props.$isActive ? 1 : 0)};
+  transform: translateY(${props => (props.$isActive ? '0' : '20px')});
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
 
   * {
     font-family: ${fonts.SFMono} !important;
@@ -168,29 +171,133 @@ const StyledTabContent = styled.div`
     color: ${colors.slate};
   }
 `
+
+const StyledRole = styled.div`
+  margin-bottom: 35px;
+  position: relative;
+  padding-left: 20px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: ${props => props.$isFirstRole ? '10px' : '0'};
+    height: ${props => props.$isFirstRole ? 'calc(100% - 10px)' : '100%'};
+    width: 2px;
+    background-color: ${colors.green};
+    opacity: 0.3;
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 10px;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: ${colors.green};
+    opacity: 0.8;
+    transition: all 0.2s ease-in-out;
+  }
+
+  &:hover {
+    &:before {
+      opacity: 0.5;
+    }
+    &:after {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+  }
+
+  // Connect to the next role if it exists
+  &:not(:last-child) {
+    &:before {
+      height: calc(100% + 35px); // Extend to the next role
+    }
+  }
+`
+
 const StyledJobTitle = styled.h4`
   color: ${colors.lightestSlate};
   font-family: ${fonts.Calibre} !important;
   font-size: ${fontSizes.xxl};
   font-weight: 600;
   margin-bottom: 5px;
+  transition: color 0.25s ease-in-out;
+
+  &:hover {
+    color: ${colors.green};
+  }
 `
+
 const StyledCompany = styled.h6`
   color: ${colors.green};
   font-family: ${fonts.Calibre} !important;
   font-size: ${fontSizes.lg};
   font-weight: 600;
   margin-bottom: 5px;
+  opacity: 0.9;
+  transition: opacity 0.25s ease-in-out;
+
+  &:hover {
+    opacity: 1;
+  }
 `
+
 const StyledJobDetails = styled.h5`
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.smish};
   font-weight: normal;
   letter-spacing: 0.05em;
-  color: ${colors.lightestSlate};
-  margin-bottom: 30px;
-  svg {
-    width: 15px;
+  color: ${colors.lightSlate};
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  span.divider {
+    color: ${colors.green};
+    opacity: 0.7;
+  }
+`
+
+const StyledList = styled.ul`
+  position: relative;
+  padding-left: 0;
+  margin-left: 0;
+  
+  li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 10px;
+    font-size: ${fontSizes.sm};
+    color: ${colors.slate};
+    transition: transform 0.2s ease-in-out;
+
+    &:before {
+      content: '▹';
+      position: absolute;
+      left: 0;
+      color: ${colors.green};
+      opacity: 0.8;
+      transition: all 0.2s ease-in-out;
+    }
+
+    &:hover {
+      transform: translateX(5px);
+      color: ${colors.lightestSlate};
+
+      &:before {
+        opacity: 1;
+        transform: scale(1.2);
+      }
+    }
   }
 `
 
@@ -292,7 +399,7 @@ const Jobs = ({ data }) => {
         </StyledTabList>
 
         <div>
-          {data.map(({ title, company, range, location, content }, i) => (
+          {data.map(({ company, roles }, i) => (
             <StyledTabContent
               key={i}
               $isActive={activeTabId === i}
@@ -300,18 +407,24 @@ const Jobs = ({ data }) => {
               role="tabpanel"
               aria-labelledby={`tab-${i}`}
               tabIndex={activeTabId === i ? '0' : '-1'}>
-              <StyledJobTitle>{title}</StyledJobTitle>
-              <StyledCompany>{company}</StyledCompany>
-              <StyledJobDetails>
-                <span>{range}</span>
-                <span>&nbsp;@&nbsp;</span>
-                <span>{location}</span>
-              </StyledJobDetails>
-              <ul>
-                {content.map((item, j) => (
-                  <li key={j}>{renderContent(item)}</li>
-                ))}
-              </ul>
+              {roles.map((role, j) => (
+                <StyledRole 
+                  key={j} 
+                  $isFirstRole={j === 0}>
+                  <StyledJobTitle>{role.title}</StyledJobTitle>
+                  <StyledCompany>{company}</StyledCompany>
+                  <StyledJobDetails>
+                    <span>{role.range}</span>
+                    <span className="divider">•</span>
+                    <span>{role.location}</span>
+                  </StyledJobDetails>
+                  <StyledList>
+                    {role.content.map((item, k) => (
+                      <li key={k}>{renderContent(item)}</li>
+                    ))}
+                  </StyledList>
+                </StyledRole>
+              ))}
             </StyledTabContent>
           ))}
         </div>
@@ -323,23 +436,27 @@ const Jobs = ({ data }) => {
 Jobs.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      title: PropTypes.string.isRequired,
       company: PropTypes.string.isRequired,
-      location: PropTypes.string.isRequired,
-      range: PropTypes.string.isRequired,
-      content: PropTypes.arrayOf(
-        PropTypes.oneOfType([
-          PropTypes.string,
-          PropTypes.shape({
-            type: PropTypes.string.isRequired,
-            content: PropTypes.string.isRequired,
-            link: PropTypes.shape({
-              text: PropTypes.string.isRequired,
-              url: PropTypes.string.isRequired,
-            }),
-            afterLink: PropTypes.string,
-          }),
-        ])
+      roles: PropTypes.arrayOf(
+        PropTypes.shape({
+          title: PropTypes.string.isRequired,
+          location: PropTypes.string.isRequired,
+          range: PropTypes.string.isRequired,
+          content: PropTypes.arrayOf(
+            PropTypes.oneOfType([
+              PropTypes.string,
+              PropTypes.shape({
+                type: PropTypes.string.isRequired,
+                content: PropTypes.string.isRequired,
+                link: PropTypes.shape({
+                  text: PropTypes.string.isRequired,
+                  url: PropTypes.string.isRequired,
+                }),
+                afterLink: PropTypes.string,
+              }),
+            ])
+          ).isRequired,
+        })
       ).isRequired,
     })
   ).isRequired,

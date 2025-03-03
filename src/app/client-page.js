@@ -27,9 +27,6 @@ export default function ClientPage({ initialContent }) {
   // Transform education data to match component expectations
   const educationData = initialContent.education?.education || []
 
-  // Transform featured projects data to match component expectations
-  const featuredData = initialContent.featured?.featured || []
-
   // Transform projects data to match component expectations
   const projectsData = initialContent.projects?.projects || []
 
@@ -42,7 +39,7 @@ export default function ClientPage({ initialContent }) {
             <About data={initialContent.about} technologiesData={technologiesData} />
             <Jobs data={jobsData} />
             <Education data={educationData} />
-            <Featured data={featuredData} />
+            <Featured data={initialContent.featured} />
             <Projects data={projectsData} />
             <Contact data={initialContent.contact} />
           </>

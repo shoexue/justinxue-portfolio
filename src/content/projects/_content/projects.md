@@ -1,7 +1,7 @@
 ---
 projects:
   - date: "2023"
-    title: "ai playground"
+    title: "AI Playground"
     external: "https://github.com/CSC207-2023Y-UofT/ai-playground"
     tech:
       - Java
@@ -10,14 +10,14 @@ projects:
     showInProjects: true
     content:
       type: text
-      content: "An interactive Java-based platform for visualzing neural network decision boundaries which has heavily inspired by the "
+      content: "An interactive Java-based platform for visualizing neural network decision boundaries, inspired by"
       link:
-        text: "Tensorflow Playground"
+        text: "TensorFlow Playground"
         url: "https://playground.tensorflow.org"
-      afterLink: ". This platform allows for users to customize datasets and adjust paramaters to demonstrate real-time effects on the decision boundary. ... And yes the font is comic sans :)"
+      afterLink: ". This platform allows users to customize datasets and adjust parameters to demonstrate real-time effects on the decision boundary. And yes, the font is Comic Sans :)"
 
-  - date: "2022-02-02"
-    title: "hate speech detection algorithm"
+  - date: "2022"
+    title: "Hate Speech Detection Algorithm"
     github: "https://github.com/alvina-yang/hateSpeechDetection/"
     tech:
       - Python
@@ -27,8 +27,8 @@ projects:
     showInProjects: true
     content: "A classification algorithm created using neural networks to classify text into 3 different categories: offensive, hate speech, or neither with a 96% accuracy."
 
-  - date: "2025"
-    title: "locked in"
+  - date: "2024"
+    title: "Locked In"
     external: "https://github.com/alvina-yang/LeetcodeLock"
     tech:
       - Python

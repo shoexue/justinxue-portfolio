@@ -6,10 +6,51 @@ export const getContentData = (section) => {
   const contentDirectory = path.join(process.cwd(), 'src', 'content', section, '_content')
   const filePath = path.join(contentDirectory, `${section}.md`)
   const fileContents = fs.readFileSync(filePath, 'utf8')
-  const { data, content } = matter(fileContents)
+  const { data } = matter(fileContents)
+  
+  // Special handling for featured section
+  if (section === 'featured') {
+    const featured = data.featured.map(projectId => {
+      const projectPath = path.join(contentDirectory, `${projectId}.md`)
+      const projectContent = fs.readFileSync(projectPath, 'utf8')
+      const { data: projectData, content } = matter(projectContent)
+      
+      // Process markdown content
+      const contentParts = content.trim().split('\n\n').filter(Boolean)
+      const processedContent = contentParts.map(part => {
+        // Check if the part contains a markdown link
+        const linkMatch = part.match(/\[(.*?)\]\((.*?)\)/)
+        if (linkMatch) {
+          const beforeLink = part.substring(0, part.indexOf('['))
+          const afterLink = part.substring(part.indexOf(')') + 1)
+          return {
+            type: 'text',
+            content: beforeLink,
+            link: {
+              text: linkMatch[1],
+              url: linkMatch[2]
+            },
+            afterLink: afterLink
+          }
+        }
+        return part
+      })
+
+      return {
+        ...projectData,
+        content: processedContent
+      }
+    })
+
+    return {
+      title: data.title,
+      featured: featured.sort((a, b) => new Date(b.date) - new Date(a.date))
+    }
+  }
   
   // Special handling for about section to include markdown content
   if (section === 'about') {
+    const { content } = matter(fileContents)
     const contentLines = content.trim().split('\n')
     const parsedContent = []
     let currentList = null
@@ -150,8 +191,87 @@ export const getEducationData = () => {
   }
 }
 
+export const getJobsData = () => {
+  const contentDirectory = path.join(process.cwd(), 'src', 'content', 'jobs', '_content')
+  const mainFilePath = path.join(contentDirectory, 'jobs.md')
+  const { data: mainData } = matter(fs.readFileSync(mainFilePath, 'utf8'))
+  
+  const jobs = mainData.companies.map(company => {
+    const companyFilePath = path.join(contentDirectory, `${company}.md`)
+    const { data: jobData, content } = matter(fs.readFileSync(companyFilePath, 'utf8'))
+    
+    // Handle jobs with multiple roles (like UTMIST)
+    if (jobData.roles) {
+      return {
+        company: jobData.company,
+        roles: jobData.roles.map(role => ({
+          ...role,
+          content: role.content.map(item => {
+            if (typeof item === 'string') {
+              // Check if the string contains a markdown link
+              const linkMatch = item.match(/\[(.*?)\]\((.*?)\)/)
+              if (linkMatch) {
+                const beforeLink = item.substring(0, item.indexOf('['))
+                const afterLink = item.substring(item.indexOf(')') + 1)
+                return {
+                  type: 'text',
+                  content: beforeLink,
+                  link: {
+                    text: linkMatch[1],
+                    url: linkMatch[2]
+                  },
+                  afterLink: afterLink
+                }
+              }
+              return item
+            }
+            return item
+          })
+        }))
+      }
+    }
+    
+    // Handle single role jobs
+    const processedContent = content.split('\n')
+      .filter(line => line.trim() && line.trim().startsWith('-'))
+      .map(line => {
+        line = line.replace(/^- /, '').trim()
+        const linkMatch = line.match(/\[(.*?)\]\((.*?)\)/)
+        if (linkMatch) {
+          const beforeLink = line.substring(0, line.indexOf('['))
+          const afterLink = line.substring(line.indexOf(')') + 1)
+          return {
+            type: 'text',
+            content: beforeLink,
+            link: {
+              text: linkMatch[1],
+              url: linkMatch[2]
+            },
+            afterLink: afterLink
+          }
+        }
+        return line
+      })
+
+    return {
+      company: jobData.company,
+      roles: [{
+        title: jobData.title,
+        location: jobData.location,
+        range: jobData.range,
+        content: processedContent
+      }]
+    }
+  })
+
+  return {
+    title: mainData.title,
+    jobs: jobs
+  }
+}
+
 export const getAllContent = () => {
-  const sections = ['hero', 'about', 'technologies', 'jobs', 'featured', 'projects', 'contact']
+  const sections = ['hero', 'about', 'technologies', 'featured', 'projects', 'contact']
   const content = {}
 
   sections.forEach(section => {
@@ -160,6 +280,9 @@ export const getAllContent = () => {
 
   // Handle education separately
   content.education = getEducationData()
+
+  // Handle jobs separately
+  content.jobs = getJobsData()
 
   return content
 } 
