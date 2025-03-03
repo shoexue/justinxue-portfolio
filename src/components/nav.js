@@ -27,45 +27,55 @@ const navLinks = [
 
 const StyledContainer = styled.header`
   ${mixins.flexBetween};
-  position: fixed;
-  top: 0;
-  margin: 0;
-  padding: 0;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
   background-color: ${colors.lightGray};
   transition: ${theme.transition};
   z-index: 11;
   filter: none !important;
   pointer-events: auto !important;
   user-select: auto !important;
-  width: 100vw;
-  left: 0;
-  height: ${theme.navHeight};
+  width: 100% !important;
+  height: ${theme.navHeight} !important;
+  display: flex !important;
+  justify-content: center !important;
 `
 
 const StyledNav = styled.nav`
   ${mixins.flexBetween};
   position: relative;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 50px;
+  width: 100% !important;
+  max-width: 1200px !important;
+  padding: 0 !important;
   color: ${colors.lightestSlate};
   font-weight: 200;
   font-family: ${fonts.SFMono};
   counter-reset: item 0;
   z-index: 12;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
   
-  ${media.desktop`padding: 0 40px;`};
-  ${media.tablet`padding: 0 25px;`};
+  ${media.desktop`padding: 0 !important;`};
+  ${media.tablet`padding: 0 !important;`};
 `
 
 const StyledLogo = styled.div`
   ${mixins.flexCenter};
+  padding: 0 !important;
+  margin: 0 !important;
+  position: absolute !important;
+  left: 25px !important;
   a {
     display: block;
     color: ${colors.green};
     width: 60px;
     height: 60px;
+    padding: 0 !important;
+    margin: 0 !important;
     &:hover,
     &:focus {
       svg {
@@ -81,28 +91,39 @@ const StyledLogo = styled.div`
 `
 
 const StyledLink = styled.div`
-  display: flex;
-  align-items: center;
-  ${media.tablet`display: none;`};
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  position: absolute !important;
+  right: 25px !important;
+  ${media.tablet`display: none !important;`};
 `
 
 const StyledList = styled.ol`
   ${mixins.flexBetween};
-  padding: 0;
-  margin: 0;
+  padding: 0 !important;
+  margin: 0 !important;
   list-style: none;
+  display: flex !important;
+  justify-content: flex-end !important;
 `
 
 const StyledListItem = styled.li`
-  margin: 0 10px;
+  margin: 0 !important;
+  padding: 0 !important;
   position: relative;
   font-size: ${fontSizes.smish};
+  
+  &:not(:last-child) {
+    margin-right: 20px !important;
+  }
 `
 
 const StyledListLink = styled.a`
-  padding: 12px 10px;
-  display: flex;
-  align-items: center;
+  padding: 12px 0 !important;
+  display: flex !important;
+  align-items: center !important;
   text-decoration: none;
   color: ${colors.lightestSlate};
   

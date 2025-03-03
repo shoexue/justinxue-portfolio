@@ -3,29 +3,27 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { usePathname } from 'next/navigation'
+import dynamic from 'next/dynamic'
 
 const ClientWrapper = ({ children }) => {
   const pathname = usePathname()
   const isHome = pathname === '/'
   const [isMounted, setIsMounted] = useState(false)
-  const [smoothScrollInitialized, setSmoothScrollInitialized] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
   useEffect(() => {
-    if (!isMounted || smoothScrollInitialized) return;
+    if (!isMounted) return;
 
     const initSmoothScroll = async () => {
       try {
         const SmoothScroll = (await import('smooth-scroll')).default;
-        const scroll = new SmoothScroll('a[href*="#"]', {
+        return new SmoothScroll('a[href*="#"]', {
           speed: 800,
           speedAsDuration: true,
         });
-        setSmoothScrollInitialized(true);
-        return scroll;
       } catch (error) {
         console.error('Failed to initialize smooth scroll:', error);
         return null;
@@ -42,10 +40,10 @@ const ClientWrapper = ({ children }) => {
         smoothScroll.destroy();
       }
     };
-  }, [isMounted, smoothScrollInitialized]);
+  }, [isMounted]);
 
   useEffect(() => {
-    if (!isMounted) return;
+    if (!isMounted || typeof window === 'undefined') return;
 
     const handleHashLink = () => {
       const hash = window.location.hash;
@@ -66,11 +64,6 @@ const ClientWrapper = ({ children }) => {
     return () => window.removeEventListener('hashchange', handleHashLink);
   }, [isMounted]);
 
-  // During SSR or before hydration, render children without any client-side features
-  if (!isMounted) {
-    return <>{children}</>;
-  }
-
   return <>{children}</>;
 };
 
@@ -78,4 +71,7 @@ ClientWrapper.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default ClientWrapper; 
+// Use dynamic import with ssr: false for the entire component
+export default dynamic(() => Promise.resolve(ClientWrapper), {
+  ssr: false
+}); 
