@@ -160,6 +160,8 @@ const StyledFeaturedImg = styled.div`
     object-fit: cover;
     object-position: center;
     border-radius: ${theme.borderRadius};
+    filter: grayscale(100%) contrast(1) brightness(90%);
+    transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
   }
 
   ${media.tablet`
@@ -177,22 +179,20 @@ const StyledImgContainer = styled.a`
   border-radius: ${theme.borderRadius};
   transition: ${theme.transition};
   background-color: transparent;
+  
   ${media.tablet`height: 100%;`};
   ${media.thone`
     grid-column: 1 / -1;
     opacity: 0.25;
   `};
+
   &:hover,
   &:focus {
     background: transparent;
-    &:before,
-    ${StyledFeaturedImg} {
-      background: transparent;
+    
+    img {
       filter: none;
     }
-  }
-  &:before {
-    display: none;
   }
 `
 const StyledProjectContainer = styled.div`
