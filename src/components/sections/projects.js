@@ -110,7 +110,6 @@ const StyledProjectDescription = styled.div`
   font-family: ${fonts.SFMono};
   font-size: ${fontSizes.sm};
   color: ${colors.lightSlate};
-  padding-bottom: 20px;
   line-height: 1.5;
 
   * {
@@ -133,17 +132,14 @@ const StyledTechList = styled.ul`
   align-items: flex-end;
   flex-grow: 1;
   flex-wrap: wrap;
-  margin: 35px 0 0 0;
+  margin: 10px 0 0 0;
   list-style: none;
-  ${mixins.fancyList};
-
   li {
     font-family: ${fonts.SFMono};
     font-size: ${fontSizes.xs};
     color: ${colors.green};
     line-height: 1.75;
     margin-right: 15px;
-    padding-left: 20px;
     &:last-of-type {
       margin-right: 0;
     }
