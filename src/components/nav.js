@@ -208,17 +208,18 @@ const StyledMobileMenu = styled.div`
   display: none;
   ${media.tablet`display: block;`};
   position: fixed;
-  top: 0;
+  top: ${theme.navHeight};
   bottom: 0;
   right: 0;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - ${theme.navHeight});
   z-index: 12;
   outline: 0;
   transition: ${theme.transition};
   transform: translateX(${props => (props.$menuOpen ? 0 : 100)}vw);
   visibility: ${props => (props.$menuOpen ? 'visible' : 'hidden')};
-  background-color: ${colors.lightGray};
+  background-color: ${colors.shadowbg};
+  backdrop-filter: blur(10px);
 `
 
 const StyledMobileNav = styled.nav`
@@ -227,8 +228,9 @@ const StyledMobileNav = styled.nav`
   color: ${colors.lightestSlate};
   font-family: ${fonts.SFMono};
   text-align: center;
-  padding: 100px 50px;
-  height: 100vh;
+  padding: 50px;
+  height: 100%;
+  width: 100%;
 `
 
 const StyledMobileList = styled.ol`
@@ -240,7 +242,7 @@ const StyledMobileList = styled.ol`
   li {
     position: relative;
     margin: 0 auto 20px;
-    font-size: ${fontSizes.lg};
+    font-size: ${fontSizes.xl};
     counter-increment: item 1;
 
     a {
@@ -250,7 +252,7 @@ const StyledMobileList = styled.ol`
       display: flex;
       align-items: center;
       justify-content: center;
-      color: ${colors.lightestSlate};
+      color: ${colors.white};
       &:hover,
       &:focus {
         color: ${colors.green};
