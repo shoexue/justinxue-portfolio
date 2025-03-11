@@ -57,6 +57,7 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href="https://alvinayang.com" />
+        <script defer src="https://cloud.umami.is/script.js" data-website-id="701337a8-5778-46fc-ae34-5e0eadbcb774"></script>
         <style>{`
           :root {
             --darkBg: #101010;
