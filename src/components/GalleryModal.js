@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import Image from 'next/image'
@@ -183,6 +183,7 @@ const SectionTitle = styled.h3`
 
 const GalleryModal = ({ isOpen, onClose }) => {
   const [playing, setPlaying] = useState(false);
+  const videoRef = useRef(null);
 
   if (!isOpen) {
     return null;
@@ -234,7 +235,17 @@ const GalleryModal = ({ isOpen, onClose }) => {
         </GalleryGrid>
         
         <SectionTitle style={{ marginTop: '30px' }}>Project Demo</SectionTitle>
-        <VideoContainer>
+        <VideoContainer ref={videoRef}>
+          <video
+            id="gallery-video"
+            controls={playing}
+            playsInline
+            poster=""
+            onClick={handleVideoClick}
+          >
+            <source src="/lovelytics/optimized/demo.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
           {!playing && (
             <VideoOverlay onClick={handleVideoClick}>
               <PlayButton>
@@ -245,14 +256,6 @@ const GalleryModal = ({ isOpen, onClose }) => {
               <VideoCaption>Watch our demo</VideoCaption>
             </VideoOverlay>
           )}
-          <video
-            id="gallery-video"
-            controls={playing}
-            onClick={handleVideoClick}
-          >
-            <source src="/lovelytics/ScreenRecording_02-25-2025 20-48-15_1.mov" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
         </VideoContainer>
       </StyledModal>
     </StyledContainer>
