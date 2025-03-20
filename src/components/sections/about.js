@@ -99,11 +99,17 @@ const StyledContent = styled.div`
 const StyledPic = styled.div`
   position: relative;
   width: 40%;
-  max-width: 300px;
+  max-width: 350px;
   margin-left: 60px;
   margin-bottom: 10px;
-  ${media.tablet`margin: 60px auto 0;`};
-  ${media.phablet`width: 70%;`};
+  ${media.tablet`
+    margin: 60px auto 0;
+    width: 70%;
+  `};
+  ${media.phablet`
+    width: 70%;
+    margin: 40px auto 0;
+  `};
   a {
     &:focus {
       outline: 0;
@@ -133,6 +139,9 @@ const StyledAvatarLink = styled.a`
   border-radius: ${theme.borderRadius};
   background-color: ${colors.lightestSlate};
   margin-left: -20px;
+  ${media.tablet`
+    margin-left: 0;
+  `};
   &:hover ${StyledAvatar}, &:focus ${StyledAvatar} {
     filter: none;
   }
@@ -296,8 +305,8 @@ const About = ({ data, technologiesData }) => {
               <Image
                 src={avatar}
                 alt="Avatar"
-                width={300}
-                height={300}
+                width={380}
+                height={380}
                 quality={95}
                 priority
               />

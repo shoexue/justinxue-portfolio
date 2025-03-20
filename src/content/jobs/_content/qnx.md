@@ -6,6 +6,7 @@ range: May 2024 - August 2024
 url: https://blackberry.qnx.com
 ---
 
-- Spearheaded development of the QNX VSCode Extension automation tests, reducing manual testing by 100%
-- Automated 150+ test cases with Selenium, TypeScript, and ExTester
-- Programmed automated testing solutions for the Momentics IDE and the QNX Software Center 
+- Developped the QNX VSCode Extension test suite from scratch, completely eliminating the need for tedious manual testing
+- Crafted over 150 automated test cases using Selenium and TypeScript, turning hours of repetitive clicking into a single command
+- Built testing frameworks for both the Momentics IDE and QNX Software Center, making sure new features didn't break existing functionality
+- Streamlined the CI/CD pipeline by integrating automated tests, letting developers ship code faster and with more confidence

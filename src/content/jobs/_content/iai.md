@@ -6,7 +6,8 @@ range: May 2024 - Present
 url: https://abtestingtools-frontend.up.railway.app/
 ---
 
-- Selected as one of the ROP Students for the Spring/Summer term
-- Worked on the [ABScribe](https://abtestingtools-frontend.up.railway.app/) project under Ph.D candidate Mohi Reza and Dr. Joseph Williams
-- Redesigned the home page using React and Tailwind CSS
-- Developped new features such as personalized persuasive messages using GPT-4, JavaScript, and Python
+- Landed a spot in the Research Opportunity Program for Spring/Summer, working with some brilliant minds in adaptive learning
+- Helped build [ABScribe](https://abtestingtools-frontend.up.railway.app/), a platform that makes A/B testing accessible
+- Gave the home page a complete makeover with React and Tailwind CSS, turning a functional but bland interface into something cool
+- Implemented new features on the editor like chunk splitting to enhance content management
+- Bridged the gap between research theory and practical implementation by translating complex behavioral science concepts into working code

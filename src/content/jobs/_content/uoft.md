@@ -6,5 +6,5 @@ range: October 2024 - Present
 url: https://www.utoronto.ca
 ---
 
-- Conducted research under Dr. Khai Truong's supervision to develop a software platform designed to train users in conducting interviews for Human-Centered Design
-- Engineered interactive interview bots leveraging Retrieval-Augmented Generation and GPT-based models to simulate realistic interview scenarios 
+- Working with Dr. Khai Truong to build a cool platform that helps people get better at conducting Human-Centered Design interviews without the stress of practicing on real humans
+- Created lifelike interview bots using RAG architecture, LangChain, and GPT-4 models that respond dynamically to user questions and provide realistic conversational feedback

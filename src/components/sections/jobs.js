@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import useScrollReveal from '../../utils/sr'
 import styled from 'styled-components'
 import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
+import GalleryModal from '../GalleryModal'
 const { colors, fontSizes, fonts } = theme
 
 const StyledContainer = styled(Section)`
@@ -301,9 +302,25 @@ const StyledList = styled.ul`
   }
 `
 
+const GalleryButton = styled.button`
+  ${mixins.inlineLink};
+  margin-top: 20px;
+  margin-left: 5px;
+  font-size: ${fontSizes.smish};
+  background-color: transparent;
+  color: ${colors.green};
+  padding: 10px 15px;
+  
+  ${media.thone`
+    padding: 8px 12px;
+    font-size: ${fontSizes.xs};
+  `};
+`
+
 const Jobs = ({ data }) => {
   const [activeTabId, setActiveTabId] = useState(0)
   const [tabFocus, setTabFocus] = useState(null)
+  const [galleryOpen, setGalleryOpen] = useState(false)
   const tabs = useRef([])
   const revealContainer = useRef(null)
   const sr = useScrollReveal()
@@ -423,12 +440,19 @@ const Jobs = ({ data }) => {
                       <li key={k}>{renderContent(item)}</li>
                     ))}
                   </StyledList>
+                  {company === 'UTMIST & Lovelytics' && (
+                    <GalleryButton onClick={() => setGalleryOpen(true)}>
+                      View Project Gallery
+                    </GalleryButton>
+                  )}
                 </StyledRole>
               ))}
             </StyledTabContent>
           ))}
         </div>
       </StyledTabs>
+      
+      <GalleryModal isOpen={galleryOpen} onClose={() => setGalleryOpen(false)} />
     </StyledContainer>
   )
 }

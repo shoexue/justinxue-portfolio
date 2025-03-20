@@ -5,7 +5,8 @@ roles:
     range: Sep 2024 - Present
     location: Toronto, ON, Canada
     content:
-      - Led a team of 6 developers in designing LLM-powered a task automation platform in collaboration with [Lovelytics](https://lovelytics.com), enhancing efficiency in job-specific task execution
-      - Implemented Retrieval-Augmented Generation and DSPy to fine-tune and optimize prompts
-      - Spearheaded development efforts to ensure adaptability of the platform for diverse use cases
+      - Leading a cool team of 10 devs in building a cool LLM-powered task automation platform with [Lovelytics](https://lovelytics.com) that makes work way less tedious
+      - Implemented Retrieval-Augmented Generation and DSPy to make our prompts smarter and more effective
+      - Created a multi-agent system that breaks down complex tasks into smaller, manageable chunks for better execution
+      - Made sure the platform was flexible enough to handle whatever weird use cases people might throw at it
 ---

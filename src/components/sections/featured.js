@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 import 'swiper/css'
@@ -13,6 +13,7 @@ import { FormattedIcon } from '../icons'
 import useScrollReveal from '../../utils/sr'
 import styled from 'styled-components'
 import { theme, mixins, media, Section, Heading, Dot } from '../../styles'
+import { VideoModal } from '..'
 const { colors, fontSizes, fonts } = theme
 
 const StyledContainer = styled(Section)`
@@ -117,7 +118,6 @@ const StyledTechList = styled.ul`
   padding: 0;
   margin: 25px 0 10px;
   list-style: none;
-  ${mixins.fancyList};
 
   li {
     font-family: ${fonts.SFMono};
@@ -143,6 +143,7 @@ const StyledLinkWrapper = styled.div`
   margin-top: 10px;
   margin-left: -10px;
   color: ${colors.lightestSlate};
+
   a {
     padding: 10px;
     svg {
@@ -226,9 +227,11 @@ const StyledProject = styled.div`
 `
 
 const Featured = ({ data }) => {
-  const revealTitle = useRef(null)
-  const revealContainer = useRef(null)
-  const sr = useScrollReveal()
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [currentVideo, setCurrentVideo] = useState(null);
+  const revealTitle = useRef(null);
+  const revealContainer = useRef(null);
+  const sr = useScrollReveal();
 
   useEffect(() => {
     if (sr) {
@@ -249,9 +252,70 @@ const Featured = ({ data }) => {
     }
   }, [sr])
 
+  const openVideoModal = (videoSrc, title) => {
+    setCurrentVideo({ src: videoSrc, title });
+    setVideoModalOpen(true);
+  };
+
+  const handleLinkClick = (e, href) => {
+    // Check if the link is to a video file
+    if (href && (href.endsWith('.mp4') || href.endsWith('.mov') || href.endsWith('.webm'))) {
+      e.preventDefault();
+      
+      // Determine which project this is for based on the href
+      let videoTitle = 'Project Demo';
+      if (href.includes('rizzkhalifa')) {
+        videoTitle = 'Rizz Khalifa Demo';
+      }
+      
+      openVideoModal(href, videoTitle);
+    }
+    // For other links, let the browser handle them normally
+  };
+
   const renderContent = (content) => {
     if (typeof content === 'string') {
-      return <p>{content}</p>
+      // Process string content to find and convert video links
+      const linkRegex = /\[(.*?)\]\((.*?)\)/g;
+      let lastIndex = 0;
+      const elements = [];
+      let match;
+      
+      while ((match = linkRegex.exec(content)) !== null) {
+        // Add text before the link
+        if (match.index > lastIndex) {
+          elements.push(
+            <span key={`text-${lastIndex}`}>{content.substring(lastIndex, match.index)}</span>
+          );
+        }
+        
+        // Add the link
+        const linkText = match[1];
+        const linkHref = match[2];
+        
+        elements.push(
+          <a 
+            key={`link-${match.index}`}
+            href={linkHref}
+            onClick={(e) => handleLinkClick(e, linkHref)}
+            target="_blank" 
+            rel="noopener noreferrer"
+          >
+            {linkText}
+          </a>
+        );
+        
+        lastIndex = match.index + match[0].length;
+      }
+      
+      // Add any remaining text
+      if (lastIndex < content.length) {
+        elements.push(
+          <span key={`text-${lastIndex}`}>{content.substring(lastIndex)}</span>
+        );
+      }
+      
+      return <p>{elements}</p>;
     }
 
     if (content.type === 'text') {
@@ -259,7 +323,12 @@ const Featured = ({ data }) => {
         <p>
           {content.content}
           {content.link && (
-            <a href={content.link.url} target="_blank" rel="noopener noreferrer">
+            <a 
+              href={content.link.url} 
+              onClick={(e) => handleLinkClick(e, content.link.url)}
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
               {content.link.text}
             </a>
           )}
@@ -356,6 +425,15 @@ const Featured = ({ data }) => {
             </SwiperSlide>
           ))}
         </Swiper>
+      )}
+
+      {currentVideo && (
+        <VideoModal 
+          isOpen={videoModalOpen} 
+          onClose={() => setVideoModalOpen(false)} 
+          videoSrc={currentVideo.src}
+          title={currentVideo.title}
+        />
       )}
     </StyledContainer>
   )
