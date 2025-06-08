@@ -5,6 +5,5 @@ companies:
   - seismic
   - utmist
   - iai
-  - uoft
   - qnx
 --- 
