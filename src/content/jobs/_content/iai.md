@@ -2,7 +2,7 @@
 company: Intelligent Adaptive Interventions Lab
 title: Undergraduate Researcher
 location: Toronto, ON, Canada / Remote
-range: May 2024 - Present
+range: May 2024 - May 2025
 url: https://abtestingtools-frontend.up.railway.app/
 ---
 

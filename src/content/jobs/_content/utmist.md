@@ -2,7 +2,7 @@
 company: UTMIST & Lovelytics
 roles:
   - title: ML Project Lead
-    range: Sep 2024 - Present
+    range: Sep 2024 - Apr 2025
     location: Toronto, ON, Canada
     content:
       - Leading a cool team of 10 devs in building a cool LLM-powered task automation platform with [Lovelytics](https://lovelytics.com) that makes work way less tedious

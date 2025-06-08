@@ -2,7 +2,7 @@
 company: Seismic
 title: Software Engineer Intern
 location: Toronto, ON, Canada
-range: January 2025 - Present
+range: January 2025 - May 2025
 url: https://seismic.com
 ---
 - Building LLM agents with LangGraph that collaborate with tools to interact with our platform and execute user requests.
