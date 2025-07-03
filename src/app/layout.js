@@ -1,7 +1,7 @@
 import StyledComponentsRegistry from '../lib/registry'
 
 export const metadata = {
-  title: 'Alvina Yang',
+  title: 'Justin Xue',
   description: 'Welcome to my personal website!',
   metadataBase: new URL('https://alvinayang.com'),
   icons: {
@@ -9,7 +9,7 @@ export const metadata = {
     shortcut: '/logo.png',
     apple: '/logo.png',
   },
-  keywords: ['Alvina Yang', 'Software Engineer', 'Web Developer', 'Portfolio', 'Full Stack Developer', 'Software Development', 'Alvina Yang Portfolio', 'Alvina Yang Website', 'Alvina Yang Personal Website', 'University of Toronto'],
+  keywords: ['Justin Xue', 'Software Engineer', 'Web Developer', 'Portfolio', 'Full Stack Developer', 'Software Development', 'Justin Xue Portfolio', 'Justin Xue Website', 'Justin Xue Personal Website', 'University of Toronto'],
   robots: {
     index: true,
     follow: true,
@@ -22,10 +22,10 @@ export const metadata = {
     },
   },
   openGraph: {
-    title: 'Alvina Yang',
+    title: 'Justin Xue',
     description: 'Welcome to my personal website!',
     url: 'https://alvinayang.com',
-    siteName: 'Alvina Yang\'s Portfolio',
+    siteName: 'Justin Xue\'s Portfolio',
     locale: 'en_US',
     type: 'website',
     images: [
@@ -33,13 +33,13 @@ export const metadata = {
         url: '/logo.png',
         width: 800,
         height: 600,
-        alt: 'Alvina Yang Portfolio'
+        alt: 'Justin Xue Portfolio'
       }
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Alvina Yang',
+    title: 'Justin Xue',
     description: 'Welcome to my personal website!',
     images: ['/logo.png'],
   },

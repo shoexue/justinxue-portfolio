@@ -9,7 +9,7 @@ const PrismStyles = css`
    * prism.js default theme for JavaScript, CSS and HTML
    * Based on dabblet (http://dabblet.com)
    * @author Lea Verou
-   * Modified by Alvina Yang
+   * Modified by Justin Xue
    */
 
   code[class*='language-'],

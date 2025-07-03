@@ -1,15 +1,16 @@
 ---
 title: "about ()"
-avatar: "/headshot.png"
+avatar: "/headshot2.png"
 ---
 
 # What's up!
 
-I'm a student at the [University of Toronto](https://www.utoronto.ca/) with a Computer Science Specialist and Mathematics Major.
+I'm a student at the [McGill University](https://www.mcgill.ca/) with a Computer Science - Artifical Intellgence Major.
 
 ## A bit about me:
 
-- I'm currently working on the [SCOT](https://www.amazon.science/tag/supply-chain-optimization-technologies) Forecasting team as an SDE intern at Amazon!
-- I'm interested in a lot of topics such as AI Agents, NLP, and HCI!
-- I love coffee (I've been to nearly 100 coffee shops in Toronto).
-- I'm also an avid reader. My favourite authors are Donna Tartt and Elif Shafak! 
+- I'm currently working on the API Foundations team as an SDE intern at Shopify, helping to improve its [public GraphQL API](https://shopify.dev/docs/api/admin-graphql)!
+- On the side I organize this hackathon with other students [Hackthe6ix] (https://hackthe6ix.com/), Toronto's largest summer hackathon!
+- I play volleyball, I play the setter position at school :D
+- I also do photography for the McGill Chinese Student Society!
+- My favourite drink is milk 

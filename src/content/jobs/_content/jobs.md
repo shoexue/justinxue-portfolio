@@ -1,9 +1,7 @@
 ---
 title: experience ()
 companies:
-  - amazon
-  - seismic
-  - utmist
-  - iai
+  - shopify
+  - hackthe6ix
   - qnx
 --- 

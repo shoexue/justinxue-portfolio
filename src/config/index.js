@@ -1,14 +1,14 @@
 'use client'
 
 const config = {
-  siteTitle: 'Alvina Yang',
+  siteTitle: 'Justin Xue',
   siteDescription: 'A student at the University of Toronto who can sometimes code :)',
-  siteKeywords: 'Alvina Yang, Alvina',
+  siteKeywords: 'Justin Xue, Justin',
   siteUrl: 'https://alvinayang.com/',
   siteLanguage: 'en_US',
   googleAnalyticsID: 'UA-45666519-2',
   googleVerification: 'DCl7VAf9tcz6eD9gb67NfkNnJ1PKRNcg8qQiwpbx9Lk',
-  name: 'Alvina Yang',
+  name: 'Justin Xue',
   location: 'Toronto, Ontario, Canada',
   email: 'alvina.yang@mail.utoronto.ca',
   github: 'https://github.com/alvina-yang',

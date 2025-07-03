@@ -102,7 +102,7 @@ const Footer = () => {
           target="_blank"
           rel="nofollow noopener noreferrer">
           <div>
-            Built with ❤️ by Alvina Yang<br />
+            Built with ❤️ by Justin Xue<br />
           </div>
 
           {githubInfo.stars && githubInfo.forks && (
