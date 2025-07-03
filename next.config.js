@@ -4,8 +4,7 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
-  // Remove assetPrefix or update to your own domain if you have one
-  // assetPrefix: process.env.NODE_ENV === 'production' ? 'https://yourdomain.com' : '',
+  // assetPrefix: process.env.NODE_ENV === 'production' ? 'https://alvinayang.com' : '',
 }
 
 module.exports = nextConfig 
