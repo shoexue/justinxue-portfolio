@@ -1,5 +1,5 @@
 ---
 title: 'print("hello world!")'
 name: "Hi, I'm Justin"
-subtitle: "... nice to meet you :) 👋 "
+subtitle: "... this is my website :) 👋 "
 --- 
