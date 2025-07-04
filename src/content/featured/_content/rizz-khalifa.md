@@ -1,14 +1,17 @@
 ---
-title: Rizz Khalifa
+title: Phonefix.ai
 date: 2024
-cover: /featured/RizzKhalifa.png
-github: https://github.com/Ch3mson/RizzKhalifa
+cover: /featured/phonefix.png
+github: https://github.com/shoexue/phonefix.ai
 tech:
-  - FastAPI
-  - LangChain/LangGraoh
-  - Supabase
-  - Flutter/Dart
+  - OpenAI | Dall-E 2
+  - Pillow
+  - HTML
+  - Go
+  - Bash
 showInProjects: true
 ---
 
-Rizz Khalifa is an AI assistant that helps you flirt better by analyzing conversations in real-time through Meta Rayban glasses. Using facial recognition and conversation analysis, it whispers personalized responses directly into your ear, turning even the most awkward interactions into smooth conversations. With important information and conversation history saved onto our app, you can remember anything about anyone you are talking to and practise your rizz! [View our demo video](/rizzkhalifa/optimized/demo.mp4) to see it in action.
+You know when you get a photo for your phone background it gets all messed up? It zooms in too much, the resolution gets ruined, and the quality goes down. Well we got tired of this happening so we made a solution using AI.
+
+View our project on [Devpost](https://devpost.com/software/phonefix-ai) !

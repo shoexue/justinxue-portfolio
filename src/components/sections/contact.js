@@ -87,7 +87,7 @@ const Contact = ({ data }) => {
         <p>{content}</p>
       </StyledDescription>
 
-      <StyledEmailLink href="mailto:alvina.yang@mail.utoronto.ca" target="_blank" rel="nofollow noopener noreferrer">
+      <StyledEmailLink href="mailto:justin.xue@mail.mcgill.ca" target="_blank" rel="nofollow noopener noreferrer">
         {buttonText}
       </StyledEmailLink>
       <div />

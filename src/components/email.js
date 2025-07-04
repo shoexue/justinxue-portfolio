@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import { theme } from '../styles'
 const { colors, fontSizes, fonts } = theme
 
-const email = 'alvina.yang@mail.utoronto.ca'
+const email = 'justin.xue@mail.mcgill.ca'
 
 const StyledLinkWrapper = styled.div`
   display: flex;

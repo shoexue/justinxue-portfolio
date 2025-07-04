@@ -1,18 +1,17 @@
 ---
-title: Pitch, Please
+title: Fridge Friend
 date: 2024
-cover: /featured/PitchPlease.png
-github: https://github.com/whyismynamerudy/pitch-please/tree/main
+cover: /featured/fridge.png
+github: https://github.com/shoexue/FridgeFriend
 tech:
-  - Python
-  - TypeScript
-  - Next.js
-  - LangChain
+  - Google Cloud Vision
+  - HTML
+  - Flask
+  - Supabase | Postgres
+  - Cloudflare Agents
 showInProjects: true
 ---
 
-Pitches are a challenging part of every hackathon. After a weekend of sleep-deprived hacking, you're now faced with the task of showcasing all of your work in just a few minutes. How can you ensure your ideas come across clearly from each judge's perspective? Introducing Pitch, Please!
+Every year, countless households waste food because items expire unnoticed in their fridges. Fridge Friend tackles this problem by helping users track their grocery items and make the most out of what they have before it spoils.
 
-🥇 Best use of Databricks @UofTHacks 12!
-
-[Check out our submission](https://dorahacks.io/buidl/21648/) !
+[Check out our submission](https://dorahacks.io/buidl/20359/) !

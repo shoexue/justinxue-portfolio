@@ -1,18 +1,21 @@
 ---
-title: HackerQuest
+title: CloudQ
 date: 2024
-cover: /featured/HackerQuest.png
-github: https://github.com/alvina-yang/HackerQuest
+cover: /featured/cloudq.png
+github: https://github.com/FinityFly/cloudQ
 tech:
-  - AWS
-  - Python
-  - JavaScript
+  - React
   - Next.js
-  - Flask
-  - LangChain
+  - Midnight
+  - Twilio
+  - Cairo
+  - Auth0
 showInProjects: true
 ---
 
-Tired of grinding LeetCode with no results? HackerQuest transforms the interview process with AI-driven mock interviews and live feedback. From coding challenges to behavioral questions, our platform equips job seekers and recruiters with the tools to succeed.
+Tired of waiting in long lines at hackathons? So were we.
+After spending hours in queues for registration and food at two different events, we realized there had to be a better way. That’s why we built CloudQ — a decentralized, on-chain solution for managing virtual lineups. Inspired by the ease of tools like LettuceMeet and McDonald’s kiosks, CloudQ lets users create and join queues in just a few clicks, saving time, space, and hassle for both organizers and attendees.
 
-View our project on [Devpost](https://devpost.com/software/hackerquest#updates) !
+🥇 Won Best use of Midnight @McHacks 12!
+
+View our project on [Devpost](https://devpost.com/software/cloudq?ref_content=my-projects-tab&ref_feature=my_projects) !

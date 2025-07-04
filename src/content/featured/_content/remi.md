@@ -1,16 +1,18 @@
 ---
-title: Remi
-date: 2024
-cover: /featured/HelloRemi.png
-github: https://github.com/alvina-yang/HelloRemi
+title: Melodica
+date: 2023
+cover: /featured/melodica.png
+github: https://github.com/FinityFly/melodica
 tech:
-  - ReactJS
-  - Python
-  - Arduino UNO
+  - Moises
+  - Basic-pitch API
+  - Flask
+  - p5.js
   - three.js
 showInProjects: true
 ---
 
-Remi (remember me) is a web-based application connected to an answering machine. Its purpose is to use reminiscence therapy to strengthen bonds between patients with memory-related challenges and their loved ones.
+As a new band, we struggled to isolate instruments and follow chords while practicing songs. So, we built Melodica — a web app that separates any track into individual instruments, visualizes chords, and lets users adjust or download each part. With just a few clicks, Melodica helps musicians practice smarter and play with confidence.
 
-🥇 First place in the RBC Category for UofTHacks, winning $1500. View the project on [Devpost](https://devpost.com/software/remi-bo5sil) !
+
+🥇 Won Best Hack for All Arts @ MAIS Hacks 2023! View the project on [Devpost](https://devpost.com/software/melodica-y0267b) !

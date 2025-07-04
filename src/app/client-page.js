@@ -40,7 +40,6 @@ export default function ClientPage({ initialContent }) {
             <Jobs data={jobsData} />
             <Education data={educationData} />
             <Featured data={initialContent.featured} />
-            <Projects data={projectsData} />
             <Contact data={initialContent.contact} />
           </>
         )}
