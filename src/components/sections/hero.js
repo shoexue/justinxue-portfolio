@@ -59,11 +59,38 @@ const StyledCVButton = styled.a`
     background: ${colors.lightGreen || '#baffc9'};
     color: #fff;
   }
+`;
+
+const StyledMonkeyTypeButton = styled.a`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  padding: 0.5rem 1.5rem;
+  background: transparent;
+  color: ${colors.green};
+  border: 1px solid ${colors.green};
+  border-radius: 5px;
+  font-size: 1rem;
+  text-decoration: none;
+  font-family: ${fonts.SFMono};
+  transition: all 0.2s;
+  &:hover {
+    background: ${colors.transGreen};
+    color: ${colors.white};
+  }
   &:active,
   &:focus,
   &:visited {
-    color: #000;
+    color: ${colors.green};
   }
+`;
+
+const MonkeyTypeLogo = styled.svg`
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
 `;
 
 const Hero = ({ data }) => {
@@ -105,9 +132,17 @@ const Hero = ({ data }) => {
     },
     {
       node: (
-        <StyledCVButton href="/JustinXueResume_July2025.pdf" target="_blank" rel="noopener noreferrer">
-          Download CV
-        </StyledCVButton>
+        <div>
+          <StyledCVButton href="/JustinXueResume_July2025.pdf" target="_blank" rel="noopener noreferrer">
+            Download CV
+          </StyledCVButton>
+          <StyledMonkeyTypeButton href="https://monkeytype.com/profile/shoexue" target="_blank" rel="noopener noreferrer">
+            <MonkeyTypeLogo viewBox="0 0 24 24">
+              <path d="M20 5H4c-1.1 0-1.99.9-1.99 2L2 17c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm-9 3h2v2h-2V8zm0 3h2v2h-2v-2zM8 8h2v2H8V8zm0 3h2v2H8v-2zm-1 2H5v-2h2v2zm0-3H5V8h2v2zm9 7H8c-.55 0-1-.45-1-1s.45-1 1-1h8c.55 0 1 .45 1 1s-.45 1-1 1zm0-4h-2v-2h2v2zm0-3h-2V8h2v2zm3 3h-2v-2h2v2zm0-3h-2V8h2v2z"/>
+            </MonkeyTypeLogo>
+            200+ WPM on monkeytype
+          </StyledMonkeyTypeButton>
+        </div>
       ),
       delay: '400ms'
     }
