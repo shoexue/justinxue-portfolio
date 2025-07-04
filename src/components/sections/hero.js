@@ -124,11 +124,6 @@ const Hero = ({ data }) => {
               </div>
             ))}
           </div>
-          <div>
-            <FractalTreeContainer>
-              <FractalTree />
-            </FractalTreeContainer>
-          </div>
         </>
       )}
     </StyledContainer>
