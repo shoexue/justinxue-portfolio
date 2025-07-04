@@ -4,7 +4,7 @@ const config = {
   siteTitle: 'Justin Xue',
   siteDescription: 'A student at McGill University who can sometimes code :)',
   siteKeywords: 'Justin Xue, Justin',
-  siteUrl: 'https://alvinayang.com/',
+  siteUrl: 'https://justinxue.dev/',
   siteLanguage: 'en_US',
   googleAnalyticsID: 'UA-45666519-2',
   googleVerification: 'DCl7VAf9tcz6eD9gb67NfkNnJ1PKRNcg8qQiwpbx9Lk',
