@@ -44,6 +44,27 @@ const StyledSubtitle = styled.h3`
   ${media.phablet`font-size: 50px;`};
   ${media.phone`font-size: 40px;`};
 `;
+const StyledCVButton = styled.a`
+  display: inline-block;
+  margin-top: 2rem;
+  padding: 0.75rem 2rem;
+  background: ${colors.green};
+  color: #000;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  text-decoration: none;
+  font-family: ${fonts.SFMono};
+  transition: background 0.2s, color 0.2s;
+  &:hover {
+    background: ${colors.lightGreen || '#baffc9'};
+    color: #fff;
+  }
+  &:active,
+  &:focus,
+  &:visited {
+    color: #000;
+  }
+`;
 
 const Hero = ({ data }) => {
   const [isMounted, setIsMounted] = useState(false);
@@ -81,6 +102,14 @@ const Hero = ({ data }) => {
     {
       node: <StyledSubtitle>{subtitle}</StyledSubtitle>,
       delay: '300ms'
+    },
+    {
+      node: (
+        <StyledCVButton href="/JustinXueResume_July2025.pdf" target="_blank" rel="noopener noreferrer">
+          Download CV
+        </StyledCVButton>
+      ),
+      delay: '400ms'
     }
   ];
 
