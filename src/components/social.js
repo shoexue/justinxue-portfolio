@@ -11,11 +11,11 @@ const { colors } = theme
 const socialMedia = [
   {
     name: 'GitHub',
-    url: 'https://github.com/alvina-yang',
+    url: 'https://github.com/shoexue',
   },
   {
     name: 'Linkedin',
-    url: 'https://www.linkedin.com/in/alvina-yang',
+    url: 'https://www.linkedin.com/in/justin-xue5/',
   },
 ]
 

@@ -300,7 +300,7 @@ const About = ({ data, technologiesData }) => {
           ))}
         </StyledContent>
         <StyledPic>
-          <StyledAvatarLink href="https://github.com/alvina-yang" target="_blank" rel="noopener noreferrer">
+          <StyledAvatarLink href="https://github.com/shoexue" target="_blank" rel="noopener noreferrer">
             <StyledAvatar>
               <Image
                 src={avatar}

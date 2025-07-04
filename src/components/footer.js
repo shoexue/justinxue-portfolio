@@ -10,11 +10,11 @@ const { colors, fontSizes, fonts } = theme
 const socialMedia = [
   {
     name: 'GitHub',
-    url: 'https://github.com/alvina-yang',
+    url: 'https://github.com/shoexue',
   },
   {
     name: 'Linkedin',
-    url: 'https://www.linkedin.com/in/alvina-yang',
+    url: 'https://www.linkedin.com/in/justin-xue5/',
   },
 ]
 
@@ -98,7 +98,7 @@ const Footer = () => {
       </StyledSocial>
       <StyledMetadata tabIndex="-1">
         <StyledGitHubLink
-          href="https://github.com/alvina-yang"
+          href="https://github.com/shoexue"
           target="_blank"
           rel="nofollow noopener noreferrer">
           <div>

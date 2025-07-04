@@ -2,7 +2,7 @@
 
 const config = {
   siteTitle: 'Justin Xue',
-  siteDescription: 'A student at the University of Toronto who can sometimes code :)',
+  siteDescription: 'A student at McGill University who can sometimes code :)',
   siteKeywords: 'Justin Xue, Justin',
   siteUrl: 'https://alvinayang.com/',
   siteLanguage: 'en_US',
@@ -10,16 +10,16 @@ const config = {
   googleVerification: 'DCl7VAf9tcz6eD9gb67NfkNnJ1PKRNcg8qQiwpbx9Lk',
   name: 'Justin Xue',
   location: 'Toronto, Ontario, Canada',
-  email: 'alvina.yang@mail.utoronto.ca',
-  github: 'https://github.com/alvina-yang',
+  email: 'justin.xue@mail.mcgill.ca',
+  github: 'https://github.com/shoexue',
   socialMedia: [
     {
       name: 'GitHub',
-      url: 'https://github.com/alvina-yang',
+      url: 'https://github.com/shoexue',
     },
     {
       name: 'Linkedin',
-      url: 'https://www.linkedin.com/in/alvina-y-1a823922b/',
+      url: 'https://www.linkedin.com/in/justin-xue5/',
     },
   ],
 

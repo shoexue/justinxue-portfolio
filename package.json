@@ -2,10 +2,10 @@
   "name": "portfolio",
   "description": "Personal Portfolio",
   "version": "1.0.0",
-  "author": "Justin Xue <alvina.yang@mail.utoronto.ca>",
+  "author": "Justin Xue <justin.xue@mail.mcgill.ca>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/alvina-yang/alvina-yang.github.io"
+    "url": "https://github.com/shoexue/shoexue.github.io"
   },
   "license": "MIT",
   "scripts": {
