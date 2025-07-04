@@ -1,6 +1,6 @@
 ---
 title: "about ()"
-avatar: "/headshot2.png"
+avatar: "/picture.png"
 ---
 
 # What's up!
