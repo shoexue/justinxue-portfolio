@@ -47,6 +47,7 @@ const StyledSubtitle = styled.h3`
 const StyledCVButton = styled.a`
   display: inline-block;
   margin-top: 2rem;
+  margin-left: 1rem;
   padding: 0.75rem 2rem;
   background: ${colors.green};
   color: #000;
@@ -67,7 +68,7 @@ const StyledMonkeyTypeButton = styled.a`
   gap: 8px;
   margin-top: 1rem;
   margin-left: 1rem;
-  padding: 0.5rem 1.5rem;
+  padding: 0.75rem 1.5rem;
   background: transparent;
   color: ${colors.green};
   border: 1px solid ${colors.green};
