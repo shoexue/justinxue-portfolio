@@ -3,7 +3,7 @@ import StyledComponentsRegistry from '../lib/registry'
 export const metadata = {
   title: 'Justin Xue',
   description: 'Welcome to my personal website!',
-  metadataBase: new URL('https://alvinayang.com'),
+  metadataBase: new URL('https://justinxue.dev'),
   icons: {
     icon: '/logo.png',
     shortcut: '/logo.png',
@@ -24,7 +24,7 @@ export const metadata = {
   openGraph: {
     title: 'Justin Xue',
     description: 'Welcome to my personal website!',
-    url: 'https://alvinayang.com',
+    url: 'https://justinxue.dev',
     siteName: 'Justin Xue\'s Portfolio',
     locale: 'en_US',
     type: 'website',
@@ -44,7 +44,7 @@ export const metadata = {
     images: ['/logo.png'],
   },
   alternates: {
-    canonical: 'https://alvinayang.com'
+    canonical: 'https://justinxue.dev'
   },
   verification: {
     google: 'add-your-google-site-verification-here', 
@@ -56,7 +56,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="canonical" href="https://alvinayang.com" />
+        <link rel="canonical" href="https://justinxue.dev" />
         <script defer src="https://cloud.umami.is/script.js" data-website-id="701337a8-5778-46fc-ae34-5e0eadbcb774"></script>
         <style>{`
           :root {
